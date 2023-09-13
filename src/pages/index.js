@@ -1,14 +1,10 @@
-import { Button } from 'semantic-ui-react';
+import { CustomButton } from '@/components/CustomButton';
 
 const index = () => {
 	return (
 		<div>
 			<h2>Game Shop </h2>
-
-			<div>
-				<Button primary>Primary</Button>
-				<Button secondary>Secondary</Button>
-			</div>
+			<CustomButton />
 		</div>
 	);
 };
