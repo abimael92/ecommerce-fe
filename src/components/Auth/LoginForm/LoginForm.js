@@ -17,11 +17,13 @@ export function LoginForm() {
 		validationSchema: validationSchema(),
 		validateOnChange: false,
 		onSubmit: async (formValue) => {
+			console.log('values sent: ', formValue);
 			try {
 				const response = await authCtrl.login(formValue);
+				console.log(response);
 				login(response.jwt);
-
-				// router.push("/");
+				console.log('login successful');
+				router.push('/');
 			} catch (error) {
 				console.error(error);
 			}

@@ -10,10 +10,6 @@ export function Footer() {
 					<div>
 						<Link href='/'>
 							<Image src='/images/logo.png' alt='Game' />
-							<Image
-								src='/public/images/gaming.png'
-								alt='Gaming'
-							/>
 						</Link>
 					</div>
 
