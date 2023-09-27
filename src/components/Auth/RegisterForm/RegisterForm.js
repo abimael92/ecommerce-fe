@@ -14,8 +14,10 @@ export function RegisterForm() {
 		validationSchema: validationSchema(),
 		validateOnChange: false,
 		onSubmit: async (formValue) => {
+			console.log('values sent: ', formValue);
 			try {
 				await authCtrl.register(formValue);
+				console.log('Register success');
 				router.push('/join/sign-in');
 			} catch (error) {
 				console.error(error);
