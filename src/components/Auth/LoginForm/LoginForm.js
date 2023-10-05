@@ -9,53 +9,53 @@ import styles from './LoginForm.module.scss';
 const authCtrl = new Auth();
 
 export function LoginForm() {
-	const router = useRouter();
-	const { login } = useAuth();
+  const router = useRouter();
+  const { login } = useAuth();
 
-	const formik = useFormik({
-		initialValues: initialValues(),
-		validationSchema: validationSchema(),
-		validateOnChange: false,
-		onSubmit: async (formValue) => {
-			console.log('values sent: ', formValue);
-			try {
-				const response = await authCtrl.login(formValue);
-				console.log(response);
-				login(response.jwt);
-				console.log('login successful');
-				router.push('/');
-			} catch (error) {
-				console.error(error);
-			}
-		},
-	});
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validationSchema(),
+    validateOnChange: false,
+    onSubmit: async (formValue) => {
+      console.log('values sent: ', formValue);
+      try {
+        const response = await authCtrl.login(formValue);
+        login(response.jwt);
+        console.log('login successful');
+        router.push('/');
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  });
 
-	return (
-		<Form onSubmit={formik.handleSubmit}>
-			<Form.Input
-				name='identifier'
-				type='text'
-				placeholder='Email or Username'
-				value={formik.values.identifier}
-				onChange={formik.handleChange}
-				error={formik.errors.identifier}
-			/>
-			<Form.Input
-				name='password'
-				type='password'
-				placeholder='Password'
-				value={formik.values.password}
-				onChange={formik.handleChange}
-				error={formik.errors.password}
-			/>
+  return (
+    <Form onSubmit={formik.handleSubmit}>
+      <Form.Input
+        name="identifier"
+        type="text"
+        placeholder="Email or Username"
+        value={formik.values.identifier}
+        onChange={formik.handleChange}
+        error={formik.errors.identifier}
+      />
+      <Form.Input
+        name="password"
+        type="password"
+        placeholder="Password"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        error={formik.errors.password}
+      />
 
-			<Form.Button
-				className={`${styles.glowHover}  `}
-				type='submit'
-				fluid
-				loading={formik.isSubmitting}>
-				Login <span className='icon'>&rarr;</span>
-			</Form.Button>
-		</Form>
-	);
+      <Form.Button
+        className={`${styles.glowHover}  `}
+        type="submit"
+        fluid
+        loading={formik.isSubmitting}
+      >
+        Login <span className="icon">&rarr;</span>
+      </Form.Button>
+    </Form>
+  );
 }
