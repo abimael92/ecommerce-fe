@@ -1,4 +1,4 @@
-import { Token } from "@/api";
+import { Token } from '@/api';
 
 export async function authFetch(url, params) {
   const tokenCtrl = new Token();
@@ -6,13 +6,19 @@ export async function authFetch(url, params) {
 
   const logout = () => {
     tokenCtrl.removeToken();
-    window.location.replace("/");
+    window.location.replace('/');
   };
 
   if (!token) {
-    logout();
+    logout(); // close session
   } else {
-    if (tokenCtrl.hasExpired(token)) {
+    const isExpired = tokenCtrl.hasExpired(token);
+    console.log('the user toke is expired? ', isExpired);
+    const daysLeftToken = tokenCtrl.expiredTimeout(token);
+    console.log('how many days are left till token expires? ', daysLeftToken);
+
+    if (isExpired) {
+      // check expired
       logout();
     } else {
       const paramsTemp = {

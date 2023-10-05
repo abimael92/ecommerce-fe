@@ -1,4 +1,4 @@
-@import "~/src/scss/index.scss";
+@import '~/src/scss/index.scss';
 
 .account {
   display: flex;
@@ -42,10 +42,25 @@
 
     &:hover {
       border: 2px solid $primary;
+      color: $text-primary;
 
       i {
-        color: $text-primary;
+        color: $primary;
+      }
+      p {
+        color: $primary;
       }
     }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logged {
+    color: $text-secondary;
+    margin: 0;
+    font-size: inherit;
   }
 }
