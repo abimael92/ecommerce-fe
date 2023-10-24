@@ -1,17 +1,17 @@
 export const data = [
   {
-    icon: "truck",
-    title: "Súper rápido",
-    description: "Entrega en 24/48 horas",
+    icon: 'truck',
+    title: 'Super Fast',
+    description: 'Delivery in 24/48 hours',
   },
   {
-    icon: "shield",
-    title: "Fiable y seguro",
-    description: "Más de 10,000 juegos",
+    icon: 'shield',
+    title: 'Reliable and Secure',
+    description: 'Over 10,000 games',
   },
   {
-    icon: "wechat",
-    title: "Atención al cliente",
-    description: "Agente disponible 24/7",
+    icon: 'wechat',
+    title: 'Customer Support',
+    description: 'Agent available 24/7',
   },
 ];

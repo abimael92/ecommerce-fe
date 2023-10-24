@@ -1,9 +1,9 @@
-import Head from "next/head";
+import Head from 'next/head';
 
 export function Seo(props) {
   const {
-    title = "Gaming - Tus juegos favoritos",
-    description = "Tus juegos favoritos para Steam, PlayStation, Xbox, Switch al mejor precio.",
+    title = 'Gaming - Your favorite games',
+    description = 'Your favorite games for Steam, PlayStation, Xbox, and Switch at the best prices.',
   } = props;
 
   return (
