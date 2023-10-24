@@ -1,4 +1,4 @@
-@import "~/src/scss/index.scss";
+@import '~/src/scss/index.scss';
 
 .platforms {
   position: relative;
@@ -17,9 +17,22 @@
     text-decoration: none;
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(1.2) invert(1);
       height: 16px;
       padding-right: 10px;
+      transition: filter 0.3s; // Add transition for smooth hover effect
+
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.2);
+      }
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.2);
+        cursor: pointer;
+      }
     }
   }
 }
