@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { Game } from "@/api";
-import { CartLayout } from "@/layouts";
-import { useCart } from "@/hooks";
-import { Cart } from "@/components/Cart";
-import { Seo } from "@/components/Shared";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Game } from '@/api';
+import { CartLayout } from '@/layouts';
+import { useCart } from '@/hooks';
+import { Cart } from '@/components/Cart';
+import { Seo } from '@/components/Shared';
 
 const gameCtrl = new Game();
 
@@ -33,7 +33,7 @@ export default function CartPage() {
 
   return (
     <>
-      <Seo title="Carrito" />
+      <Seo title="Cart" />
 
       <CartLayout>
         {currentStep === 1 && <Cart.StepOne games={games} />}
