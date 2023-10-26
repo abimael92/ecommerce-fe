@@ -21,7 +21,7 @@ export default function HomePage() {
         <Separator height={100} />
 
         <Container>
-          <Home.LatestGames title="Ultimos lanzamientos" />
+          <Home.LatestGames title="Latest releases" />
         </Container>
 
         <Separator height={100} />
