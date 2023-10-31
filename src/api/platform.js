@@ -1,10 +1,10 @@
-import { ENV } from "@/utils";
+import { ENV } from '@/utils';
 
 export class Platform {
   async getAll() {
     try {
-      const sort = "sort=order:asc";
-      const populate = "populate=icon";
+      const sort = 'sort=order:asc';
+      const populate = 'populate=icon';
 
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PLATFORM}?${populate}&${sort}`;
 
@@ -20,6 +20,7 @@ export class Platform {
   }
 
   async getBySlug(slug) {
+    console.log('slug: ', slug);
     try {
       const filters = `filters[slug][$eq]=${slug}`;
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PLATFORM}?${filters}`;
