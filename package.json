@@ -23,6 +23,7 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
     "slick-carousel": "^1.8.1",
+    "stripe": "^14.2.0",
     "yup": "^1.2.0"
   },
   "devDependencies": {
