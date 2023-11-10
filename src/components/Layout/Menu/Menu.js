@@ -45,7 +45,7 @@ export function Menu(props) {
           <Image
             key={new Date(platform.attributes.createdAt).getTime()}
             alt={platform.attributes.title}
-            src={platform.attributes.icon.data[0].attributes?.url}
+            src={platform.attributes.icon.data.attributes?.url}
           />
           {platform.attributes.title}
         </Link>
