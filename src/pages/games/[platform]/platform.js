@@ -1,17 +1,17 @@
-import { Container } from "semantic-ui-react";
-import { size } from "lodash";
-import { BasicLayout } from "@/layouts";
+import { Container } from 'semantic-ui-react'
+import { size } from 'lodash'
+import { BasicLayout } from '@/layouts'
 import {
   GridGames,
   Separator,
   NoResult,
   Pagination,
   Seo,
-} from "@/components/Shared";
+} from '@/components/Shared'
 
 export default function PlatformPage(props) {
-  const { games, platform, pagination } = props;
-  const hasProducts = size(games) > 0;
+  const { games, platform, pagination } = props
+  const hasProducts = size(games) > 0
 
   return (
     <>
@@ -34,7 +34,7 @@ export default function PlatformPage(props) {
             </>
           ) : (
             <NoResult
-              text={`La categoria ${platform.attributes.title} aun no tiene productos`}
+              text={`The category ${platform.attributes.title} does not have any products yet`}
             />
           )}
 
@@ -42,5 +42,5 @@ export default function PlatformPage(props) {
         </Container>
       </BasicLayout>
     </>
-  );
+  )
 }
