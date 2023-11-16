@@ -1,18 +1,29 @@
-import { Game } from "@/api";
+import { Game } from '@/api'
 
-export { default } from "./game";
+export { default } from './game'
 
 export async function getServerSideProps(context) {
-  const {
-    params: { game },
-  } = context;
+  try {
+    const {
+      params: { game },
+    } = context
 
-  const gameCtrl = new Game();
-  const response = await gameCtrl.getBySlug(game);
+    const gameCtrl = new Game()
+    const response = await gameCtrl.getBySlug(game)
 
-  return {
-    props: {
-      game: response,
-    },
-  };
+    return {
+      props: {
+        game: response,
+      },
+    }
+  } catch (error) {
+    console.error('\n\n Error in getServerSideProps: \n\n ', error)
+
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 }
