@@ -1,4 +1,5 @@
 import { ENV } from '@/utils'
+import axios from 'axios'
 
 export class Platform {
   async getAll() {
@@ -8,61 +9,59 @@ export class Platform {
 
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PLATFORM}?${populate}&${sort}`
 
-      const response = await fetch(url)
+      console.log(`this is the URL:\n${url}\n`)
+
+      // const response = await fetch(url)
+      const response = await axios.get(url)
+
+      // console.log(
+      //   `Response Status: ${response.status}\nResponse OK: ${
+      //     response.ok
+      //   }\nResponse Headers:
+      //   ${response.headers}\nResponse: ${JSON.stringify(response.data)}\n
+      //   }`,
+      // )
+
       const result = await response.json()
+      console.log(`Result :`, result)
 
       if (response.status !== 200) throw result
 
       return result
     } catch (error) {
+      console.error('\nError in getAll:', error.message || error)
       throw error
     }
   }
 
   async getBySlug(slug) {
-    console.error(`Fetching data for slug: ${slug}\n`)
+    console.log(`getBySlug\n--------------------`)
+    console.log(`slug: ${slug}\n`)
     try {
       const filters = `filters[slug][$eq]=${slug}`
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PLATFORM}?${filters}`
-
-      console.log(`\n${url}\n`)
+      console.log(`this is the URL:\n${url}\n`)
 
       const response = await fetch(url)
+      console.log(
+        `Response Status: ${response.status}\nResponse OK: ${
+          response.ok
+        }\nResponse Headers:
+        ${response.headers}\nResponse: ${JSON.stringify(response.data)}\n
+        }`,
+      )
 
-      console.log(`\n${response}\n`)
-
-      // Check if the HTTP response status is in the range 200-299 (successful)
       if (!response.ok) {
-        // If not successful, parse the response JSON to get error details
-        const errorResult = await response.json()
-        console.error(`Error: ${response.status} - ${errorResult.message}\n`)
-        throw new Error(`Error: ${response.status} - ${errorResult.message}`)
+        throw new Error(`Error: ${response.status} - ${response.statusText}`)
       }
 
-      const result = await response.json()
-      console.log(`\n${result}\n`)
-      return result.data[0]
+      // const result = await response
+      // console.log(`Result Data:`, result)
+
+      // return result.data[0]
     } catch (error) {
-      // Handle errors thrown in the try block
-      console.error('\n\nError in getBySlug:', error)
-      throw error // Re-throw the error to propagate it further if needed
+      console.error('\nError in getBySlug:\n\n', error.message || error)
+      throw error
     }
   }
-
-  // async getBySlug(slug) {
-  //   console.log(slug);
-  //   try {
-  //     const filters = `filters[slug][$eq]=${slug}`;
-  //     const url = `${ENV.API_URL}/${ENV.ENDPOINTS.PLATFORM}?${filters}`;
-
-  //     const response = await fetch(url);
-  //     const result = await response.json();
-
-  //     if (response.status !== 200) throw result;
-
-  //     return result.data[0];
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
 }
