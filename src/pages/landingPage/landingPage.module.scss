@@ -1,22 +1,50 @@
 @import '@/scss//index.scss';
 
-.signIn {
-  width: 50%;
+.homeContainer {
+  text-align: center;
+}
+
+.homeHeaderWrapper {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(45deg, #ff5400, #ffd700);
+  display: inline-block;
+  color: transparent;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.homeHeader {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.homeInfo {
+  width: 60%;
+  max-width: 800px; /* Set a maximum width for responsiveness */
+  margin: 0 auto; /* Center the paragraph and actions horizontally */
   color: coral;
 
-  > h3 {
+  > p {
     margin-bottom: 20px;
   }
 
   .actions {
     margin-top: 10px;
+
     .link {
       color: #f5a550;
       text-decoration: underline;
       padding-left: 10px;
+
       &:hover {
         color: $primary;
-      } // This will make the link inherit the global styles
+      }
+    }
+
+    > .primary {
+      margin: 20px 0; /* Adjust as needed */
     }
   }
 }

@@ -20,7 +20,6 @@ export function LoginForm() {
       console.log('values sent: ', formValue)
 
       try {
-        // Introduce an artificial delay (e.g., 50 seconds) before making the login request
         await new Promise((resolve) => setTimeout(resolve, 20000)) // 50000 milliseconds = 50 seconds
 
         const response = await authCtrl.login(formValue)
