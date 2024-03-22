@@ -11,8 +11,8 @@ const LandingPage = () => {
 
       <JoinLayout>
         <div className={styles.homeContainer}>
-          <div class="homeHeaderWrapper">
-            <h1 class="homeHeader">
+          <div className={styles.homeHeaderWrapper}>
+            <h1 className={styles.homeHeader}>
               Welcome to the Ultimate Gaming Experience!
             </h1>
           </div>
@@ -28,7 +28,7 @@ const LandingPage = () => {
             </p>
 
             <div className={styles.actions}>
-              <Button primary size="huge" className={styles.primary}>
+              <Button size="huge" className={styles.tryOutButton}>
                 <Link href="join/sign-in" legacyBehavior>
                   <a>Try out now</a>
                 </Link>

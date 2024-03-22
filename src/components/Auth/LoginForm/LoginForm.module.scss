@@ -1,3 +1,5 @@
+@import '@/scss/index.scss'; // Import global styles
+
 .glowHover {
   border: none;
   outline: none;
@@ -34,6 +36,8 @@
     animation: glowing 20s linear infinite;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    background: $primary; /* Set button background color */
+    padding: 10px 20px;
     border-radius: 10px;
   }
 
@@ -99,10 +103,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.tenorSection {
-  /* Styling for the Tenor GIF embed section */
 }
 
 .bounceSection {

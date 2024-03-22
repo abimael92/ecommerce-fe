@@ -83,7 +83,7 @@ export function LoginForm() {
       />
 
       <Form.Button
-        className={`${styles.glowHover}  `}
+        className={`${styles.glowHover}`}
         type="submit"
         fluid
         loading={formik.isSubmitting}
