@@ -1,36 +1,70 @@
-import { Form } from 'semantic-ui-react';
-import { useFormik } from 'formik';
-import { useRouter } from 'next/router';
-import { Auth } from '@/api';
-import { useAuth } from '@/hooks';
-import { initialValues, validationSchema } from './LoginForm.form';
-import styles from './LoginForm.module.scss';
+import { Form, Message, Dimmer, Loader } from 'semantic-ui-react'
+import { useFormik } from 'formik'
+import { useRouter } from 'next/router'
+import { Auth } from '@/api'
+import { useAuth } from '@/hooks'
+import { initialValues, validationSchema } from './LoginForm.form'
+import styles from './LoginForm.module.scss'
 
-const authCtrl = new Auth();
+const authCtrl = new Auth()
 
 export function LoginForm() {
-  const router = useRouter();
-  const { login } = useAuth();
+  const router = useRouter()
+  const { login } = useAuth()
 
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      console.log('values sent: ', formValue);
+      console.log('values sent: ', formValue)
+
       try {
-        const response = await authCtrl.login(formValue);
-        login(response.jwt);
-        console.log('login successful');
-        router.push('/');
+        await new Promise((resolve) => setTimeout(resolve, 1000)) // 50000 milliseconds = 50 seconds
+
+        const response = await authCtrl.login(formValue)
+        login(response.jwt)
+
+        console.log(
+          'Timeout triggered. Navigating and completing form submission.',
+        )
+        router.push('/')
+        formik.setSubmitting(false)
+
+        console.log('login successful')
       } catch (error) {
-        console.error(error);
+        console.error(error)
+        const errorMessage =
+          error?.response?.data?.error?.message ||
+          'Invalid identifier or password'
+
+        formik.setSubmitting(false)
+        formik.setStatus({ loginError: errorMessage })
       }
     },
-  });
+  })
 
   return (
     <Form onSubmit={formik.handleSubmit}>
+      {formik.status?.loginError && (
+        <Message negative>
+          <Message.Header>Login Failed</Message.Header>
+          <p style={{ color: 'red' }}>{formik.status.loginError}</p>
+        </Message>
+      )}
+
+      <Dimmer active={formik.isSubmitting} inverted page>
+        <Loader
+          className={styles.animatedLoader}
+          content={
+            <>
+              Game On <br />
+              Best Games are now Loading
+            </>
+          }
+        />
+      </Dimmer>
+
       <Form.Input
         name="identifier"
         type="text"
@@ -49,7 +83,7 @@ export function LoginForm() {
       />
 
       <Form.Button
-        className={`${styles.glowHover}  `}
+        className={`${styles.glowHover}`}
         type="submit"
         fluid
         loading={formik.isSubmitting}
@@ -57,5 +91,5 @@ export function LoginForm() {
         Login <span className="icon">&rarr;</span>
       </Form.Button>
     </Form>
-  );
+  )
 }

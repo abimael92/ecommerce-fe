@@ -1,56 +1,64 @@
 @import '~/src/scss/index.scss';
 
 .container {
-	height: 100vh;
-	max-height: 100vh;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .topBar {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	padding: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
 
-	> a {
-		> img {
-			height: 30px;
-		}
+  > a {
+    > img {
+      height: 30px;
+    }
 
-		> i {
-			font-size: 26px;
-			color: $danger;
-			margin: 0;
-		}
-	}
+    > i {
+      font-size: 26px;
+      color: $danger;
+      margin: 0;
+    }
+  }
 }
 
 .blockLeft {
-	width: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.blockRight {
-	background-image: url('/images/sign-wallpaper.jpg');
-	background-position: center;
-	background-size: cover;
-	height: 100%;
-	width: 50%;
+.blockRight-AuthPage {
+  background-image: url('/images/sign-wallpaper.jpg');
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  width: 50%;
+}
+
+.blockRight-LandingPage {
+  background-image: url('/images/videogames-wallpaper.png');
+  background-position: center; /* Center the background image */
+  background-size: auto 158%;
+  height: 100vh;
+  width: 50%;
 }
 
 .imageContainer {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .imageWrapper {
-	margin: 0 10px;
-	display: inline-block;
+  margin: 0 10px;
+  display: inline-block;
 }

@@ -1,0 +1,44 @@
+import { Container, Header, Button } from 'semantic-ui-react'
+import Link from 'next/link'
+import { JoinLayout } from '@/layouts'
+import { Seo } from '@/components/Shared'
+import styles from './landingPage.module.scss'
+
+const LandingPage = () => {
+  return (
+    <>
+      <Seo title="Login" />
+
+      <JoinLayout>
+        <div className={styles.homeContainer}>
+          <div className={styles.homeHeaderWrapper}>
+            <h1 className={styles.homeHeader}>
+              Welcome to the Ultimate Gaming Experience!
+            </h1>
+          </div>
+
+          <div className={styles.homeInfo}>
+            <p>
+              Explore our collection of the latest and greatest video games.
+              Find the games that match your passion and immerse yourself in the
+              gaming world. <br />
+              <br />
+              Whether you're into action, adventure, strategy, or simulation,
+              we've got something for every gamer.
+            </p>
+
+            <div className={styles.actions}>
+              <Button size="huge" className={styles.tryOutButton}>
+                <Link href="join/sign-in" legacyBehavior>
+                  <a>Try out now</a>
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </JoinLayout>
+    </>
+  )
+}
+
+export default LandingPage

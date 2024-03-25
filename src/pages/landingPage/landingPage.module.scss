@@ -1,0 +1,156 @@
+/* landingPage.module.scss */
+
+@import '@/scss/index.scss'; // Import global styles
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.homeContainer {
+  text-align: center;
+}
+
+.homeHeaderWrapper {
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(45deg, #ff5400, #ffd700);
+  display: inline-block;
+  color: transparent;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.homeHeader {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  animation: flash 2s infinite; /* Adjust duration as needed */
+}
+
+.homeInfo {
+  width: 60%;
+  max-width: 800px; /* Set a maximum width for responsiveness */
+  margin: 0 auto; /* Center the paragraph and actions horizontally */
+  color: coral;
+  font-size: 20px;
+
+  > p {
+    margin-bottom: 25px;
+  }
+
+  .actions {
+    margin-top: 10px;
+  }
+}
+.tryOutButton {
+  position: relative;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  z-index: 0;
+  border-radius: 10px;
+  color: #fff;
+  background: #111;
+  padding: 10px 20px; /* Add padding to maintain button size */
+  transition: transform 0.3s ease; /* Add transition for size change */
+
+  span {
+    display: none;
+  }
+
+  &:before {
+    content: '';
+    background: linear-gradient(
+      45deg,
+      #ff0000,
+      #ff7300,
+      #fffb00,
+      #7a00ff,
+      #ff00c8,
+      #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 1;
+    border-radius: 10px;
+  }
+
+  &:active {
+    color: #000;
+  }
+
+  &:active:after {
+    background: transparent;
+  }
+
+  &:hover:before {
+    opacity: 1; /* Ensure glow is always visible */
+  }
+
+  &:hover {
+    transform: scale(1.3); /* Increase button size on hover */
+  }
+
+  &:hover span {
+    animation: arrow 700ms linear infinite;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: large;
+  }
+
+  &:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111; /* Set button background color */
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+}
+
+@keyframes glowing {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes flash {
+  0% {
+    color: #ff0000; /* Red */
+    text-shadow: 0 0 8px #ff0000, 0 0 12px #ff0000; /* Red glowing effect */
+  }
+  12% {
+    color: #00ff00; /* Green */
+    text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00; /* Green glowing effect */
+  }
+  40% {
+    color: #0000ff; /* Blue */
+    text-shadow: 0 0 8px #0000ff, 0 0 12px #0000ff; /* Blue glowing effect */
+  }
+  60% {
+    color: #ffff00; /* Yellow */
+    text-shadow: 0 0 8px #ffff00, 0 0 12px #ffff00; /* Yellow glowing effect */
+  }
+  80% {
+    color: #ffa500; /* Orange */
+    text-shadow: 0 0 8px #ffa500, 0 0 12px #ffa500; /* Orange glowing effect */
+  }
+  80% {
+    color: #40e0d0; /* Turquoise */
+    text-shadow: 0 0 8px #40e0d0, 0 0 12px #40e0d0; /* Turquoise glowing effect */
+  }
+}
