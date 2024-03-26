@@ -1,15 +1,15 @@
-import { Container, Header, Button } from 'semantic-ui-react'
-import Link from 'next/link'
-import { JoinLayout } from '@/layouts'
-import { Seo } from '@/components/Shared'
-import styles from './landingPage.module.scss'
+import { Button } from 'semantic-ui-react';
+import Link from 'next/link';
+import { HeroLayout } from '@/layouts';
+import { Seo } from '@/components/Shared';
+import styles from './landing-guest.module.scss';
 
-const LandingPage = () => {
+export default function LandingGuestPage() {
   return (
     <>
-      <Seo title="Login" />
+      <Seo title="Welcome" />
 
-      <JoinLayout>
+      <HeroLayout>
         <div className={styles.homeContainer}>
           <div className={styles.homeHeaderWrapper}>
             <h1 className={styles.homeHeader}>
@@ -36,9 +36,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-      </JoinLayout>
+      </HeroLayout>
     </>
-  )
+  );
 }
-
-export default LandingPage

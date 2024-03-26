@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.loaderContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.animatedLoader {
+  text-align: center;
+}
+
+.loadingTextPrimary {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 48px;
+  text-align: center;
+  color: #ff7300;
+  line-height: 1.5;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000; /* Black outline */
+}
+
+.loadingTextSecondary {
+  font-family: 'VT323', monospace; /* Different font */
+  font-size: 36px;
+  text-align: center;
+  color: #30b230;
+  line-height: 1.2;
+  margin-top: 20px;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+}

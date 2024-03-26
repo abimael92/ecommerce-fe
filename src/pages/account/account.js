@@ -1,11 +1,17 @@
-import { useState } from 'react';
-import { Tab } from 'semantic-ui-react';
-import { useRouter } from 'next/router';
-import { BasicLayout } from '@/layouts';
-import { useAuth } from '@/hooks';
-import { Info, Settings, Address, Wishlist, Orders } from '@/components/Account';
-import { Separator, Seo } from '@/components/Shared';
-import styles from './account.module.scss';
+import { useState } from "react";
+import { Tab } from "semantic-ui-react";
+import { useRouter } from "next/router";
+import { BasicLayout } from "@/layouts";
+import { useAuth } from "@/hooks";
+import {
+  Info,
+  Settings,
+  Address,
+  Wishlist,
+  Orders,
+} from "@/components/Account";
+import { Separator, Seo } from "@/components/Shared";
+import styles from "./account.module.scss";
 
 export default function AccountPage() {
   const { user, logout } = useAuth();
@@ -13,7 +19,7 @@ export default function AccountPage() {
   const [reload, setReload] = useState(false);
 
   if (!user) {
-    router.push('/');
+    router.push("/");
     return null;
   }
 
@@ -21,7 +27,7 @@ export default function AccountPage() {
 
   const panes = [
     {
-      menuItem: 'My Orders',
+      menuItem: "Mis pedidos",
       render: () => (
         <Tab.Pane attached={false}>
           <Orders />
@@ -30,7 +36,7 @@ export default function AccountPage() {
       ),
     },
     {
-      menuItem: 'Wishlist',
+      menuItem: "Lista de deseos",
       render: () => (
         <Tab.Pane attached={false}>
           <Wishlist />
@@ -39,7 +45,7 @@ export default function AccountPage() {
       ),
     },
     {
-      menuItem: 'Addresses',
+      menuItem: "Direcciones",
       render: () => (
         <Tab.Pane attached={false}>
           <Address.AddAddress onReload={onReload} />
@@ -49,7 +55,7 @@ export default function AccountPage() {
       ),
     },
     {
-      menuItem: { key: 20, icon: 'settings', content: 'Ajustes' },
+      menuItem: { key: 20, icon: "settings", content: "Ajustes" },
       render: () => (
         <Tab.Pane attached={false} key={99}>
           <Settings.ChangeNameForm />
@@ -64,8 +70,8 @@ export default function AccountPage() {
     {
       menuItem: {
         key: 21,
-        icon: 'log out',
-        content: '',
+        icon: "log out",
+        content: "",
         onClick: logout,
       },
     },
@@ -73,12 +79,16 @@ export default function AccountPage() {
 
   return (
     <>
-      <Seo title="My Account" />
+      <Seo title="Mi cuenta" />
 
       <BasicLayout isContainer relative>
         <Info />
 
-        <Tab menu={{ secondary: true, pointing: true }} panes={panes} className={styles.tabs} />
+        <Tab
+          menu={{ secondary: true, pointing: true }}
+          panes={panes}
+          className={styles.tabs}
+        />
       </BasicLayout>
     </>
   );

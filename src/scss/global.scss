@@ -1,13 +1,13 @@
-@import './index.scss';
-@import './semantic-ui/index.scss';
+@import "./index.scss";
+@import "./semantic-ui/index.scss";
 
 * {
-	color: $text-primary;
+  color: $text-primary;
 }
 
 body {
-	margin: 0;
-	background-color: $background-primary;
+  margin: 0;
+  background-color: $background-primary;
 }
 
 h1,
@@ -15,17 +15,17 @@ h2,
 h3,
 h4,
 h5 {
-	margin: 0;
+  margin: 0;
 }
 
 p {
-	margin: 0;
+  margin: 0;
 }
 
 a {
-	color: $text-primary;
+  color: $text-primary;
 
-	&:hover {
-		color: $primary;
-	}
+  &:hover {
+    color: $primary;
+  }
 }

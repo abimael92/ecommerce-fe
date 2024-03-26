@@ -1,37 +1,36 @@
-import { useState, useEffect } from 'react'
-import { Container, Image } from 'semantic-ui-react'
-import { DateTime } from 'luxon'
-import Link from 'next/link'
-import { Game } from '@/api'
-import { Label } from '@/components/Shared'
-import { fn } from '@/utils'
-import styles from './BannerLastGamePublished.module.scss'
+import { useState, useEffect } from "react";
+import { Container, Image } from "semantic-ui-react";
+import { DateTime } from "luxon";
+import Link from "next/link";
+import { Game } from "@/api";
+import { Label } from "@/components/Shared";
+import { fn } from "@/utils";
+import styles from "./BannerLastGamePublished.module.scss";
 
-const gameCtrl = new Game()
+const gameCtrl = new Game();
 
 export function BannerLastGamePublished() {
-  const [game, setGame] = useState(null)
+  const [game, setGame] = useState(null);
 
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       try {
-        const response = await gameCtrl.getLastPublished()
-        console.log(response.data[0])
-        setGame(response.data[0])
+        const response = await gameCtrl.getLastPublished();
+        setGame(response.data[0]);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
-  if (!game) return null
+  if (!game) return null;
 
-  const wallpaper = game.attributes.wallpaper
-  const releaseDate = new Date(game.attributes.releaseDate).toISOString()
+  const wallpaper = game.attributes.wallpaper;
+  const releaseDate = new Date(game.attributes.releaseDate).toISOString();
   const price = fn.calcDiscountedPrice(
     game.attributes.price,
-    game.attributes.discount,
-  )
+    game.attributes.discount
+  );
 
   return (
     <div className={styles.container}>
@@ -52,5 +51,5 @@ export function BannerLastGamePublished() {
         </Container>
       </Link>
     </div>
-  )
+  );
 }

@@ -5,20 +5,20 @@ import { Seo } from '@/components/Shared';
 import styles from './sign-up.module.scss';
 
 export default function SignUpPage() {
-	return (
-		<>
-			<Seo title='Register' />
+  return (
+    <>
+      <Seo title="Register" />
 
-			<JoinLayout>
-				<div className={styles.signIn}>
-					<h3>Sign up</h3>
-					<RegisterForm />
+      <JoinLayout>
+        <div className={styles.signIn}>
+          <h3>Sign up</h3>
+          <RegisterForm />
 
-					<div className={styles.actions}>
-						<Link href='/join/sign-in'>Back</Link>
-					</div>
-				</div>
-			</JoinLayout>
-		</>
-	);
+          <div className={styles.actions}>
+            <Link href="/join/sign-in">Back</Link>
+          </div>
+        </div>
+      </JoinLayout>
+    </>
+  );
 }

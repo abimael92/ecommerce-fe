@@ -1,0 +1,70 @@
+/* landingPage.module.scss */
+
+@import '@/scss/index.scss'; // Import global styles
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.container {
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+
+  > a {
+    > img {
+      height: 30px;
+    }
+
+    > i {
+      font-size: 26px;
+      color: $danger;
+      margin: 0;
+    }
+  }
+}
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s; /* Add transition effect for smooth hover */
+
+  &:hover {
+    transform: scale(1.1); /* Scale up the image container on hover */
+  }
+
+  .imageWrapper {
+    margin: 0 10px;
+    display: inline-block;
+  }
+}
+.blockContainer {
+  display: contents;
+  overflow: hidden;
+}
+
+.blockLeft {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.05s ease-out;
+}
+
+.blockRight {
+  background-image: url('/images/videogames-wallpaper.png');
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  width: 50%;
+}

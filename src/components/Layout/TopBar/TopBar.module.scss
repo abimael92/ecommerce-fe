@@ -1,39 +1,47 @@
 .topBar {
-	position: fixed;
-	display: flex;
-	align-items: center;
-	width: 100%;
-	padding: 20px;
-	z-index: 5;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  z-index: 5;
 }
 
 .left {
-	width: 20%;
-	text-align: center;
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
 
-	img {
-		height: 30px;
-	}
+  // img {
+  //   height: 40px;
+  // }
+}
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s; /* Add transition effect for smooth hover */
+
+  &:hover {
+    transform: scale(1.1); /* Scale up the image container on hover */
+  }
+
+  .imageWrapper {
+    margin: 0 10px;
+    display: inline-block;
+  }
 }
 
 .center {
-	width: 60%;
-	display: flex;
-	justify-content: center;
+  width: 60%;
+  display: flex;
+  justify-content: center;
 }
 
 .right {
-	width: 20%;
-	display: flex;
-	justify-content: flex-end;
-}
-
-.imageContainer {
-	display: flex;
-	align-items: center;
-}
-
-.imageWrapper {
-	margin: 0 10px;
-	display: inline-block;
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
 }

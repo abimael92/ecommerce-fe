@@ -3,20 +3,21 @@ import { Container, Image, Button } from 'semantic-ui-react';
 import styles from './Footer.module.scss';
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <div className={styles.footer}>
       <Container>
         <div className={styles.columns}>
           <div>
             <Link href="/">
-              <Image src="/images/logo.png" alt="Game" />
+              <Image src="/images/logo.png" alt="Gaming" />
             </Link>
           </div>
 
           <div>
             <ul>
-              <Link href="/other/404">Terms and Conditions</Link>
-              <Link href="/other/403">Privacy Policy</Link>
+              <Link href="#">Terms and Conditions</Link>
+              <Link href="#">Privacy Policy</Link>
               <Link href="#">Contact</Link>
               <Link href="#">FAQs</Link>
             </ul>
@@ -31,7 +32,7 @@ export function Footer() {
         </div>
 
         <div className={styles.copyright}>
-          <span>Copyright © 2023 Gaming - All rights reserved</span>
+          <span>Copyright © {currentYear} Gaming - All rights reserved</span>
         </div>
       </Container>
     </div>

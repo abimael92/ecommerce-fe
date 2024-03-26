@@ -1,5 +1,5 @@
-import { ENV } from '@/utils';
-import jwtDecode from 'jwt-decode';
+import { ENV } from "@/utils";
+import jwtDecode from "jwt-decode";
 
 export class Token {
   setToken(token) {
@@ -15,7 +15,6 @@ export class Token {
   }
 
   hasExpired(token) {
-    // check token expired date
     const tokenDecode = jwtDecode(token);
     const expireDate = tokenDecode.exp * 1000;
     const currentDate = new Date().getTime();
@@ -25,16 +24,5 @@ export class Token {
     }
 
     return false;
-  }
-
-  expiredTimeout(token) {
-    // check token expired date
-    const tokenDecode = jwtDecode(token);
-    const expireDate = tokenDecode.exp * 1000;
-    const currentDate = new Date().getTime();
-
-    const diferenceDate = Math.floor((expireDate - currentDate) / (1000 * 60 * 60 * 24));
-
-    return diferenceDate;
   }
 }

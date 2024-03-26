@@ -1,5 +1,5 @@
-import { useState, useEffect, createContext } from 'react';
-import { Token, User } from '@/api';
+import { useState, useEffect, createContext } from "react";
+import { Token, User } from "@/api";
 
 const tokenCtrl = new Token();
 const userCtrl = new User();
@@ -13,7 +13,6 @@ export function AuthProvider(props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // check if user has an active session
     (async () => {
       const token = tokenCtrl.getToken();
 
@@ -33,12 +32,10 @@ export function AuthProvider(props) {
 
   const login = async (token) => {
     try {
-      tokenCtrl.setToken(token); // set token in localstorage
+      tokenCtrl.setToken(token);
       const response = await userCtrl.getMe();
-      console.log('user data: ', response);
-
-      setUser(response); // user data in state
-      setToken(token); // token in state
+      setUser(response);
+      setToken(token);
       setLoading(false);
     } catch (error) {
       console.error(error);
