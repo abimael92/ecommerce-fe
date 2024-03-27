@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Container, Image, Button } from 'semantic-ui-react';
+import LogoTitle from '@/components/Layout/LogoTitle';
+
 import styles from './Footer.module.scss';
 
 export function Footer() {
@@ -8,11 +10,7 @@ export function Footer() {
     <div className={styles.footer}>
       <Container>
         <div className={styles.columns}>
-          <div>
-            <Link href="/">
-              <Image src="/images/logo.png" alt="Gaming" />
-            </Link>
-          </div>
+          <LogoTitle size="BIG" />
 
           <div>
             <ul>

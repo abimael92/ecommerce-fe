@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { map } from "lodash";
-import { Label, WishlistIcon } from "@/components/Shared";
-import { fn } from "@/utils";
-import styles from "./GridGames.module.scss";
+import Link from 'next/link';
+import { map } from 'lodash';
+import { Label, WishlistIcon } from '@/components/Shared';
+import { fn } from '@/utils';
+import styles from './GridGames.module.scss';
 
 export function GridGames(props) {
   const { wishlist, onReload } = props;
@@ -29,11 +29,11 @@ export function GridGames(props) {
               <div>
                 <span>{game.attributes.title}</span>
                 <span className={styles.price}>
+                  $
                   {fn.calcDiscountedPrice(
                     game.attributes.price,
-                    game.attributes.discount
+                    game.attributes.discount,
                   )}
-                  €
                 </span>
               </div>
             </Link>

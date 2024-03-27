@@ -1,9 +1,10 @@
-import { Icon, Image } from "semantic-ui-react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { map } from "lodash";
-import classNames from "classnames";
-import styles from "./HeaderCart.module.scss";
+import { Icon, Image } from 'semantic-ui-react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { map } from 'lodash';
+import classNames from 'classnames';
+import styles from './HeaderCart.module.scss';
+import LogoTitle from '../LogoTitle';
 
 export function HeaderCart() {
   const {
@@ -12,17 +13,15 @@ export function HeaderCart() {
   const currentStep = step;
 
   const steps = [
-    { number: 1, title: "Cesta" },
-    { number: 2, title: "Pago" },
-    { number: 3, title: "Confirmación" },
+    { number: 1, title: 'Cart' },
+    { number: 2, title: 'Payment' },
+    { number: 3, title: 'Confirmation' },
   ];
 
   return (
     <div className={styles.headerCart}>
       <div className={styles.left}>
-        <Link href="/">
-          <Image src="/images/logo.png" alt="Gaming" />
-        </Link>
+        <LogoTitle size="SMALL" />
       </div>
 
       <div className={styles.center}>

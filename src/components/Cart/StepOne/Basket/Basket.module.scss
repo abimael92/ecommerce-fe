@@ -1,4 +1,4 @@
-@import "~/src/scss/index.scss";
+@import '~/src/scss/index.scss';
 
 .basket {
   > h2 {
@@ -69,5 +69,23 @@
         font-weight: bold;
       }
     }
+  }
+}
+
+.productLess {
+  display: flex;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid $border-secondary;
+
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0;
+  width: 100%;
+
+  p {
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
   }
 }

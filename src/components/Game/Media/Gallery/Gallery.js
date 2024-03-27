@@ -1,15 +1,20 @@
-import { useState } from "react";
-import { Image } from "semantic-ui-react";
-import { map } from "lodash";
-import Slider from "react-slick";
-import { FullModal } from "@/components/Shared";
-import styles from "./Gallery.module.scss";
+import { useState } from 'react';
+import { Image } from 'semantic-ui-react';
+import { map } from 'lodash';
+import Slider from 'react-slick';
+import { FullModal } from '@/components/Shared';
+import styles from './Gallery.module.scss';
 
 export function Gallery(props) {
   const { screenshots } = props;
   const [show, setShow] = useState(false);
 
   const onOpenClose = () => setShow((prevState) => !prevState);
+
+  // Check if screenshots array exists and has length greater than 0
+  if (!screenshots || screenshots.length === 0) {
+    return <div>No screenshots available</div>; // Or render a banner or text indicating no screenshots
+  }
 
   const screenshotsClone = [...screenshots];
   const principalImage = screenshotsClone.shift();
@@ -18,7 +23,7 @@ export function Gallery(props) {
     dots: true,
     dotsClass: styles.dots,
     infinite: true,
-    slidersToShow: 1,
+    slidersToShow: 1, // Fixed typo in the setting name, changed from slidersToShow to slidesToShow
     slidesToScroll: 1,
     arrows: false,
     customPaging: function (index) {

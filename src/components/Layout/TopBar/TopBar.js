@@ -2,6 +2,7 @@ import { Image } from 'semantic-ui-react';
 import Link from 'next/link';
 import { Account } from '../Account';
 import { Menu } from '../Menu';
+import LogoTitle from '@/components/Layout/LogoTitle';
 import styles from './TopBar.module.scss';
 
 export function TopBar(props) {
@@ -10,9 +11,7 @@ export function TopBar(props) {
   return (
     <div className={styles.topBar}>
       <div className={styles.left}>
-        <Link href="/">
-          <Image src="/images/logo.png" alt="Gaming" />
-        </Link>
+        <LogoTitle size="MEDIUM" />
       </div>
 
       <div className={styles.center}>

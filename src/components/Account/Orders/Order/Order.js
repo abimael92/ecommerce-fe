@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { Image } from "semantic-ui-react";
-import { DateTime } from "luxon";
-import { forEach, map } from "lodash";
-import { BasicModal } from "@/components/Shared";
-import { fn } from "@/utils";
-import styles from "./Order.module.scss";
+import { useState } from 'react';
+import { Image } from 'semantic-ui-react';
+import { DateTime } from 'luxon';
+import { forEach, map } from 'lodash';
+import { BasicModal } from '@/components/Shared';
+import { fn } from '@/utils';
+import styles from './Order.module.scss';
 
 export function Order(props) {
   const { order } = props;
@@ -30,14 +30,14 @@ export function Order(props) {
       <div className={styles.order} onClick={openCloseModal}>
         <div>
           <span>
-            {DateTime.fromISO(createdAt, { locale: "es" }).toFormat(
-              "dd/MM/yyyy"
+            {DateTime.fromISO(createdAt, { locale: 'es' }).toFormat(
+              'dd/MM/yyyy',
             )}
           </span>
           <p>{getTotalProducts()} productos</p>
         </div>
 
-        <p>{order.attributes.totalPayment.toFixed(2)}€</p>
+        <p>${order.attributes.totalPayment.toFixed(2)}</p>
       </div>
 
       <BasicModal
@@ -59,11 +59,11 @@ export function Order(props) {
               <div className={styles.quantity}>
                 <span>x{product.quantity}</span>
                 <span>
+                  $
                   {fn.calcDiscountedPrice(
                     product.attributes.price,
-                    product.attributes.discount
+                    product.attributes.discount,
                   )}
-                  €
                 </span>
               </div>
             </div>
@@ -74,15 +74,15 @@ export function Order(props) {
           <div>
             <p className={styles.title}>{address.attributes.title}</p>
             <p className={styles.addressInfo}>
-              {address.attributes.name}, {address.attributes.address},{" "}
-              {address.attributes.state}, {address.attributes.city},{" "}
+              {address.attributes.name}, {address.attributes.address},{' '}
+              {address.attributes.state}, {address.attributes.city},{' '}
               {address.attributes.postal_code}
             </p>
           </div>
         </div>
 
         <div className={styles.total}>
-          <p>TOTAL: {order.attributes.totalPayment.toFixed(2)}€</p>
+          <p>TOTAL: ${order.attributes.totalPayment.toFixed(2)}</p>
         </div>
       </BasicModal>
     </>

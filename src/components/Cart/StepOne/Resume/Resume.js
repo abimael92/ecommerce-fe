@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
-import { Button } from "semantic-ui-react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { forEach } from "lodash";
-import { fn } from "@/utils";
-import styles from "./Resume.module.scss";
+import { useState, useEffect } from 'react';
+import { Button } from 'semantic-ui-react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { forEach } from 'lodash';
+import { fn } from '@/utils';
+import styles from './Resume.module.scss';
 
 export function Resume(props) {
   const { games } = props;
   const router = useRouter();
   const [totals, setTotals] = useState(null);
+
+  console.log(games);
 
   useEffect(() => {
     let totals = {
@@ -21,7 +23,7 @@ export function Resume(props) {
     forEach(games, (game) => {
       const price = fn.calcDiscountedPrice(
         game.attributes.price,
-        game.attributes.discount
+        game.attributes.discount,
       );
 
       totals = {
@@ -48,24 +50,29 @@ export function Resume(props) {
       <div className={styles.block}>
         <div className={styles.prices}>
           <div>
-            <span>Precio oficial</span>
-            <span>{totals.original.toFixed(2)}€</span>
+            <span>Official Price</span>
+            <span>${totals.original.toFixed(2)}</span>
           </div>
           <div>
-            <span>Descuento</span>
-            <span>{totals.discount.toFixed(2)}€</span>
+            <span>Discount</span>
+            <span>${totals.discount.toFixed(2)}</span>
           </div>
           <div>
             <span>Subtotal</span>
-            <span>{totals.price.toFixed(2)}€</span>
+            <span>${totals.price.toFixed(2)}</span>
           </div>
         </div>
 
-        <Button primary fluid onClick={goToStepTwo}>
-          Proceder con el pago
+        <Button
+          primary
+          fluid
+          onClick={goToStepTwo}
+          disabled={!(games && games.lenght > 0)}
+        >
+          Proceed with payment
         </Button>
 
-        <Link href="/">Continuar comprando</Link>
+        <Link href="/">Continue Shopping</Link>
       </div>
     </div>
   );

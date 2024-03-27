@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import { Button } from "semantic-ui-react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useRouter } from "next/router";
-import { forEach, map } from "lodash";
-import { Cart } from "@/api";
-import { useAuth, useCart } from "@/hooks";
-import { fn } from "@/utils";
-import styles from "./Resume.module.scss";
+import { useState, useEffect } from 'react';
+import { Button } from 'semantic-ui-react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/router';
+import { forEach, map } from 'lodash';
+import { Cart } from '@/api';
+import { useAuth, useCart } from '@/hooks';
+import { fn } from '@/utils';
+import styles from './Resume.module.scss';
 
 const cartCtrl = new Cart();
 
@@ -26,7 +26,7 @@ export function Resume(props) {
     forEach(games, (game) => {
       const price = fn.calcDiscountedPrice(
         game.attributes.price,
-        game.attributes.discount
+        game.attributes.discount,
       );
       totalTemp += price * game.quantity;
     });
@@ -52,14 +52,14 @@ export function Resume(props) {
         result.token,
         games,
         user.id,
-        addressSelected
+        addressSelected,
       );
 
       if (response.status === 200) {
         deleteAllItems();
         goToStepEnd();
       } else {
-        console.error("Error al realizar el pedido");
+        console.error('Error al realizar el pedido');
       }
     }
 
@@ -87,12 +87,11 @@ export function Resume(props) {
                 <span>{game.attributes.platform.data.attributes.title}</span>
               </div>
               <span>
-                {game.quantity > 0 && `${game.quantity}x`}
+                {game.quantity > 0 && `${game.quantity}x`}$
                 {fn.calcDiscountedPrice(
                   game.attributes.price,
-                  game.attributes.discount
+                  game.attributes.discount,
                 )}
-                €
               </span>
             </div>
           ))}
@@ -102,7 +101,7 @@ export function Resume(props) {
       <div className={styles.blockTotal}>
         <div>
           <span>Total</span>
-          <span>{total}€</span>
+          <span>${total}</span>
         </div>
 
         <Button

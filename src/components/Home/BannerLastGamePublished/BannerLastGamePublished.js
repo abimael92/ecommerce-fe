@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { Container, Image } from "semantic-ui-react";
-import { DateTime } from "luxon";
-import Link from "next/link";
-import { Game } from "@/api";
-import { Label } from "@/components/Shared";
-import { fn } from "@/utils";
-import styles from "./BannerLastGamePublished.module.scss";
+import { useState, useEffect } from 'react';
+import { Container, Image } from 'semantic-ui-react';
+import { DateTime } from 'luxon';
+import Link from 'next/link';
+import { Game } from '@/api';
+import { Label } from '@/components/Shared';
+import { fn } from '@/utils';
+import styles from './BannerLastGamePublished.module.scss';
 
 const gameCtrl = new Game();
 
@@ -29,7 +29,7 @@ export function BannerLastGamePublished() {
   const releaseDate = new Date(game.attributes.releaseDate).toISOString();
   const price = fn.calcDiscountedPrice(
     game.attributes.price,
-    game.attributes.discount
+    game.attributes.discount,
   );
 
   return (
@@ -46,7 +46,7 @@ export function BannerLastGamePublished() {
 
           <p className={styles.price}>
             <Label.Discount>-{game.attributes.discount}%</Label.Discount>
-            <span className={styles.finalPrice}>{price}€</span>
+            <span className={styles.finalPrice}>${price}</span>
           </p>
         </Container>
       </Link>
