@@ -2,7 +2,8 @@
   position: relative;
   margin-top: 50px;
 
-  > div {
+  div {
+    font-size: 18px !important;
     > a {
       &:last-of-type {
         position: absolute !important;
@@ -11,6 +12,10 @@
       &:nth-last-of-type(2) {
         position: absolute !important;
         right: 46px;
+      }
+      > i {
+        font-size: x-large;
+        padding-left: 0 50px;
       }
     }
   }

@@ -1,17 +1,18 @@
-import { useState } from "react";
-import { Tab } from "semantic-ui-react";
-import { useRouter } from "next/router";
-import { BasicLayout } from "@/layouts";
-import { useAuth } from "@/hooks";
+import { useState } from 'react';
+import { Tab } from 'semantic-ui-react';
+import { useRouter } from 'next/router';
+import { BasicLayout } from '@/layouts';
+import { useAuth } from '@/hooks';
 import {
   Info,
   Settings,
   Address,
   Wishlist,
   Orders,
-} from "@/components/Account";
-import { Separator, Seo } from "@/components/Shared";
-import styles from "./account.module.scss";
+} from '@/components/Account';
+import { Separator, Seo } from '@/components/Shared';
+import 'semantic-ui-css/semantic.min.css';
+import styles from './account.module.scss';
 
 export default function AccountPage() {
   const { user, logout } = useAuth();
@@ -19,7 +20,7 @@ export default function AccountPage() {
   const [reload, setReload] = useState(false);
 
   if (!user) {
-    router.push("/");
+    router.push('/');
     return null;
   }
 
@@ -27,27 +28,27 @@ export default function AccountPage() {
 
   const panes = [
     {
-      menuItem: "Mis pedidos",
+      menuItem: 'My Orders',
       render: () => (
-        <Tab.Pane attached={false}>
+        <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
           <Orders />
           <Separator height={80} />
         </Tab.Pane>
       ),
     },
     {
-      menuItem: "Lista de deseos",
+      menuItem: 'Wishlist',
       render: () => (
-        <Tab.Pane attached={false}>
+        <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
           <Wishlist />
           <Separator height={80} />
         </Tab.Pane>
       ),
     },
     {
-      menuItem: "Direcciones",
+      menuItem: 'Addresses',
       render: () => (
-        <Tab.Pane attached={false}>
+        <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
           <Address.AddAddress onReload={onReload} />
           <Address.ListAddresses reload={reload} onReload={onReload} />
           <Separator height={80} />
@@ -55,7 +56,7 @@ export default function AccountPage() {
       ),
     },
     {
-      menuItem: { key: 20, icon: "settings", content: "Ajustes" },
+      menuItem: { key: 20, icon: 'settings', content: 'Settings' },
       render: () => (
         <Tab.Pane attached={false} key={99}>
           <Settings.ChangeNameForm />
@@ -70,8 +71,8 @@ export default function AccountPage() {
     {
       menuItem: {
         key: 21,
-        icon: "log out",
-        content: "",
+        icon: 'log out',
+        content: '',
         onClick: logout,
       },
     },
@@ -79,7 +80,7 @@ export default function AccountPage() {
 
   return (
     <>
-      <Seo title="Mi cuenta" />
+      <Seo title="My Account" />
 
       <BasicLayout isContainer relative>
         <Info />
@@ -88,7 +89,7 @@ export default function AccountPage() {
           menu={{ secondary: true, pointing: true }}
           panes={panes}
           className={styles.tabs}
-        />
+        ></Tab>
       </BasicLayout>
     </>
   );

@@ -16,12 +16,12 @@ export function Basket(props) {
 
   return (
     <div className={styles.basket}>
-      <h2>Cart</h2>
+      <h2>Shopping Cart</h2>
 
       <div className={styles.block}>
         {games && games.length === 0 ? (
           <div className={styles.productLess}>
-            <p>Your cart is empty.</p>
+            <p>Your Shopping Cart is Empty.</p>
           </div>
         ) : (
           <>

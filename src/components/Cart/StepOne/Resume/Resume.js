@@ -45,7 +45,7 @@ export function Resume(props) {
 
   return (
     <div className={styles.resume}>
-      <h2>Resumen</h2>
+      <h2>Order Summary</h2>
 
       <div className={styles.block}>
         <div className={styles.prices}>

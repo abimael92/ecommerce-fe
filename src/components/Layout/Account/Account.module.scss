@@ -1,51 +1,55 @@
-@import "~/src/scss/index.scss";
-
+@import '~/src/scss/index.scss';
 .account {
   display: flex;
+  margin: 10px;
+  padding: 10px;
 
-  button {
-    background-color: transparent !important;
-    margin-left: 10px !important;
-
-    &:hover {
-      > i {
-        color: $primary;
-      }
-    }
-
-    > i {
-      font-size: 18px;
-      height: 20px !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  .cart {
-    display: flex;
+  .button {
+    width: 62px;
+    height: 62px;
+    padding: 10px !important; /* Adjust padding to make it square */
+    transition: background-color 0.3s;
+    position: relative;
+    background-color: black !important;
+    opacity: 55%;
+    border: 2px solid transparent;
+    border-radius: 15px;
     align-items: center;
-    justify-content: center;
+    display: block;
+    margin: 8px;
 
-    > div {
-      background-color: $primary;
-      color: $text-primary;
-      font-size: 10px;
-      margin-left: 5px;
+    i {
+      font-size: 1.3em;
+      margin: 2px;
+    }
+
+    &:hover {
+      border: 2px solid orange;
+      transform: scale(1.15);
     }
   }
 
-  .user {
-    background-color: $background-tertiary !important;
-    border-radius: 10px;
-    border: 2px solid $background-tertiary;
+  .label,
+  .notifier {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background-color: orange; /* Adjust color if necessary */
+    color: black;
+    border-radius: 50%;
+    font-size: 15px;
+    border: 1px solid black;
+    padding: 2px;
+  }
 
-    &:hover {
-      border: 2px solid $primary;
+  .notifier {
+    background-color: greenyellow;
+  }
 
-      i {
-        color: $text-primary;
-      }
-    }
+  .userName {
+    display: block;
+    color: white;
   }
 }

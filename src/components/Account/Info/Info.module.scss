@@ -1,4 +1,4 @@
-@import "~/src/scss/index.scss";
+@import '~/src/scss/index.scss';
 
 .info {
   display: flex;
@@ -35,9 +35,10 @@
 .email {
   font-weight: bold;
   margin-bottom: 10px;
+  font-size: 25px;
 }
 
 .createdAt {
   color: $text-secondary;
-  font-size: 12px;
+  font-size: 15px;
 }
