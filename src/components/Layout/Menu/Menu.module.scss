@@ -1,4 +1,4 @@
-@import "~/src/scss/index.scss";
+@import '~/src/scss/index.scss';
 
 .platforms {
   position: relative;
@@ -7,19 +7,40 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  padding: 0 50px 0 20px;
+  padding: 0 80px 0 50px;
   border-radius: 100px 0 0 100px;
 
-  > a {
-    display: flex;
+  .platform {
+    position: relative;
+    display: block;
     align-items: center;
-    padding: 20px 15px;
-    text-decoration: none;
+    justify-content: center;
+    padding: 15px;
+    margin-right: 10px;
+    filter: invert(1);
 
-    img {
-      filter: brightness(0) invert(1);
-      height: 16px;
-      padding-right: 10px;
+    &:hover {
+      transform: scale(1.15);
+    }
+    .platformTitle {
+      color: black;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: transform 0.3s;
+
+      .iconWrapper {
+        margin-bottom: 10px;
+      }
+
+      img {
+        height: 16px;
+        padding-right: 20px;
+        align-items: center;
+      }
     }
   }
 }
