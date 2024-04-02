@@ -11,7 +11,7 @@ export function TopBar(props) {
   return (
     <div className={styles.topBar}>
       <div className={styles.left}>
-        <LogoTitle size="MEDIUM" />
+        <LogoTitle size="SMALL" />
       </div>
 
       <div className={styles.center}>

@@ -45,7 +45,7 @@ export default function LandingUserPage() {
           subtitle="Compare with other games and choose yours!"
           btnTitle="Enter now"
           btnLink="/account"
-          image="/images/img01.png"
+          image="/images/gaming-rivals.png"
         />
 
         <Separator height={50} />

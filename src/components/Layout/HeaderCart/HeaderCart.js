@@ -46,7 +46,7 @@ export function HeaderCart() {
       <div className={styles.right}>
         <Icon name="lock" />
         <div>
-          <span>Pago seguro</span>
+          <span>Secure Payment</span>
           <span>256-bit SSL Secure</span>
         </div>
       </div>

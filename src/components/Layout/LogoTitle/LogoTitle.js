@@ -4,9 +4,9 @@ import Link from 'next/link';
 import styles from './LogoTitle.module.scss';
 
 const SIZES = {
-  BIG: 80,
-  MEDIUM: 45,
-  SMALL: 25,
+  BIG: 320,
+  MEDIUM: 160,
+  SMALL: 80,
 };
 
 const LogoTitle = ({ size }) => {
@@ -18,10 +18,14 @@ const LogoTitle = ({ size }) => {
       <div className={styles.logoTitle}>
         <div className={styles.imageContainer}>
           <div className={styles.imageWrapper}>
-            <Image src="/images/logo.png" alt="Game" height={imgGame} />
+            <Image src="/images/gamingCtrl.png" alt="Game" height={imgGame} />
           </div>
           <div className={styles.imageWrapper}>
-            <Image src="/images/gaming.png" alt="Gaming" height={imgGaming} />
+            <Image
+              src="/images/gaming_title.png"
+              alt="Gaming"
+              height={imgGaming}
+            />
           </div>
         </div>
       </div>
