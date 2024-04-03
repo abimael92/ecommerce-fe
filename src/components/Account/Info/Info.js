@@ -1,10 +1,19 @@
 import { Button, Icon } from 'semantic-ui-react';
 import { DateTime } from 'luxon';
 import { useAuth } from '@/hooks';
+import { useRouter } from 'next/router';
 import styles from './Info.module.scss';
 
 export function Info() {
+  const router = useRouter(); // Get the router object
   const { user } = useAuth();
+
+  const handleAddGame = () => {
+    console.log('is admin? ', user.admin);
+    if (user.admin) {
+      router.push('/addGame');
+    }
+  };
 
   return (
     <div className={styles.info}>
@@ -18,6 +27,8 @@ export function Info() {
         Member since:{' '}
         {DateTime.fromISO(user.createdAt, { locale: 'en' }).toFormat('DDD')}
       </p>
+
+      <Button onClick={handleAddGame}>Add Game</Button>
     </div>
   );
 }

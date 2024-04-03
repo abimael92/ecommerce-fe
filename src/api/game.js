@@ -142,4 +142,29 @@ export class Game {
       throw error;
     }
   }
+
+  async postGame(data) {
+    try {
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}`;
+      console.log('this is he url: ', url);
+      const params = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      };
+
+      const response = await fetch(url, params);
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to post game data');
+      }
+
+      return result;
+    } catch (error) {
+      throw new Error(error.message || 'Failed to post game data');
+    }
+  }
 }

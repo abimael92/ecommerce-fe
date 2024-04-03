@@ -1,0 +1,113 @@
+@import '@/scss/index.scss'; // Import global styles
+
+.combinedLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+
+  div {
+    width: 1rem;
+    height: 1rem;
+    margin: 2rem 0.3rem;
+    background: #979fd0;
+    border-radius: 50%;
+    animation: 0.9s bounce infinite alternate;
+
+    &:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+  }
+}
+
+.loadingText {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 26px;
+  text-align: center;
+  color: #ff7300;
+  line-height: 1.2;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 70px;
+
+  .textArea {
+    textarea {
+      border: 2px solid #3d3d3d;
+      background-color: #1d1d1d;
+      color: #fff;
+      padding: 14px;
+      border-radius: 6px;
+      width: 100%; // Adjust width as needed
+    }
+    textarea:focus {
+      background-color: #1d1d1d; // Maintain dark background color on focus
+      outline: none; // Remove default focus outline
+    }
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.formField {
+  width: 100%;
+  border: 2px solid #3d3d3d;
+  background-color: #1d1d1d;
+  color: #fff;
+  padding: 14px;
+  border-radius: 6px;
+}
+
+.formInput {
+  width: 100%;
+  border: 2px solid #3d3d3d;
+  background-color: #1d1d1d !important;
+  color: #fff;
+  padding: 14px;
+  border-radius: 6px;
+}
+.textArea {
+  textarea {
+    border: 2px solid #3d3d3d;
+    background-color: #1d1d1d;
+    color: #fff;
+    padding: 14px;
+    border-radius: 6px;
+    width: 100%; // Adjust width as needed
+  }
+}
+
+.formTextArea {
+  width: 100%;
+  height: 100px;
+  border: 2px solid #3d3d3d;
+  background-color: #1d1d1d !important;
+  background: #1d1d1d !important;
+  color: #fff;
+  padding: 14px;
+  border-radius: 6px;
+  resize: none; /* Prevent resizing */
+}
+
+.formField {
+  margin-bottom: 20px;
+}
+
+.submitButton {
+  margin-top: 20px;
+}

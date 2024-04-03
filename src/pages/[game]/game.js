@@ -4,11 +4,9 @@ import { Separator, Seo } from '@/components/Shared';
 
 export default function GamePage(props) {
   const { game } = props;
-  console.log(game);
+  // console.log(game);
 
-  // Check if game is undefined
   if (!game) {
-    // Render a loading indicator or return null
     return (
       <BasicLayout>
         <p>Game data not available</p>

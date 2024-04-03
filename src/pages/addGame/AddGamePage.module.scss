@@ -1,0 +1,31 @@
+.info {
+  display: flex !important;
+}
+.tabs {
+  position: relative;
+  margin-top: 50px;
+
+  div {
+    font-size: 18px !important;
+    > a {
+      &:last-of-type {
+        position: absolute !important;
+        right: 0;
+      }
+      &:nth-last-of-type(2) {
+        position: absolute !important;
+        right: 46px;
+      }
+      > i {
+        font-size: x-large;
+        padding-left: 0 50px;
+      }
+    }
+  }
+}
+
+.containerForms {
+  display: flex;
+  margin: 0 -10px;
+  margin-top: 50px;
+}
