@@ -1,37 +1,47 @@
 import * as Yup from 'yup';
+import { format, startOfToday } from 'date-fns';
 
 export function initialValues() {
+  // const today = format(startOfToday(), 'ddMMyyyy');
+  const today = format(startOfToday(), 'yyyy-MM-dd');
   return {
     title: '',
-    platform: '',
-    price: 0,
-    discount: 0,
     slug: '',
+    price: 0,
+    discount: null,
+    platform: '',
     summary: '',
-    video: null, // Assuming video is a file, initialize as null
-    cover: null, // Assuming cover image is a file, initialize as null
-    wallpaper: null, // Assuming wallpaper image is a file, initialize as null
-    screenshots: [], // Assuming screenshots is an array of files, initialize as empty array
-    releaseDate: new Date().toISOString().substr(0, 10),
+    releaseDate: today,
+    cover: '',
+    wallpaper: '',
+    screenshots: [],
   };
 }
 
 export function validationSchema() {
+  const discountSchema = Yup.number().positive(
+    'Discount must be a positive value',
+  );
+
   return Yup.object({
     title: Yup.string().required('Title is required'),
-    platform: Yup.string().required('Platform is required'),
+    slug: Yup.string().required('Slug is required'),
     price: Yup.number()
       .required('Price is required')
-      .min(0, 'Price must be a positive number'),
-    discount: Yup.number()
-      .required('Discount is required')
-      .min(0, 'Discount must be a positive number'),
-    slug: Yup.string().required('Slug is required'),
+      .positive('Price must be a positive value')
+      .typeError('Price must be a number'),
+    platform: Yup.string().required('Platform is required'),
     summary: Yup.string().required('Summary is required'),
-    video: Yup.string().required('Video is required'),
-    cover: Yup.string().required('Cover is required'),
-    wallpaper: Yup.string().required('Wallpaper is required'),
-    screenshots: Yup.string().required('Screenshots are required'),
     releaseDate: Yup.date().required('Release date is required'),
+    discount: Yup.number()
+      .nullable() // Allow null for discount
+      .positive('Discount must be a positive value')
+      .max(100, 'Discount must be between 1 and 100')
+      .typeError('Discount must be a number'),
+    cover: Yup.mixed().required('Cover image is required'),
+    wallpaper: Yup.mixed().required('Wallpaper image is required'),
+    screenshots: Yup.array()
+      .of(Yup.mixed())
+      .required('At least one screenshot is required'),
   });
 }

@@ -7,17 +7,8 @@ import AddGameForm from '@/components/AddGame/AddGameForm'; // Import AddGameFor
 const gameCtrl = new Game();
 
 export default function AddGamePage() {
-  // const [game, setGame] = useState(null); // Initialize state to store game data
-
   const handleSubmit = async (formData) => {
     console.log('Form data:', formData);
-    // try {
-    //   const response = await gameCtrl.postGame(formData);
-    //   setGame(response.data); // Assuming the response returns the newly added game data
-    //   console.log('Game added successfully:', response.data);
-    // } catch (error) {
-    //   console.error('Error adding game:', error);
-    // }
   };
 
   return (
@@ -25,8 +16,7 @@ export default function AddGamePage() {
       <Seo title="Add Game" />
 
       <BasicLayout isContainer relative>
-        {/* Pass the handleSubmit function as a prop to the AddGameForm component */}
-        <AddGameForm onSubmit={handleSubmit} />
+        <AddGameForm />
       </BasicLayout>
     </>
   );

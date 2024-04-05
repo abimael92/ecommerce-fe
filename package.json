@@ -12,6 +12,7 @@
     "@stripe/react-stripe-js": "^2.6.2",
     "axios": "^1.6.2",
     "classnames": "^2.5.1",
+    "date-fns": "^3.6.0",
     "formik": "^2.4.5",
     "jwt-decode": "^3.1.2",
     "luxon": "^3.4.3",

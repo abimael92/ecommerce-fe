@@ -144,6 +144,12 @@ export class Game {
   }
 
   async postGame(data) {
+    console.log(data);
+
+    const requestBody = {
+      data: data, // Include the 'data' field in the request payload
+    };
+
     try {
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}`;
       console.log('this is he url: ', url);
@@ -152,7 +158,7 @@ export class Game {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestBody),
       };
 
       const response = await fetch(url, params);
