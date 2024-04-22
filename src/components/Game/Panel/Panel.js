@@ -48,7 +48,7 @@ export function Panel(props) {
               </span>
               <span>
                 <Icon name="check" />
-                En stock
+                In stock
               </span>
             </div>
           )}
@@ -68,7 +68,7 @@ export function Panel(props) {
           </div>
 
           <Button primary fluid onClick={addCartWrapper} loading={loading}>
-            Comprar ahora
+            Buy now
           </Button>
 
           <WishlistIcon gameId={gameId} className={styles.heart} />

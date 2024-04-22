@@ -18,7 +18,7 @@ export function LoginForm() {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      console.log('values sent: ', formValue);
+      // console.log('values sent: ', formValue);
 
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 50000 milliseconds = 50 seconds
@@ -26,9 +26,6 @@ export function LoginForm() {
         const response = await authCtrl.login(formValue);
         login(response.jwt);
 
-        console.log(
-          'Timeout triggered. Navigating and completing form submission.',
-        );
         router.push('/');
         formik.setSubmitting(false);
 

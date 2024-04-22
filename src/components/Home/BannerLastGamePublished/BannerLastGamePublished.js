@@ -34,18 +34,18 @@ export function BannerLastGamePublished() {
 
   return (
     <div className={styles.container}>
-      <Image src={wallpaper.data.attributes.url} className={styles.wallpaper} />
+      <Image src={wallpaper?.data?.attributes?.url} className={styles.wallpaper} />
 
       <Link className={styles.infoContainer} href={game.attributes.slug}>
         <Container>
           <span className={styles.date}>
-            {DateTime.fromISO(releaseDate).minus({ days: 1 }).toRelative()}
+            {releaseDate && DateTime.fromISO(releaseDate).minus({ days: 1 }).toRelative()}
           </span>
 
           <h2>{game.attributes.title}</h2>
 
           <p className={styles.price}>
-            <Label.Discount>-{game.attributes.discount}%</Label.Discount>
+            <Label.Discount>-{game.attributes.discount ?? 0}%</Label.Discount>
             <span className={styles.finalPrice}>${price}</span>
           </p>
         </Container>

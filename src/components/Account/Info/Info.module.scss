@@ -42,3 +42,18 @@
   color: $text-secondary;
   font-size: 15px;
 }
+
+
+
+.gameButton {
+  border: none;
+  outline: none;
+  color: #fff;
+  background: orange !important;
+  cursor: pointer;
+  position: relative;
+  border-radius: 10px;
+  margin: 50px;
+
+}
+

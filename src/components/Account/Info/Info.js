@@ -10,9 +10,9 @@ export function Info() {
 
   const handleAddGame = () => {
     console.log('is admin? ', user.admin);
-    if (user.admin) {
-      router.push('/addGame');
-    }
+
+    router.push('/addGame');
+
   };
 
   return (
@@ -27,8 +27,12 @@ export function Info() {
         Member since:{' '}
         {DateTime.fromISO(user.createdAt, { locale: 'en' }).toFormat('DDD')}
       </p>
+      {(user.admin) && (
+        <Button type="submit" className={styles.gameButton} onClick={handleAddGame}>Add Game</Button>
 
-      <Button onClick={handleAddGame}>Add Game</Button>
+      )
+      }
+
     </div>
   );
 }
