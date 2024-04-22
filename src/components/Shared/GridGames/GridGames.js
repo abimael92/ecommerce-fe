@@ -9,15 +9,15 @@ export function GridGames(props) {
 
   return (
     <div className={styles.gridGames}>
-      {map(games, (game) => (
+      {games.map((game) => (
         <Link
           key={game.id}
-          href={`/${game.attributes.slug}`}
+          href={`/${game?.attributes?.slug}`}
           className={styles.game}
         >
           <div>
-            <img src={game.attributes.cover.data.attributes.url} />
-            {game.attributes.discount > 0 && (
+            <img src={game?.attributes?.cover?.data?.attributes?.url} />
+            {game?.attributes?.discount > 0 && (
               <Label.Discount className={styles.discount}>
                 {`-${game.attributes.discount}%`}
               </Label.Discount>
@@ -25,12 +25,12 @@ export function GridGames(props) {
           </div>
 
           <div>
-            <span>{game.attributes.title}</span>
+            <span>{game?.attributes?.title}</span>
             <span className={styles.price}>
               $
               {fn.calcDiscountedPrice(
-                game.attributes.price,
-                game.attributes.discount,
+                game?.attributes?.price,
+                game?.attributes?.discount ?? 0,
               )}
             </span>
           </div>
@@ -38,4 +38,5 @@ export function GridGames(props) {
       ))}
     </div>
   );
+
 }

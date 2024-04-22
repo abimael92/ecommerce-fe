@@ -1,46 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Message, Image, Label, Input } from 'semantic-ui-react';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/router';
 import { validationSchema, initialValues } from './AddGameForm.form';
 
-import { Game } from '@/api';
+import { Game, Platform } from '@/api';
 
 import LoaderComponent from '@/components/Shared/Loader';
 import styles from './AddGameForm.module.scss';
 
 const gameCtrl = new Game();
+const platformCtrl = new Platform();
 
 export default function AddGameForm() {
+  const router = useRouter();
+  const [platforms, setPlatforms] = useState(null);
+
   const formik = useFormik({
     initialValues: initialValues(),
     validationSchema: validationSchema(),
     validateOnChange: false,
+
     onSubmit: async (formValue) => {
-      console.log('values sent: ', formValue);
+
+      // console.log('values sent: ', formValue);
+      formValue.platform = { id: formValue.platform };
 
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 50000 milliseconds = 50 seconds
 
         const response = await gameCtrl.postGame(formValue);
-        // log
 
-        console.log('game', response);
+        // console.log('Game Post was Successful: ', response);
 
-        console.log(
-          'Timeout triggered. Navigating and completing form submission.',
-        );
-        // router.push('/');
+        router.push('/');
         formik.setSubmitting(false);
 
-        console.log('login successful');
       } catch (error) {
         console.error(error);
         const errorMessage =
           error?.response?.data?.error?.message ||
-          'Invalid email/username or password';
+          'Failed to add game. Please try again later.';
 
         formik.setSubmitting(false);
-        // formik.setStatus({ loginError: errorMessage });
+        formik.setStatus({ gameError: errorMessage });
       }
     },
   });
@@ -76,6 +79,8 @@ export default function AddGameForm() {
 
   const handleFileUpload = (event, fieldName) => {
     const file = event.target.files[0];
+    // console.log('Selected file:', file);
+
     formik.setFieldValue(fieldName, file);
   };
 
@@ -84,28 +89,43 @@ export default function AddGameForm() {
     formik.setFieldValue(fieldName, [...formik.values[fieldName], ...files]);
   };
 
-  <Form.Input
-    label="Release Date"
-    name="releaseDate"
-    type="date"
-    value={formik.values.releaseDate}
-    onChange={handleReleaseDateChange} // Use the custom function to handle date change
-    error={formik.touched.releaseDate && formik.errors.releaseDate}
-  />;
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await platformCtrl.getAll();
+        console.log('res', response);
+
+        // Extract titles from the response
+        const platformOptions = response.data.map(platform => ({
+          id: platform.id,
+          title: platform.attributes.title
+        }));
+
+        // Now you can use the titles array in your application
+        console.log('this are the titles: ', platformOptions);
+
+        // Populate the dropdown list with titles
+        setPlatforms(platformOptions);
+
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   return (
     <div className={styles.info}>
       <Form onSubmit={formik.handleSubmit}>
-        {formik.status?.loginError && (
+        {formik.status?.gameError && (
           <Message negative>
             <Message.Header>Login Failed</Message.Header>
-            <p style={{ color: 'red' }}>{formik.status.loginError}</p>
+            <p style={{ color: 'red' }}>{formik.status.gameError}</p>
           </Message>
         )}
 
         <LoaderComponent
           active={formik.isSubmitting}
-          secondaryText="Best Games are now loading"
+          secondaryText="Uploading your new game. Sit tight, it won't take long!"
         />
 
         <Form.Group widths="equal">
@@ -134,7 +154,7 @@ export default function AddGameForm() {
             label="Price"
             name="price"
             type="number"
-            // min="0"
+            min="0"
             placeholder="Price"
             value={formik.values.price}
             onChange={formik.handleChange}
@@ -161,15 +181,26 @@ export default function AddGameForm() {
           error={formik.touched.summary && formik.errors.summary}
         />
         <Form.Group widths="equal">
-          <Form.Input
+
+          <Form.Dropdown
             label="Platform"
+            id="platform"
             name="platform"
-            type="text"
-            placeholder="Platform"
-            value={formik.values.platform}
-            onChange={formik.handleChange}
-            error={formik.touched.platform && formik.errors.platform}
+            placeholder="Select a platform"
+            value={formik.values.platform || ''} // Ensure value is either null/undefined or a valid value
+            options={[
+              { key: 'select', text: 'Select a platform', value: '' }, // Ensure the placeholder option has an empty string value
+              ...(platforms
+                ? platforms.map(platform => ({ key: platform.id, text: platform.title, value: platform.id }))
+                : [])
+            ]}
+            onChange={(e, { value }) => formik.setFieldValue('platform', value)}
+            onBlur={formik.handleBlur}
+            className={styles.dropdown}
           />
+
+
+
           <Form.Input
             label="Release Date"
             name="releaseDate"
@@ -179,6 +210,17 @@ export default function AddGameForm() {
             error={formik.touched.releaseDate && formik.errors.releaseDate}
           />
         </Form.Group>
+
+        <Form.Input
+          label="Video/Trailer Link"
+          name="video"
+          type="text"
+          placeholder="Add Link"
+          value={formik.values.video}
+          onChange={formik.handleChange}
+          error={formik.touched.video && formik.errors.video}
+        />
+
         <Form.Field>
           <label>Cover Image</label>
           <Input
@@ -187,20 +229,22 @@ export default function AddGameForm() {
             accept="image/*"
             onChange={(e) => handleFileUpload(e, 'cover')}
           />
-          {
-            // formik.touched.cover &&
-            // formik.errors.cover &&
-            formik.values.cover ? (
-              <div>
-                <Label pointing="above">Cover Image Preview</Label>
-                <Image
-                  src={URL.createObjectURL(formik.values.cover)}
-                  size="small"
-                />
-              </div>
-            ) : null
+
+          {/* // formik.touched.cover &&
+            // formik.errors.cover && */}
+          {/* {formik.values.cover ? ( */}
+          {formik.values.cover && formik.values.cover instanceof File ? (
+            <div>
+              <Label pointing="above">Cover Image Preview</Label>
+              <Image
+                src={URL.createObjectURL(formik.values.cover)}
+                size="small"
+              />
+            </div>
+          ) : null
           }
         </Form.Field>
+
         <Form.Field>
           <label>Wallpaper Image</label>
           <Input
@@ -208,18 +252,19 @@ export default function AddGameForm() {
             accept="image/*"
             onChange={(e) => handleFileUpload(e, 'wallpaper')}
           />
-          {
-            // formik.touched.wallpaper &&
-            // formik.errors.wallpaper &&
-            formik.values.wallpaper ? (
-              <div>
-                <Label pointing="above">Wallpaper Image Preview</Label>
-                <Image
-                  src={URL.createObjectURL(formik.values.wallpaper)}
-                  size="small"
-                />
-              </div>
-            ) : null
+
+          {/* // formik.touched.wallpaper &&
+            // formik.errors.wallpaper && */}
+          {/* { formik.values.wallpaper ? ( */}
+          {formik.values.wallpaper && formik.values.wallpaper instanceof File ? (
+            <div>
+              <Label pointing="above">Wallpaper Image Preview</Label>
+              <Image
+                src={URL.createObjectURL(formik.values.wallpaper)}
+                size="small"
+              />
+            </div>
+          ) : null
           }
         </Form.Field>
         <Form.Field>
@@ -235,8 +280,13 @@ export default function AddGameForm() {
           {formik.values.screenshots &&
             formik.values.screenshots?.map((screenshot, index) => (
               <div key={index}>
-                <Label pointing="above">{screenshot.name}</Label>
-                <Image src={URL.createObjectURL(screenshot)} size="small" />
+                {console.log(screenshot)}
+                {screenshot && screenshot instanceof File && (
+                  <div>
+                    <Label pointing="above">{screenshot.name}</Label>
+                    <Image src={URL.createObjectURL(screenshot)} size="small" />
+                  </div>
+                )}
               </div>
             ))}
         </Form.Field>
@@ -245,6 +295,6 @@ export default function AddGameForm() {
           Login
         </Form.Button>
       </Form>
-    </div>
+    </div >
   );
 }

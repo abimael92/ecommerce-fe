@@ -12,8 +12,9 @@ export function initialValues() {
     platform: '',
     summary: '',
     releaseDate: today,
-    cover: '',
-    wallpaper: '',
+    video: '',
+    cover: null,
+    wallpaper: null,
     screenshots: [],
   };
 }
@@ -38,10 +39,10 @@ export function validationSchema() {
       .positive('Discount must be a positive value')
       .max(100, 'Discount must be between 1 and 100')
       .typeError('Discount must be a number'),
-    cover: Yup.mixed().required('Cover image is required'),
-    wallpaper: Yup.mixed().required('Wallpaper image is required'),
+    video: Yup.string().url('Invalid URL format').required('Video/Trailer Link is required'),
+    cover: Yup.mixed().nullable(),// Allow null 
+    wallpaper: Yup.mixed().nullable(),// Allow null 
     screenshots: Yup.array()
-      .of(Yup.mixed())
-      .required('At least one screenshot is required'),
+      .of(Yup.mixed()).nullable(),// Allow null 
   });
 }

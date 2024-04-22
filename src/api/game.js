@@ -1,4 +1,5 @@
-import { ENV } from '@/utils';
+import { ENV, authFetch } from "@/utils";
+import { uploadFileToStrapi } from '@/utils/functions/mediaUpload';
 
 export class Game {
   async getLastPublished() {
@@ -8,11 +9,11 @@ export class Game {
       const populate = 'populate=*';
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}?${sort}&${pagination}&${populate}`;
 
-      console.log(
-        '\n\n *getLastPublished* \n\nFetching data from URL: ',
-        url,
-        '\n\n ',
-      );
+      // console.log(
+      //   '\n\n *getLastPublished* \n\nFetching data from URL: ',
+      //   url,
+      //   '\n\n ',
+      // );
 
       const response = await fetch(url);
       const result = await response.json();
@@ -36,11 +37,11 @@ export class Game {
 
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}?${urlParams}`;
 
-      console.log(
-        '\n\n *getLatestPublished* \n\nFetching data from URL: ',
-        url,
-        '\n\n ',
-      );
+      // console.log(
+      //   '\n\n *getLatestPublished* \n\nFetching data from URL: ',
+      //   url,
+      //   '\n\n ',
+      // );
 
       const response = await fetch(url);
       const result = await response.json();
@@ -62,11 +63,11 @@ export class Game {
 
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}?${urlParams}`;
 
-      console.log(
-        '\n\n *getGamesByPlatformSlug* \n\nFetching data from URL: ',
-        url,
-        '\n\n ',
-      );
+      // console.log(
+      //   '\n\n *getGamesByPlatformSlug* \n\nFetching data from URL: ',
+      //   url,
+      //   '\n\n ',
+      // );
 
       const response = await fetch(url);
       const result = await response.json();
@@ -100,26 +101,25 @@ export class Game {
   }
 
   async getBySlug(slug) {
-    console.log('\n\nslug: ', slug, '\n\n ');
+    // console.log('\n\nslug: ', slug, '\n\n ');
     try {
       const filters = `filters[slug][$eq]=${slug}`;
       const populate = `populate[0]=wallpaper&populate[1]=cover&populate&populate[2]=screenshots&populate[3]=platform&populate[4]=platform.icon`;
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}?${filters}&${populate}`;
 
-      console.log('\n\nFetching data from URL: ', url, '\n\n ');
+      // console.log('\n\nFetching data from URL: ', url, '\n\n ');
 
       const response = await fetch(url);
 
-      console.log('Response:', response);
+      // console.log('Response:', response);
 
       const result = await response.json();
 
-      console.log('Response:', result);
+      // console.log('Response:', result);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      console.log('result:', result.data[0]);
       return result.data[0];
     } catch (error) {
       console.error('Error fetching data:', error.message);
@@ -143,34 +143,83 @@ export class Game {
     }
   }
 
-  async postGame(data) {
-    console.log(data);
-
-    const requestBody = {
-      data: data, // Include the 'data' field in the request payload
-    };
-
+  async postGame(formData) {
     try {
+      // Array to hold all promises for image uploads
+      const uploadPromises = [];
+
+      // Upload cover image to Strapi if it exists
+      if (formData.cover) {
+        uploadPromises.push(uploadFileToStrapi(formData.cover)
+          .then(coverResponse => {
+            console.log('Cover image uploaded:', coverResponse);
+            formData.cover = coverResponse[0].id
+
+            console.log('Updated formData with cover URL:', formData);
+          }));
+      }
+
+      // Upload wallpaper image to Strapi if it exists
+      if (formData.wallpaper) {
+        uploadPromises.push(uploadFileToStrapi(formData.wallpaper)
+          .then(wallpaperResponse => {
+            // console.log('Wallpaper image uploaded:', wallpaperResponse);
+            formData.wallpaper = wallpaperResponse[0].id
+
+          }));
+      }
+
+      // Upload screenshots to Strapi if they exist
+      if (formData.screenshots && formData.screenshots.length > 0) {
+        const screenshotPromises = formData.screenshots.map(uploadFileToStrapi);
+        const screenshotResponses = await Promise.all(screenshotPromises);
+
+        // console.log('Screenshots uploaded:', screenshotResponses);
+
+        // Extract IDs from responses and construct URL objects
+        const screenshotURLs = screenshotResponses.map(response => response[0].id);
+
+        // Assign IDs to formData
+        formData.screenshots = screenshotURLs;
+        // console.log('Updated formData with screenshot IDs:', formData);
+      }
+
+
+
+      // Wait for all upload promises to complete before proceeding
+      await Promise.all(uploadPromises);
+
+      // console.log('Updated formData with URLs:', formData);
+
+      // Construct URL for the POST request
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}`;
-      console.log('this is he url: ', url);
+      // console.log('POST request URL:', url);
+
+      // Construct request parameters
       const params = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify({ data: formData }), // Include the form data in the request body
       };
 
+      // Send POST request to the Strapi backend
       const response = await fetch(url, params);
       const result = await response.json();
 
+      // Check if response is not OK and throw error if needed
       if (!response.ok) {
         throw new Error(result.message || 'Failed to post game data');
       }
 
+      // Return the result
       return result;
     } catch (error) {
+      console.error('Error posting game data:', error);
       throw new Error(error.message || 'Failed to post game data');
     }
   }
+
+
 }
