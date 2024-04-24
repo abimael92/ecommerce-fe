@@ -14,8 +14,9 @@ const LogoTitle = ({ size }) => {
   const imgGaming = Math.floor(imgGame * 0.7);
 
   return (
-    <Link href="/">
-      <div className={styles.logoTitle}>
+    <div className={styles.logoTitle}>
+      <Link href="/">
+
         <div className={styles.imageContainer}>
           <div className={styles.imageWrapper}>
             <Image src="/images/gamingCtrl.png" alt="Game" height={imgGame} />
@@ -28,8 +29,8 @@ const LogoTitle = ({ size }) => {
             />
           </div>
         </div>
-      </div>
-    </Link>
+      </Link >
+    </div >
   );
 };
 

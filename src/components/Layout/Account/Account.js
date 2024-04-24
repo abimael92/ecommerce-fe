@@ -16,9 +16,6 @@ export function Account() {
     if (!user) goToLogin();
     else router.push('/cart');
   };
-  if (user) {
-    console.log('user is: ', user);
-  }
 
   return (
     <div className={styles.account}>

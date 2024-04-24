@@ -93,7 +93,7 @@ export default function AddGameForm() {
     (async () => {
       try {
         const response = await platformCtrl.getAll();
-        console.log('res', response);
+        // console.log('res', response);
 
         // Extract titles from the response
         const platformOptions = response.data.map(platform => ({
@@ -102,7 +102,7 @@ export default function AddGameForm() {
         }));
 
         // Now you can use the titles array in your application
-        console.log('this are the titles: ', platformOptions);
+        // console.log('this are the titles: ', platformOptions);
 
         // Populate the dropdown list with titles
         setPlatforms(platformOptions);
@@ -280,7 +280,7 @@ export default function AddGameForm() {
           {formik.values.screenshots &&
             formik.values.screenshots?.map((screenshot, index) => (
               <div key={index}>
-                {console.log(screenshot)}
+                {/* {console.log(screenshot)} */}
                 {screenshot && screenshot instanceof File && (
                   <div>
                     <Label pointing="above">{screenshot.name}</Label>

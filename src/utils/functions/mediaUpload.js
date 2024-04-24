@@ -10,7 +10,7 @@ export const uploadFileToStrapi = async (file) => {
             method: 'POST',
             body: formData,
         });
-        console.log(response);
+        // console.log(response);
         if (!response.ok) {
             throw new Error('Failed to upload file to Strapi');
         }

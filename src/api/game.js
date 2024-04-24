@@ -152,10 +152,10 @@ export class Game {
       if (formData.cover) {
         uploadPromises.push(uploadFileToStrapi(formData.cover)
           .then(coverResponse => {
-            console.log('Cover image uploaded:', coverResponse);
+            // console.log('Cover image uploaded:', coverResponse);
             formData.cover = coverResponse[0].id
 
-            console.log('Updated formData with cover URL:', formData);
+            // console.log('Updated formData with cover URL:', formData);
           }));
       }
 

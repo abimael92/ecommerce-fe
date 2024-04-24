@@ -106,11 +106,9 @@
 }
 
 .bounceSection {
-  /* Styling for the bouncing loading animation section */
   margin-top: 20px; /* Adjust the margin as needed */
 }
 
-/* Include the provided bouncing loading animation styles */
 @keyframes bounce {
   to {
     opacity: 0.3;

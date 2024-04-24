@@ -17,7 +17,7 @@ export function RegisterForm() {
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      console.log('values sent for register: ', formValue);
+      // console.log('values sent for register: ', formValue);
       setIsSubmitting(true);
 
       try {

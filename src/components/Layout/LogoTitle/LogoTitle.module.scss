@@ -1,10 +1,18 @@
 /* landingPage.module.scss */
-
 @import '@/scss/index.scss'; // Import global styles
 
 .logoTitle {
   padding: 15px;
-  margin: 0 8px;
+  margin: 2 6px;
+  background-color: $primary;
+  opacity: 0.65;
+  border: 2px solid $primary ;
+  border-radius: 50%;
+  transition: border-color 0.3s ease;
+  &:hover{
+    box-shadow: 0 0 10px #fff200;
+  }
+
 }
 
 .imageContainer {
@@ -16,13 +24,17 @@
   transition: transform 0.3s; /* Add transition effect for smooth hover */
 
   &:hover {
-    transform: scale(1.1); /* Scale up the image container on hover */
+    transform: scale(1.1); 
+    opacity: 1;
   }
 
   .imageWrapper {
     margin: 0 5px;
     display: inline-block;
   }
+  .imageWrapper img {
+    filter: brightness(1) invert(1);
+}
 }
 .blockContainer {
   display: contents;
