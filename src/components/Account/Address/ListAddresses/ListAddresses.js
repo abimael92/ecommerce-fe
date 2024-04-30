@@ -23,18 +23,25 @@ export function ListAddresses(props) {
     })();
   }, [reload]);
 
+  console.error('addresses: ', addresses);
   if (!addresses) return null;
 
   return (
-    <div className={styles.addresses}>
-      {map(addresses, (address) => (
-        <Address
-          key={address.id}
-          addressId={address.id}
-          address={address.attributes}
-          onReload={onReload}
-        />
-      ))}
+    <div className={styles.addressesContainer}>
+
+      <div className={styles.addressesGrid}>
+        {map(addresses, (address) => (
+          <div key={address.id} className={styles.addressItem}>
+            <div className={styles.address}>
+              <Address
+                addressId={address.id}
+                address={address.attributes}
+                onReload={onReload}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

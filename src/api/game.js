@@ -184,8 +184,6 @@ export class Game {
         // console.log('Updated formData with screenshot IDs:', formData);
       }
 
-
-
       // Wait for all upload promises to complete before proceeding
       await Promise.all(uploadPromises);
 

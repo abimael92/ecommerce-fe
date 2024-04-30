@@ -24,6 +24,7 @@ export class Address {
 
       return result;
     } catch (error) {
+      console.error('Error posting game data:', error);
       throw error;
     }
   }
@@ -33,13 +34,23 @@ export class Address {
       const filters = `filters[user][id][$eq]=${userId}`;
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.ADDRESS}?${filters}`;
 
-      const response = await authFetch(url);
+      console.log(
+        '\n\n *getAllAddresses* \n\nFetching data from URL: ',
+        url,
+        '\n\n ',
+      );
+
+      const response = await fetch(url);
+
+      console.log("Response:", response);
+
       const result = await response.json();
 
       if (response.status !== 200) throw result;
 
       return result;
     } catch (error) {
+      console.error("Error in getAll:", error);
       throw error;
     }
   }

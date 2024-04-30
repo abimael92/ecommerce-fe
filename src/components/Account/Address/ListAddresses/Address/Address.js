@@ -27,14 +27,6 @@ export function Address(props) {
   return (
     <>
       <div className={styles.address}>
-        <div>
-          <p className={styles.title}>{address.title}: </p>
-          <p className={styles.addressInfo}>
-            {address.name}, {address.address}, {address.state}, {address.city},{" "}
-            {address.postal_code}
-          </p>
-        </div>
-
         <div className={styles.actions}>
           <Button primary icon onClick={openCloseEdit}>
             <Icon name="pencil" />
@@ -42,6 +34,13 @@ export function Address(props) {
           <Button primary icon onClick={openCloseConfirm}>
             <Icon name="delete" />
           </Button>
+        </div>
+        <div>
+          <p className={styles.title}>{address.title}: </p>
+          <p className={styles.addressInfo}>
+            {address.name}, {address.address}, {address.state}, {address.city},{" "}
+            {address.postal_code}
+          </p>
         </div>
       </div>
 

@@ -13,10 +13,10 @@ export function AddAddress(props) {
   return (
     <>
       <Button primary className={styles.addBtn} onClick={onOpenClose}>
-        Crear
+        Create
       </Button>
 
-      <BasicModal show={show} onClose={onOpenClose} title="Nueva dirección">
+      <BasicModal show={show} onClose={onOpenClose} title="New address">
         <AddressForm onClose={onOpenClose} onReload={onReload} />
       </BasicModal>
     </>

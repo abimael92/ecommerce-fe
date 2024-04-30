@@ -8,6 +8,7 @@ export function Seo(props) {
 
   return (
     <Head>
+      <link rel="icon" href="/public/favicon-16x16.png" />
       <title>{title}</title>
       <meta property="description" content={description} />
     </Head>
