@@ -5,29 +5,37 @@
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; // Adjust to column layout
   align-items: center;
+  justify-content: space-between;
 
-  > div {
-    display: flex;
+  .title {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px; // Adjust spacing between title and content
+    align-self: center; // Center the title horizontally
   }
-}
 
-.title {
-  margin-right: 5px;
-  font-weight: bold;
-  font-size: 16px;
-}
+  .addressInfo {
+    color: $text-secondary;
+    font-size: 16px;
+    margin-bottom: 5px; // Add space between content and actions
+  }
 
-.addressInfo {
-  color: $text-secondary;
-  font-size: 16px;
-}
+  .actions {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    display: flex;
+    flex-direction: row; // Adjust to column layout
+    align-items: center; // Align items to end
 
-.actions {
-  > button {
-    padding: 12px !important;
-    margin-left: 10px !important;
+    button {
+      padding: 12px !important;
+      margin-left: 10px !important;
+    }
   }
 }

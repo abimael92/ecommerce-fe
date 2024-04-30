@@ -22,7 +22,7 @@ export function Orders() {
     })();
   }, []);
 
-  if (!orders) return <NoResult text="No tienes ningun producto comprado" />;
+  if (!orders) return <NoResult text="You haven't purchased any products" />;
 
   return (
     <div>

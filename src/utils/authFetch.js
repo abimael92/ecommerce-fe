@@ -9,6 +9,8 @@ export async function authFetch(url, params) {
     window.location.replace("/");
   };
 
+  console.log('token is: ', token);
+
   if (!token) {
     logout();
   } else {

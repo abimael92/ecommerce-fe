@@ -292,7 +292,7 @@ export default function AddGameForm() {
         </Form.Field>
 
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>
-          Login
+          Submit
         </Form.Button>
       </Form>
     </div >
