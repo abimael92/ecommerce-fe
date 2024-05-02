@@ -9,8 +9,6 @@ export async function authFetch(url, params) {
     window.location.replace("/");
   };
 
-  console.log('token is: ', token);
-
   if (!token) {
     logout();
   } else {
@@ -25,10 +23,8 @@ export async function authFetch(url, params) {
         },
       };
 
-
       try {
-        console.log(url, tokenCtrl.getToken());
-
+        // console.log(url, tokenCtrl.getToken());
         return await fetch(url, paramsTemp);
       } catch (error) {
         return error;

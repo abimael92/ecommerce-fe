@@ -27,18 +27,23 @@
     }
 
     &.social {
-      display: flex;
-      justify-content: center; // Center horizontally
-      align-items: center; // Center vertically
+
       gap: 10px; // Adjust the gap between buttons as needed
 
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+
       > a {
-        height: 3.5em;
-        width: 3.5em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+
+        margin-left: 10px;
+
+        // height: 3.5em;
+        // width: 3.5em;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // text-align: center;
         padding: 10px 2px 8px 10px;
       }
 

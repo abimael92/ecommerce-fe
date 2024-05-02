@@ -10,11 +10,17 @@ export function Panel(props) {
   const [loading, setLoading] = useState(false);
   const { addCart } = useCart();
 
+  console.log('game: ', game);
+
   // Check if game object is defined
   if (!game) {
     // Render null or a loading indicator
     return null; // or <LoadingIndicator />
   }
+
+  console.log('gameId: ', gameId);
+
+
 
   const platform = game.platform?.data;
   const coverUrl = game.cover?.data?.attributes?.url;
