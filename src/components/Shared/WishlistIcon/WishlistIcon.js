@@ -12,8 +12,6 @@ export function WishlistIcon(props) {
   const [hasWishlist, setHasWishlist] = useState(null);
   const { user } = useAuth();
 
-  console.log('gameId: ', gameId);
-
   useEffect(() => {
     (async () => {
       try {
