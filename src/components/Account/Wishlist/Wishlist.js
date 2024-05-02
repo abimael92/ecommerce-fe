@@ -26,7 +26,7 @@ export function Wishlist() {
   }, [reload]);
 
   return size(wishlist) === 0 ? (
-    <NoResult text="No tienes ningun juego en la lista de deseos" />
+    <NoResult text="You don't have any games in your wishlist" />
   ) : (
     <GridGames wishlist={wishlist} onReload={onReload} />
   );

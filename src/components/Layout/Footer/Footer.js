@@ -10,7 +10,7 @@ export function Footer() {
     <div className={styles.footer}>
       <Container>
         <div className={styles.columns}>
-          <LogoTitle size="MEDIUM" />
+          <LogoTitle size="SMALL" />
 
           <div>
             <ul>

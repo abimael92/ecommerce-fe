@@ -10,37 +10,37 @@ export function GridGames(props) {
   return (
     <div className={styles.gridGames}>
       {map(wishlist, (item) => {
-        const game = item.attributes.game.data;
-        const cover = game.attributes.cover.data;
+        const game = item?.attributes?.game?.data;
+        const cover = game?.attributes?.cover?.data;
 
         return (
           <div key={item.id} className={styles.game}>
-            <Link href={`/${game.attributes.slug}`}>
+            <Link href={`/${game?.attributes?.slug}`}>
               <div>
-                <img src={cover.attributes.url} />
+                <img src={cover?.attributes?.url} />
 
-                {game.attributes.discount > 0 && (
+                {game?.attributes?.discount > 0 && (
                   <Label.Discount className={styles.discount}>
-                    {`-${game.attributes.discount}%`}
+                    {`-${game?.attributes?.discount}%`}
                   </Label.Discount>
                 )}
               </div>
 
               <div>
-                <span>{game.attributes.title}</span>
+                <span>{game?.attributes?.title}</span>
                 <span className={styles.price}>
                   $
                   {fn.calcDiscountedPrice(
-                    game.attributes.price,
-                    game.attributes.discount,
+                    game?.attributes?.price,
+                    game?.attributes?.discount,
                   )}
                 </span>
               </div>
             </Link>
 
             <WishlistIcon
-              gameId={game.id}
-              className={styles.whislistIcon}
+              gameId={game?.id}
+              className={styles.wishlistIcon}
               removeCallback={onReload}
             />
           </div>
