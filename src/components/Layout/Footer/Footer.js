@@ -61,7 +61,7 @@ export function Footer() {
         </div>
 
         <div className={styles.copyright}>
-          <span>Copyright © {currentYear} Gaming - All rights reserved</span>
+          <span>Copyright © {currentYear} Gaming Arena - All rights reserved</span>
         </div>
       </Container>
     </div>
