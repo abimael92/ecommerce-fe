@@ -29,7 +29,7 @@ export function Panel(props) {
 
   return (
     <Container className={styles.panel}>
-      <div className={styles.imgContiner}>
+      <div className={styles.imgContainer}>
         <Image src={coverUrl} />
       </div>
 
