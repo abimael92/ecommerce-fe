@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import { BasicModal } from "@/components/Shared";
 import { AddressForm } from "../AddressForm";
 import styles from "./AddAddress.module.scss";
@@ -13,7 +13,7 @@ export function AddAddress(props) {
   return (
     <>
       <Button primary className={styles.addBtn} onClick={onOpenClose}>
-        Create
+        <Icon name="add" style={{ marginLeft: '5px' }} /> Create
       </Button>
 
       <BasicModal show={show} onClose={onOpenClose} title="New address">

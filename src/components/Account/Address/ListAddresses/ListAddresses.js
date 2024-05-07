@@ -23,7 +23,6 @@ export function ListAddresses(props) {
     })();
   }, [reload]);
 
-  console.error('addresses: ', addresses);
   if (!addresses) return null;
 
   return (

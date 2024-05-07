@@ -2,7 +2,7 @@ import { Form, Icon } from 'semantic-ui-react';
 import { useFormik } from "formik";
 import { Address } from "@/api";
 import { useAuth } from "@/hooks";
-import { initialValues, validationSchema } from "./AddressForm.form";
+// import { initialValues, validationSchema } from "./AddressForm.form";
 
 const addressCtrl = new Address();
 
@@ -11,8 +11,8 @@ export function AddressForm(props) {
   const { user } = useAuth();
 
   const formik = useFormik({
-    initialValues: initialValues(address),
-    validationSchema: validationSchema(),
+    // initialValues: initialValues(address),
+    // validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
       console.log(user.id);

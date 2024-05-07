@@ -8,6 +8,7 @@ import {
   Settings,
   Address,
   Wishlist,
+  Game,
   Orders,
 } from '@/components/Account';
 import { Separator, Seo } from '@/components/Shared';
@@ -77,6 +78,29 @@ export default function AccountPage() {
       },
     },
   ];
+
+  // Conditionally add tabs for admin
+  if (user.admin) {
+    panes.splice(3, 0, {
+      menuItem: 'Games',
+      render: () => (
+        <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
+          <Game.AddGame onReload={onReload} />
+          <Separator height={80} />
+        </Tab.Pane>
+      ),
+    });
+    panes.splice(3, 0, {
+      menuItem: 'Users',
+      render: () => (
+        <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
+          {/* Render user-related components */}
+          {/* Example: <UsersComponent /> */}
+          <Separator height={80} />
+        </Tab.Pane>
+      ),
+    });
+  }
 
   return (
     <>

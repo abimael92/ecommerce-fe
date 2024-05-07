@@ -64,7 +64,7 @@ export function Menu(props) {
       >
         <Input
           id="search-games"
-          placeholder="Buscador"
+          placeholder="Search..."
           className={styles.input}
           focus={true}
           value={searchText}
