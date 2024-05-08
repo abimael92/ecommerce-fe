@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Message, Image, Label, Input, Icon } from 'semantic-ui-react';
-import { useFormik } from 'formik';
-import { validationSchema, initialValues } from './GameForm.form';
-
+import { useFormik } from "formik";
 import { Game, Platform } from '@/api';
 
 import LoaderComponent from '@/components/Shared/Loader';
+import { initialValues, validationSchema } from "./GameForm.form";
 import styles from './GameForm.module.scss';
 
 const gameCtrl = new Game();
 const platformCtrl = new Platform();
 
-export default function GameForm(props) {
+export function GameForm(props) {
   const { onClose, onReload } = props;
   const [platforms, setPlatforms] = useState(null);
 
@@ -112,7 +111,6 @@ export default function GameForm(props) {
       }
     })();
   }, []);
-
   return (
     <>
       <Icon
@@ -123,6 +121,7 @@ export default function GameForm(props) {
           cursor: 'pointer', color: 'red', fontSize: ' x-large',
         }}
       />
+
       <Form onSubmit={formik.handleSubmit}>
         {formik.status?.gameError && (
           <Message negative>
