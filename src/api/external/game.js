@@ -2,41 +2,53 @@ import { ENV } from "@/utils";
 
 export class ExternalGameAPI {
     async searchGameByName(name) {
-        try {
-            const url = `${ENV.EXTERNAL_API_URL}/search/?api_key=${ENV.EXTERNAL_API_KEY}&format=json&query=${name}&resources=game`;
-            const response = await fetch(url);
-            console.log('this is the url: ', url);
 
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch data from the external API');
+        const url = `${ENV.EXTERNAL_API_URL}/game/search?criteria=${name}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': `${ENV.EXTERNAL_API_KEY}`,
+                'X-RapidAPI-Host': `${ENV.EXTERNAL_API_HOST}`,
             }
+        };
 
-            const data = await response.json();
-            console.log('this is the data: ', data);
+        try {
+            const response = await fetch(url, options);
+            const games = await response.json();
 
-            return data;
+            // console.log(games);
+
+            if (games.length > 0) {
+                const firstGameId = games[0].id;
+                return firstGameId; // Return the ID of the first game
+            } else {
+                console.log('No games found.');
+                return null; // Return null if no games found
+            }
         } catch (error) {
-            throw error;
+            console.error(error);
         }
     }
 
 
     async getGameDetailsById(id) {
-        try {
-            const url = `${ENV.EXTERNAL_API_URL}/games/${id}`;
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch game details from the external API');
+        const url = `${ENV.EXTERNAL_API_URL}/game/${id}`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': `${ENV.EXTERNAL_API_KEY}`,
+                'X-RapidAPI-Host': `${ENV.EXTERNAL_API_HOST}`,
             }
+        };
 
-            const data = await response.json();
-            return data;
+        try {
+            const response = await fetch(url, options);
+            const gameDetails = await response.json();
+            // console.log('Details of the game:', gameDetails);
+            return gameDetails; // Return details of the game
         } catch (error) {
-            throw error;
+            console.error(error);
+            throw error; // Throw error for error handling in the calling function
         }
     }
-
-    // Add more methods for fetching game data as needed
 }

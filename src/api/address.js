@@ -34,15 +34,15 @@ export class Address {
       const filters = `filters[user][id][$eq]=${userId}`;
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.ADDRESS}?${filters}`;
 
-      console.log(
-        '\n\n *getAllAddresses* \n\nFetching data from URL: ',
-        url,
-        '\n\n ',
-      );
+      // console.log(
+      //   '\n\n *getAllAddresses* \n\nFetching data from URL: ',
+      //   url,
+      //   '\n\n ',
+      // );
 
       const response = await fetch(url);
 
-      console.log("Response:", response);
+      // console.log("Response:", response);
 
       const result = await response.json();
 

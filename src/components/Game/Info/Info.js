@@ -1,72 +1,69 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container } from 'semantic-ui-react';
-import styles from './Info.module.scss';
 import { ExternalGameAPI } from "@/api/external/game";
-
-// export async function getServerSideProps(context) {
-//   const { query } = context; // Destructure to get query parameters
-//   const { title } = query;
-
-//   console.log('context:', context); //
-
-//   const gameCtrl = new ExternalGameAPI();
-//   try {
-//     const response = await gameCtrl.searchGameByName(title);
-//     const gameDetails = response.data;
-
-//     console.log('gameDetails:', gameDetails);
-
-//     const serializedGameDetails = JSON.parse(JSON.stringify(gameDetails));
-//     console.log('gameDetails:', serializedGameDetails);
-
-//     return {
-//       props: {
-//         gameDetails: serializedGameDetails,
-//       },
-//     }
-//   } catch (error) {
-//     console.error('Error fetching game details:', error);
-//   }
-// }
+import styles from './Info.module.scss';
 
 export function Info(props) {
-  const { game, gameDetails } = props;
+  const { game } = props;
   const gameCtrl = new ExternalGameAPI();
+
+  const [gameDetails, setGameDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     async function fetchGameDetails() {
       try {
-        const response = await gameCtrl.searchGameByName(title);
-        const gameDetails = response.data;
+        const gameId = await gameCtrl.searchGameByName(game.title);
+        const gameDetails = await gameCtrl.getGameDetailsById(gameId);
 
-        console.log('gameDetails:', gameDetails);
+        // console.log('gameDetails:', gameDetails);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch game details');
-        }
-
-        const data = await response.json();
-        console.log('data: ', data);
-
+        setGameDetails(gameDetails);
+        setLoading(false);
       } catch (error) {
+        console.error('Error fetching game details:', error);
+        setLoading(false);
       }
     }
 
-    fetchGameDetails();
-  }, [game]);
+    if (game && game.title && !gameDetails) { // Check if gameDetails is null before fetching
+      fetchGameDetails();
+    } else {
+      setLoading(false);
+    }
+  }, [game]); // Include gameDetails in the dependency array
 
-
-
-  // Check if game object is defined
-  if (!game) return null;
+  if (!game) {
+    // Render null or a loading indicator
+    return null; // or <LoadingIndicator />
+  }
 
   // Extract properties from the game object or provide default values
   const summary = game.summary || 'Summary not available';
   const releaseDate = game.releaseDate || 'Release date not available';
 
+  function formatScore(score) {
+    return score % 1 === 0 ? score.toFixed(0) : score.toFixed(2);
+  }
+
+  function getBackgroundColorByPercentage(percent) {
+    if (percent >= 70) {
+      return '#00FF00';
+    } else if (percent >= 50) {
+      return '#FFFF00';
+    } else {
+      return '#FF0000';
+    }
+  }
+
+
+  // console.log('gameDetails:', gameDetails);
+
   return (
     <Container className={styles.info}>
       <div className={styles.summary}>
+        <h2>Summary</h2><br />
         <p>{summary}</p>
       </div>
 
@@ -75,9 +72,59 @@ export function Info(props) {
           <li>
             <span>Release Date:</span> {releaseDate}
           </li>
+          {gameDetails && (
+            <>
+              {gameDetails.Companies && (
+                <li>
+                  <span>Main Publisher:</span> {gameDetails.Companies.find(company => company.type === 'PUBLISHER')?.name}
+                </li>
+              )}
+              {gameDetails.Companies && (
+                <li>
+                  <span>Developer:</span> {gameDetails.Companies.find(company => company.type === 'DEVELOPER')?.name}
+                </li>
+              )}
+              {gameDetails.Platforms && (
+                <li>
+                  <span>Platforms:</span> {gameDetails.Platforms.map(platform => platform.name).join(', ')}
+                </li>
+              )}
+              {gameDetails.tier && (
+                <li>
+                  <span>Tier:</span> {gameDetails.tier}
+                </li>
+              )}
+
+              {gameDetails.Genres && (
+                <li>
+                  <span>Genres:</span> {gameDetails.Genres.map(genre => <><p className={styles.genreLabel} >{genre.name}</p><i className="tag icon"></i></>)}
+                </li>
+              )}
+              <br /><br />
+              {gameDetails.percentRecommended && gameDetails.medianScore && (
+                <li className={styles.percentGrid}>
+                  <div className={styles.percentGridTitle}>
+                    <span>Meta Score:</span>
+                    <br />
+                    <span className={styles.scoreCircle} style={{ backgroundColor: getBackgroundColorByPercentage(gameDetails.medianScore) }}>
+                      <span className={styles.scoreValue} >{formatScore(gameDetails.medianScore)}</span>
+                    </span>
+                  </div>
+                  <div className={styles.percentGridTitle}>
+                    <span>User Score:</span>
+                    <br />
+                    <span className={styles.scoreCircle} style={{ backgroundColor: getBackgroundColorByPercentage(gameDetails.percentRecommended) }}>
+                      <span className={styles.scoreValue} >{formatScore(gameDetails.percentRecommended)}</span>
+                    </span>
+                  </div>
+                </li>
+              )}
+
+
+            </>
+          )}
         </ul>
       </div>
-    </Container>
+    </Container >
   );
 }
-export default Info;

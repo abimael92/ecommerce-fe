@@ -15,7 +15,7 @@ export function AddressForm(props) {
     // validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      console.log(user.id);
+      // console.log(user.id);
       try {
         if (addressId) {
           await addressCtrl.update(formValue, addressId);
