@@ -17,8 +17,6 @@ export default function GamePage(props) {
   const { attributes } = game;
   const wallpaper = attributes?.wallpaper;
 
-  console.log(wallpaper);
-
   return (
     <>
       <Seo title={attributes?.title} description={attributes?.summary} />

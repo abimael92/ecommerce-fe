@@ -17,6 +17,8 @@ export const ENV = {
     PAYMENT_ORDER: 'payment-order',
     ORDER: 'orders',
   },
+  EXTERNAL_API_URL: 'https://www.giantbomb.com/api',
+  EXTERNAL_API_KEY: '8eb76d0c37bba108433463d4a692e1de7646606d',
   TOKEN: 'token',
   CART: 'cart',
   STRIPE_TOKEN:

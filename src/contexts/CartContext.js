@@ -7,7 +7,7 @@ export const CartContext = createContext();
 
 export function CartProvider(props) {
   const { children } = props;
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(cartCtrl.count());
 
   useEffect(() => {
@@ -40,6 +40,11 @@ export function CartProvider(props) {
     setCart(cartCtrl.getAll());
   };
 
+  const getCartItem = (gameId) => {
+    return cart.some(item => item.id === gameId);
+  };
+
+
   const data = {
     cart,
     addCart,
@@ -47,6 +52,7 @@ export function CartProvider(props) {
     deleteItem,
     deleteAllItems,
     changeQuantityItem,
+    getCartItem
   };
 
   return <CartContext.Provider value={data}>{children}</CartContext.Provider>;

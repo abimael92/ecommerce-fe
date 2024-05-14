@@ -11,8 +11,6 @@ export function Resume(props) {
   const router = useRouter();
   const [totals, setTotals] = useState(null);
 
-  console.log(games);
-
   useEffect(() => {
     let totals = {
       original: 0,
