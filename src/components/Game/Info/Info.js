@@ -57,7 +57,6 @@ export function Info(props) {
     }
   }
 
-
   // console.log('gameDetails:', gameDetails);
 
   return (
@@ -119,8 +118,6 @@ export function Info(props) {
                   </div>
                 </li>
               )}
-
-
             </>
           )}
         </ul>

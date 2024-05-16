@@ -1,28 +1,26 @@
 import { useState } from "react";
 import { Button, Icon } from "semantic-ui-react";
-import { Address as AddressCtrl } from "@/api";
+import { Game as GameCtrl } from "@/api";
 import { BasicModal, Confirm } from "@/components/Shared";
-import { AddressForm } from "../../AddressForm";
-import styles from "./Address.module.scss";
+import { GameForm } from "../../GameForm";
+import styles from "./Game.module.scss";
 
-const addressCtrl = new AddressCtrl();
-
-export function Address(props) {
-  const { addressId, address, onReload } = props;
+export function Game(props) {
+  const { gameId, game, onReload } = props;
   const [showEdit, setShowEdit] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const openCloseEdit = () => setShowEdit((prevState) => !prevState);
   const openCloseConfirm = () => setShowConfirm((prevState) => !prevState);
 
-  const onDelete = async () => {
-    try {
-      await addressCtrl.delete(addressId);
-      onReload();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onDelete = async () => {
+  //   try {
+  //     await addressCtrl.delete(addressId);
+  //     onReload();
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <>
@@ -31,9 +29,9 @@ export function Address(props) {
           <Button primary icon onClick={openCloseEdit}>
             <Icon name="pencil" />
           </Button>
-          <Button primary icon onClick={openCloseConfirm}>
+          {/* <Button primary icon onClick={openCloseConfirm}>
             <Icon name="delete" />
-          </Button>
+          </Button> */}
         </div>
         <div>
           <p className={styles.title}>{address.title}: </p>
@@ -44,23 +42,23 @@ export function Address(props) {
         </div>
       </div>
 
-      <Confirm
+      {/* <Confirm
         open={showConfirm}
         onCancel={openCloseConfirm}
         onConfirm={onDelete}
         content="Are you sure you want to delete the address?"
-      />
+      /> */}
 
       <BasicModal
         show={showEdit}
         onClose={openCloseEdit}
-        title="Edit address"
+        title="Edit game"
       >
-        <AddressForm
+        <GameForm
           onClose={openCloseEdit}
           onReload={onReload}
-          addressId={addressId}
-          address={address}
+          addressId={gameId}
+          address={game}
         />
       </BasicModal>
     </>

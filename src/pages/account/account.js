@@ -86,6 +86,7 @@ export default function AccountPage() {
       render: () => (
         <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
           <Game.AddGame onReload={onReload} />
+          <Game.ListGames reload={reload} onReload={onReload} />
           <Separator height={80} />
         </Tab.Pane>
       ),

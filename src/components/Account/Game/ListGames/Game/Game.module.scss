@@ -1,0 +1,41 @@
+@import "~/src/scss/index.scss";
+
+.address {
+  background-color: $background-quaternary;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column; // Adjust to column layout
+  align-items: center;
+  justify-content: space-between;
+
+  .title {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px; // Adjust spacing between title and content
+    align-self: center; // Center the title horizontally
+  }
+
+  .addressInfo {
+    color: $text-secondary;
+    font-size: 16px;
+    margin-bottom: 5px; // Add space between content and actions
+  }
+
+  .actions {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    display: flex;
+    flex-direction: row; // Adjust to column layout
+    align-items: center; // Align items to end
+
+    button {
+      padding: 12px !important;
+      margin-left: 10px !important;
+    }
+  }
+}
