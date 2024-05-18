@@ -2,6 +2,33 @@ import { ENV, authFetch } from "@/utils";
 import { uploadFileToStrapi } from '@/utils/functions/mediaUpload';
 
 export class Game {
+
+  async getAllGames({ limit = 15, platformId = null }) {
+    try {
+      const paginationLimit = `pagination[limit]=${limit}`;
+      const sort = `sort[0]=publishedAt:desc`;
+      const populate = `populate=*`;
+      const urlParams = `${sort}&${paginationLimit}&${populate}`;
+
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}?${urlParams}`;
+
+      // console.log(
+      //   '\n\n *getAllGames* \n\nFetching data from URL: ',
+      //   url,
+      //   '\n\n ',
+      // );
+
+      const response = await fetch(url);
+      const result = await response.json();
+
+      if (response.status !== 200) throw result;
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getLastPublished() {
     try {
       const sort = 'sort=publishedAt:desc';
@@ -216,6 +243,28 @@ export class Game {
     } catch (error) {
       console.error('Error posting game data:', error);
       throw new Error(error.message || 'Failed to post game data');
+    }
+  }
+
+  async putGame(data, gameId) {
+    try {
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}/${gameId}`;
+      const params = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      };
+
+      const response = await authFetch(url, params);
+      const result = await response.json();
+
+      if (response.status !== 200) throw result;
+
+      return result;
+    } catch (error) {
+      throw error;
     }
   }
 

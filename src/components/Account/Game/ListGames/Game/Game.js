@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, Icon } from "semantic-ui-react";
+import { Icon, Image, Button } from "semantic-ui-react";
 import { Game as GameCtrl } from "@/api";
+import { fn } from '@/utils';
 import { BasicModal, Confirm } from "@/components/Shared";
 import { GameForm } from "../../GameForm";
 import styles from "./Game.module.scss";
@@ -8,10 +9,10 @@ import styles from "./Game.module.scss";
 export function Game(props) {
   const { gameId, game, onReload } = props;
   const [showEdit, setShowEdit] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
+  // const [showConfirm, setShowConfirm] = useState(false);
 
   const openCloseEdit = () => setShowEdit((prevState) => !prevState);
-  const openCloseConfirm = () => setShowConfirm((prevState) => !prevState);
+  // const openCloseConfirm = () => setShowConfirm((prevState) => !prevState);
 
   // const onDelete = async () => {
   //   try {
@@ -24,7 +25,7 @@ export function Game(props) {
 
   return (
     <>
-      <div className={styles.address}>
+      <div className={styles.gameItem}>
         <div className={styles.actions}>
           <Button primary icon onClick={openCloseEdit}>
             <Icon name="pencil" />
@@ -33,12 +34,19 @@ export function Game(props) {
             <Icon name="delete" />
           </Button> */}
         </div>
-        <div>
-          <p className={styles.title}>{address.title}: </p>
-          <p className={styles.addressInfo}>
-            {address.name}, {address.address}, {address.state}, {address.city},{" "}
-            {address.postal_code}
-          </p>
+        <div key={game.id} className={styles.product}>
+          <Image src={game?.cover?.data?.attributes?.url} />
+          <div className={styles.info}>
+            <p>{game?.title}</p>
+            <p>{game?.platform?.data?.attributes?.title}</p>
+          </div>
+          <span>
+            $
+            {fn.calcDiscountedPrice(
+              game?.price,
+              game?.discount,
+            )}
+          </span>
         </div>
       </div>
 
@@ -57,8 +65,8 @@ export function Game(props) {
         <GameForm
           onClose={openCloseEdit}
           onReload={onReload}
-          addressId={gameId}
-          address={game}
+          gameId={gameId}
+          game={game}
         />
       </BasicModal>
     </>

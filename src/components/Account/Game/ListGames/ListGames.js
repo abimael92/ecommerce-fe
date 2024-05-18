@@ -3,38 +3,39 @@ import { map } from "lodash";
 import { Game as GameCtrl } from "@/api";
 import { useAuth } from "@/hooks";
 import { Game } from "./Game";
-import styles from "./ListGames.module.scss";
+import styles from './ListGames.module.scss';
 
 const gameCtrl = new GameCtrl();
 
-export function ListAddresses(props) {
-  const { reload, onReload } = props;
-  const [addresses, setAddresses] = useState(null);
+const ListGames = ({ reload, onReload }) => {
+  console.log('ListGames component rendered');
+  const [games, setGames] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await addressCtrl.getAll(user.id);
-        setAddresses(response.data);
+        const response = await gameCtrl.getAllGames(user.id);
+        setGames(response.data);
       } catch (error) {
         console.error(error);
       }
     })();
   }, [reload]);
 
-  if (!addresses) return null;
+  if (!games) return null;
+
+  console.log('games: ', games);
 
   return (
     <div className={styles.addressesContainer}>
-
       <div className={styles.addressesGrid}>
-        {map(addresses, (address) => (
-          <div key={address.id} className={styles.addressItem}>
+        {map(games, (game) => (
+          <div key={game.id} className={styles.addressItem}>
             <div className={styles.address}>
-              <Address
-                addressId={address.id}
-                address={address.attributes}
+              <Game
+                gameId={game.id}
+                game={game.attributes}
                 onReload={onReload}
               />
             </div>
@@ -44,3 +45,5 @@ export function ListAddresses(props) {
     </div>
   );
 }
+
+export default ListGames;

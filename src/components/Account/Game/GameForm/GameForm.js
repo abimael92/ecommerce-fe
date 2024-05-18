@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Message, Image, Label, Input, Icon } from 'semantic-ui-react';
+import { Button, Form, Message, Image, Label, Input, Icon } from 'semantic-ui-react';
 import { useFormik } from "formik";
 import { Game, Platform } from '@/api';
 
@@ -11,11 +11,12 @@ const gameCtrl = new Game();
 const platformCtrl = new Platform();
 
 export function GameForm(props) {
-  const { onClose, onReload } = props;
+  const { onClose, onReload, gameId, game } = props;
   const [platforms, setPlatforms] = useState(null);
+  const [videoError, setVideoError] = useState('');
 
   const formik = useFormik({
-    initialValues: initialValues(),
+    initialValues: initialValues(game),
     validationSchema: validationSchema(),
     validateOnChange: false,
 
@@ -25,11 +26,14 @@ export function GameForm(props) {
       formValue.platform = { id: formValue.platform };
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // 50000 milliseconds = 50 seconds
 
-        const response = await gameCtrl.postGame(formValue);
+        if (gameId) {
+          await gameCtrl.putGame(formValue, gameId);
+        } else {
+          await gameCtrl.postGame(formValue);
 
-        // console.log('Game Post was Successful: ', response);
+          // console.log('Game Post was Successful: ', response);
+        }
 
         formik.handleReset();
         onReload();
@@ -88,29 +92,59 @@ export function GameForm(props) {
     formik.setFieldValue(fieldName, [...formik.values[fieldName], ...files]);
   };
 
+  const handleVideoTest = () => {
+    if (!isValidVideoUrl(formik.values.video)) {
+      setVideoError('Invalid YouTube URL format');
+    } else {
+      setVideoError('');
+    }
+  };
+
+  const isValidVideoUrl = (url) => {
+    const youtubeRegex = /^https:\/\/www\.youtube\.com\/watch\?v=.+/;
+    return youtubeRegex.test(url);
+  };
+
+  const extractVideoId = (url) => {
+    const standardRegex = /^https:\/\/www\.youtube\.com\/watch\?v=([^&]+)/;
+    const shortRegex = /^https:\/\/youtu\.be\/([^?]+)/;
+    const standardMatch = url.match(standardRegex);
+    const shortMatch = url.match(shortRegex);
+
+    if (standardMatch) return standardMatch[1];
+    if (shortMatch) return shortMatch[1];
+    return null;
+  };
+
+  const videoId = extractVideoId(formik.values.video);
+
   useEffect(() => {
     (async () => {
       try {
         const response = await platformCtrl.getAll();
         // console.log('res', response);
 
-        // Extract titles from the response
         const platformOptions = response.data.map(platform => ({
           id: platform.id,
           title: platform.attributes.title
         }));
-
-        // Now you can use the titles array in your application
         // console.log('this are the titles: ', platformOptions);
-
-        // Populate the dropdown list with titles
         setPlatforms(platformOptions);
+
+        const selectedPlatform = formik.values.platform;
+        console.log("selectedPlatform", selectedPlatform);
+
+        // Set initial platform value if game data exists
+        if (game?.platform?.data?.id) {
+          formik.setFieldValue('platform', game.platform.data.id);
+        }
 
       } catch (error) {
         console.error(error);
       }
     })();
-  }, []);
+  }, [game]);
+
   return (
     <>
       <Icon
@@ -125,7 +159,7 @@ export function GameForm(props) {
       <Form onSubmit={formik.handleSubmit}>
         {formik.status?.gameError && (
           <Message negative>
-            <Message.Header>Login Failed</Message.Header>
+            <Message.Header>Submit Failed</Message.Header>
             <p style={{ color: 'red' }}>{formik.status.gameError}</p>
           </Message>
         )}
@@ -156,6 +190,7 @@ export function GameForm(props) {
             readOnly
           />
         </Form.Group>
+
         <Form.Group widths="equal">
           <Form.Input
             label="Price"
@@ -178,6 +213,7 @@ export function GameForm(props) {
             error={formik.touched.discount && formik.errors.discount}
           />
         </Form.Group>
+
         <Form.TextArea
           className={styles.textArea}
           label="Summary"
@@ -187,6 +223,7 @@ export function GameForm(props) {
           onChange={formik.handleChange}
           error={formik.touched.summary && formik.errors.summary}
         />
+
         <Form.Group widths="equal">
 
           <Form.Dropdown
@@ -194,9 +231,9 @@ export function GameForm(props) {
             id="platform"
             name="platform"
             placeholder="Select a platform"
-            value={formik.values.platform || ''} // Ensure value is either null/undefined or a valid value
+            value={formik.values.platform || null} // Ensure value is either null/undefined or a valid value
             options={[
-              { key: 'select', text: 'Select a platform', value: '' }, // Ensure the placeholder option has an empty string value
+              { key: 'select', text: 'Select a platform', value: null }, // Ensure the placeholder option has an empty string value
               ...(platforms
                 ? platforms.map(platform => ({ key: platform.id, text: platform.title, value: platform.id }))
                 : [])
@@ -205,8 +242,6 @@ export function GameForm(props) {
             onBlur={formik.handleBlur}
             className={styles.dropdown}
           />
-
-
 
           <Form.Input
             label="Release Date"
@@ -218,15 +253,33 @@ export function GameForm(props) {
           />
         </Form.Group>
 
-        <Form.Input
-          label="Video/Trailer Link"
-          name="video"
-          type="text"
-          placeholder="Add Link"
-          value={formik.values.video}
-          onChange={formik.handleChange}
-          error={formik.touched.video && formik.errors.video}
-        />
+        <Form.Group widths="equal">
+          <Form.Input
+            label="Video/Trailer Link"
+            name="video"
+            type="text"
+            placeholder="Add Link"
+            value={formik.values.video}
+            onChange={formik.handleChange}
+            error={formik.touched.video && formik.errors.video}
+          />
+
+          <Button onClick={handleVideoTest}>Test URL</Button>
+        </Form.Group>
+
+        {videoError && <Message negative>{videoError}</Message>}
+
+        {videoId && (
+          <div className={styles.videoPreviewContainer}>
+            <iframe
+              className={styles.videoPreview}
+              src={`https://www.youtube.com/embed/${videoId}`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        )}
 
         <Form.Field>
           <label>Cover Image</label>

@@ -151,3 +151,15 @@
 .submitButton {
   margin-top: 20px;
 }
+
+
+.videoPreviewContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.videoPreview {
+  width: 320px; /* Adjust the width as needed */
+  height: 180px; /* Adjust the height as needed */
+}

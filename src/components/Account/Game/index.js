@@ -1,5 +1,5 @@
 import { AddGame } from "./AddGame";
-import GameForm from "./GameForm";
+import { GameForm } from "./GameForm";
 import { ListGames } from "./ListGames";
 
 export const Game = {
