@@ -1,14 +1,25 @@
 @import '@/scss/index.scss'; // Import global styles
 
+.game {
+  background-color: $background-quaternary;
+  padding: 2px;
+  margin-bottom: 2px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; // Adjust to column layout
+  align-items: center;
+  justify-content: space-between;
+}
 .combinedLoader {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.form label {
-  color: white;
+.gameForm label {
+  color: white !important;
 }
+
 
 .loading {
   display: flex;
@@ -117,6 +128,9 @@
     background-color: black ;
     border-radius: 6px;
     width: 100%;
+    color: white !important;
+    align-items: center;
+    border: 1px solid #ff7300 !important;
 
     &:active {
       background-color: darkslategray !important;
@@ -127,7 +141,7 @@
     }
 
     &:not(:hover) {
-      background-color: rgb(31, 28, 28) !important;
+      background-color: darkgrey !important;
       color: black;
     }
 
@@ -163,3 +177,28 @@
   width: 320px; /* Adjust the width as needed */
   height: 180px; /* Adjust the height as needed */
 }
+
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* Adjust spacing between images as needed */
+  background-color: $background-quaternary;
+  padding: 10px;
+  margin: 20px;
+  border-radius: 10px;
+  position: relative;
+  width: fit-content;
+}
+
+.imageGridItem {
+  flex: 1 1 calc(33.333% - 1rem); /* 1rem is the gap size, adjust if you change gap */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imageGridItem img {
+  width: 100%;
+  height: auto;
+}
+

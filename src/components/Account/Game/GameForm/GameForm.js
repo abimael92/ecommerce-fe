@@ -21,7 +21,6 @@ export function GameForm(props) {
     validateOnChange: false,
 
     onSubmit: async (formValue) => {
-
       // console.log('values sent: ', formValue);
       formValue.platform = { id: formValue.platform };
 
@@ -31,7 +30,6 @@ export function GameForm(props) {
           await gameCtrl.putGame(formValue, gameId);
         } else {
           await gameCtrl.postGame(formValue);
-
           // console.log('Game Post was Successful: ', response);
         }
 
@@ -60,11 +58,25 @@ export function GameForm(props) {
     return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
   };
 
+  const { values } = formik;
+  const { title,
+    slug,
+    price,
+    discount,
+    platform,
+    summary,
+    releaseDate,
+    video,
+    cover,
+    wallpaper,
+    screenshots
+  } = values;
+
   const handleTitleChange = (event) => {
     const title = event.target.value;
     const slug = generateSlug(title);
     formik.setValues({
-      ...formik.values,
+      ...values,
       title: title,
       slug: slug,
     });
@@ -89,23 +101,10 @@ export function GameForm(props) {
 
   const handleScreenShotsUpload = (event, fieldName) => {
     const files = event.target.files;
-    formik.setFieldValue(fieldName, [...formik.values[fieldName], ...files]);
+    formik.setFieldValue(fieldName, [...values[fieldName], ...files]);
   };
 
-  const handleVideoTest = () => {
-    if (!isValidVideoUrl(formik.values.video)) {
-      setVideoError('Invalid YouTube URL format');
-    } else {
-      setVideoError('');
-    }
-  };
-
-  const isValidVideoUrl = (url) => {
-    const youtubeRegex = /^https:\/\/www\.youtube\.com\/watch\?v=.+/;
-    return youtubeRegex.test(url);
-  };
-
-  const extractVideoId = (url) => {
+  const extractVideo = (url) => {
     const standardRegex = /^https:\/\/www\.youtube\.com\/watch\?v=([^&]+)/;
     const shortRegex = /^https:\/\/youtu\.be\/([^?]+)/;
     const standardMatch = url.match(standardRegex);
@@ -113,10 +112,25 @@ export function GameForm(props) {
 
     if (standardMatch) return standardMatch[1];
     if (shortMatch) return shortMatch[1];
+
     return null;
   };
 
-  const videoId = extractVideoId(formik.values.video);
+  const showVideo = extractVideo(video);
+
+  const extractImage = (img) => {
+    const extractedImg = {
+      id: img?.id ?? '',
+      name: img?.attributes?.name ?? 'Unknown Image',
+      thumbnailUrl: img?.attributes?.formats?.thumbnail?.url ?? '/images/gaming-rivals.png',
+    };
+
+    console.log("this: ", extractedImg);
+    return extractedImg;
+  };
+
+
+
 
   useEffect(() => {
     (async () => {
@@ -130,9 +144,6 @@ export function GameForm(props) {
         }));
         // console.log('this are the titles: ', platformOptions);
         setPlatforms(platformOptions);
-
-        const selectedPlatform = formik.values.platform;
-        console.log("selectedPlatform", selectedPlatform);
 
         // Set initial platform value if game data exists
         if (game?.platform?.data?.id) {
@@ -156,7 +167,7 @@ export function GameForm(props) {
         }}
       />
 
-      <Form onSubmit={formik.handleSubmit}>
+      <Form className={styles.gameForm} onSubmit={formik.handleSubmit}>
         {formik.status?.gameError && (
           <Message negative>
             <Message.Header>Submit Failed</Message.Header>
@@ -175,7 +186,7 @@ export function GameForm(props) {
             name="title"
             type="text"
             placeholder="Title"
-            value={formik.values.title}
+            value={title}
             onChange={(e) => {
               handleTitleChange(e);
             }}
@@ -186,7 +197,7 @@ export function GameForm(props) {
             name="slug"
             type="text"
             placeholder="Slug"
-            value={formik.values.slug}
+            value={slug}
             readOnly
           />
         </Form.Group>
@@ -198,7 +209,7 @@ export function GameForm(props) {
             type="number"
             min="0"
             placeholder="Price"
-            value={formik.values.price}
+            value={price}
             onChange={formik.handleChange}
             error={formik.touched.price && formik.errors.price}
           />
@@ -208,7 +219,7 @@ export function GameForm(props) {
             type="number"
             // min="0"
             placeholder="Discount"
-            value={formik.values.discount}
+            value={discount}
             onChange={formik.handleChange}
             error={formik.touched.discount && formik.errors.discount}
           />
@@ -219,7 +230,7 @@ export function GameForm(props) {
           label="Summary"
           name="summary"
           placeholder="Summary"
-          value={formik.values.summary}
+          value={summary}
           onChange={formik.handleChange}
           error={formik.touched.summary && formik.errors.summary}
         />
@@ -231,7 +242,7 @@ export function GameForm(props) {
             id="platform"
             name="platform"
             placeholder="Select a platform"
-            value={formik.values.platform || null} // Ensure value is either null/undefined or a valid value
+            value={platform || null} // Ensure value is either null/undefined or a valid value
             options={[
               { key: 'select', text: 'Select a platform', value: null }, // Ensure the placeholder option has an empty string value
               ...(platforms
@@ -247,7 +258,7 @@ export function GameForm(props) {
             label="Release Date"
             name="releaseDate"
             type="date"
-            value={formik.values.releaseDate}
+            value={releaseDate}
             onChange={formik.handleChange}
             error={formik.touched.releaseDate && formik.errors.releaseDate}
           />
@@ -259,21 +270,20 @@ export function GameForm(props) {
             name="video"
             type="text"
             placeholder="Add Link"
-            value={formik.values.video}
+            value={video}
             onChange={formik.handleChange}
             error={formik.touched.video && formik.errors.video}
           />
 
-          <Button onClick={handleVideoTest}>Test URL</Button>
         </Form.Group>
 
         {videoError && <Message negative>{videoError}</Message>}
 
-        {videoId && (
+        {showVideo && (
           <div className={styles.videoPreviewContainer}>
             <iframe
               className={styles.videoPreview}
-              src={`https://www.youtube.com/embed/${videoId}`}
+              src={`https://www.youtube.com/embed/${showVideo}`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -290,19 +300,29 @@ export function GameForm(props) {
             onChange={(e) => handleFileUpload(e, 'cover')}
           />
 
-          {/* // formik.touched.cover &&
-            // formik.errors.cover && */}
-          {/* {formik.values.cover ? ( */}
-          {formik.values.cover && formik.values.cover instanceof File ? (
+          {cover && cover instanceof File ? (
             <div>
               <Label pointing="above">Cover Image Preview</Label>
               <Image
-                src={URL.createObjectURL(formik.values.cover)}
+                src={URL.createObjectURL(cover)}
                 size="small"
               />
             </div>
-          ) : null
-          }
+          ) : (
+            cover && (
+              <div className={styles.imageGrid}>
+                {(() => {
+                  const extractedImage = extractImage(cover);
+                  return (
+                    <div className={styles.imageGridItem}>
+                      <Image src={extractedImage.thumbnailUrl} size="small" />
+                      <Label pointing="above">{extractedImage.name}</Label>
+                    </div>
+                  );
+                })()}
+              </div>
+            )
+          )}
         </Form.Field>
 
         <Form.Field>
@@ -313,20 +333,24 @@ export function GameForm(props) {
             onChange={(e) => handleFileUpload(e, 'wallpaper')}
           />
 
-          {/* // formik.touched.wallpaper &&
-            // formik.errors.wallpaper && */}
-          {/* { formik.values.wallpaper ? ( */}
-          {formik.values.wallpaper && formik.values.wallpaper instanceof File ? (
+          {wallpaper && wallpaper instanceof File ? (
             <div>
               <Label pointing="above">Wallpaper Image Preview</Label>
               <Image
-                src={URL.createObjectURL(formik.values.wallpaper)}
+                src={URL.createObjectURL(wallpaper)}
                 size="small"
               />
             </div>
-          ) : null
-          }
+          ) : (
+            <div className={styles.imageGrid}>
+              <div className={styles.imageGridItem}>
+                <Image src={extractImage(wallpaper).thumbnailUrl} size="small" />
+                <Label pointing="above">{extractImage(wallpaper).name}</Label>
+              </div>
+            </div>
+          )}
         </Form.Field>
+
         <Form.Field>
           <label>Screenshots</label>
           <Input
@@ -337,18 +361,24 @@ export function GameForm(props) {
           />
 
           {/* Display selected screenshots */}
-          {formik.values.screenshots &&
-            formik.values.screenshots?.map((screenshot, index) => (
-              <div key={index}>
-                {/* {console.log(screenshot)} */}
-                {screenshot && screenshot instanceof File && (
-                  <div>
-                    <Label pointing="above">{screenshot.name}</Label>
-                    <Image src={URL.createObjectURL(screenshot)} size="small" />
-                  </div>
-                )}
-              </div>
-            ))}
+          <div className={styles.imageGrid}>
+            {screenshots &&
+              screenshots?.map((screenshot, index) => (
+                <div key={index} className={styles.imageGridItem}>
+                  {screenshot && screenshot instanceof File ? (
+                    <div>
+                      <Label pointing="above">{screenshot.name}</Label>
+                      <Image src={URL.createObjectURL(screenshot)} size="small" />
+                    </div>
+                  ) : (
+                    <div key={index} className={styles.imageGridItem}>
+                      <Image src={extractImage(screenshot).thumbnailUrl} size="small" alt={extractImage(screenshot).name} />
+                      <Label pointing="above">{extractImage(screenshot).name}</Label>
+                    </div>
+                  )}
+                </div>
+              ))}
+          </div>
         </Form.Field>
 
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>

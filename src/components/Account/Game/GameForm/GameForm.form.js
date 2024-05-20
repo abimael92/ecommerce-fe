@@ -3,8 +3,7 @@ import { format, startOfToday } from 'date-fns';
 
 export function initialValues(game) {
   // const today = format(startOfToday(), 'ddMMyyyy');
-
-  console.log('platform: ', game?.platform?.data);
+  console.log('title: ', game?.title, 'cover', game.cover?.data);
 
   const today = format(startOfToday(), 'yyyy-MM-dd');
   return {
@@ -16,9 +15,9 @@ export function initialValues(game) {
     summary: game?.summary || '',
     releaseDate: game?.releaseDate || today,
     video: game?.video || '',
-    cover: game?.cover || null,
-    wallpaper: game?.wallpaper || null,
-    screenshots: Array.isArray(game?.screenshots) ? game.screenshots : [],
+    cover: game?.cover?.data || null,
+    wallpaper: game?.wallpaper?.data || null,
+    screenshots: Array.isArray(game?.screenshots?.data) ? game.screenshots?.data : [],
   };
 }
 
