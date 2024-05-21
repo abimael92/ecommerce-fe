@@ -14,21 +14,37 @@ export function GameForm(props) {
   const { onClose, onReload, gameId, game } = props;
   const [platforms, setPlatforms] = useState(null);
   const [videoError, setVideoError] = useState('');
+  const [initialFormValues, setInitialFormValues] = useState(initialValues(game));
+
 
   const formik = useFormik({
     initialValues: initialValues(game),
     validationSchema: validationSchema(),
     validateOnChange: false,
-
     onSubmit: async (formValue) => {
       // console.log('values sent: ', formValue);
       formValue.platform = { id: formValue.platform };
+      const changedValues = getChangedValues(initialFormValues, formValue);
 
       try {
 
-        if (gameId) {
-          await gameCtrl.putGame(formValue, gameId);
+        if (changedValues) {
+          console.log(`will edit  game `);
+
+          console.log(`edit values ${JSON.stringify(formValue.platform)}`);
+
+
+          if (Object.keys(changedValues).length > 0) {
+            console.table('Changed values:', changedValues);
+            await gameCtrl.putGame(changedValues, gameId);
+
+          } else {
+            console.log('No changes detected.');
+          }
+
         } else {
+
+          console.log('will create new game');
           await gameCtrl.postGame(formValue);
           // console.log('Game Post was Successful: ', response);
         }
@@ -49,6 +65,16 @@ export function GameForm(props) {
     },
   });
 
+  const getChangedValues = (initialValues, currentValues) => {
+    const changedValues = {};
+    for (const key in currentValues) {
+      if (currentValues[key] !== initialValues[key]) {
+        changedValues[key] = currentValues[key];
+      }
+    }
+    return changedValues;
+  };
+
   const formatDate = (dateString) => {
     // Assuming dateString is in "ddMMyyyy" format
     const day = dateString.slice(0, 2);
@@ -58,8 +84,8 @@ export function GameForm(props) {
     return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
   };
 
-  const { values } = formik;
-  const { title,
+  const {
+    title,
     slug,
     price,
     discount,
@@ -70,13 +96,13 @@ export function GameForm(props) {
     cover,
     wallpaper,
     screenshots
-  } = values;
+  } = formik.values;
 
   const handleTitleChange = (event) => {
     const title = event.target.value;
     const slug = generateSlug(title);
     formik.setValues({
-      ...values,
+      ...formik.values,
       title: title,
       slug: slug,
     });
@@ -94,14 +120,16 @@ export function GameForm(props) {
 
   const handleFileUpload = (event, fieldName) => {
     const file = event.target.files[0];
-    // console.log('Selected file:', file);
+    console.log('Selected file:', file);
 
     formik.setFieldValue(fieldName, file);
   };
 
   const handleScreenShotsUpload = (event, fieldName) => {
-    const files = event.target.files;
-    formik.setFieldValue(fieldName, [...values[fieldName], ...files]);
+    const files = event.target.files[0];
+    console.log('Selected file:', files);
+
+    formik.setFieldValue(fieldName, [...formik.values[fieldName], files]);
   };
 
   const extractVideo = (url) => {
@@ -121,11 +149,10 @@ export function GameForm(props) {
   const extractImage = (img) => {
     const extractedImg = {
       id: img?.id ?? '',
-      name: img?.attributes?.name ?? 'Unknown Image',
-      thumbnailUrl: img?.attributes?.formats?.thumbnail?.url ?? '/images/gaming-rivals.png',
+      name: img?.attributes?.name ?? 'Not Found',
+      thumbnailUrl: img?.attributes?.formats?.thumbnail?.url ?? '/images/not-found.jpeg',
     };
 
-    console.log("this: ", extractedImg);
     return extractedImg;
   };
 
@@ -342,12 +369,19 @@ export function GameForm(props) {
               />
             </div>
           ) : (
-            <div className={styles.imageGrid}>
-              <div className={styles.imageGridItem}>
-                <Image src={extractImage(wallpaper).thumbnailUrl} size="small" />
-                <Label pointing="above">{extractImage(wallpaper).name}</Label>
+            wallpaper && (
+              <div className={styles.imageGrid}>
+                {(() => {
+                  const extractedImage = extractImage(wallpaper);
+                  return (
+                    <div className={styles.imageGridItem}>
+                      <Image src={extractedImage.thumbnailUrl} size="small" />
+                      <Label pointing="above">{extractedImage.name}</Label>
+                    </div>
+                  );
+                })()}
               </div>
-            </div>
+            )
           )}
         </Form.Field>
 
@@ -361,30 +395,40 @@ export function GameForm(props) {
           />
 
           {/* Display selected screenshots */}
-          <div className={styles.imageGrid}>
-            {screenshots &&
-              screenshots?.map((screenshot, index) => (
-                <div key={index} className={styles.imageGridItem}>
+          {screenshots &&
+            screenshots?.map((screenshot, index) => (
+              <div key={`${index}_grid`} className={styles.imageGrid}>
+                <div key={`${index}_gridItem`} className={styles.imageGridItem}>
                   {screenshot && screenshot instanceof File ? (
                     <div>
-                      <Label pointing="above">{screenshot.name}</Label>
                       <Image src={URL.createObjectURL(screenshot)} size="small" />
+                      <Label pointing="above">{screenshot.name}</Label>
+
                     </div>
                   ) : (
-                    <div key={index} className={styles.imageGridItem}>
-                      <Image src={extractImage(screenshot).thumbnailUrl} size="small" alt={extractImage(screenshot).name} />
-                      <Label pointing="above">{extractImage(screenshot).name}</Label>
-                    </div>
+                    screenshot && (
+                      <div className={styles.imageGrid}>
+                        {(() => {
+                          const extractedImage = extractImage(screenshot);
+                          return (
+                            <div className={styles.imageGridItem}>
+                              <Image src={extractedImage.thumbnailUrl} size="small" />
+                              <Label pointing="above">{extractedImage.name}</Label>
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    )
                   )}
                 </div>
-              ))}
-          </div>
+              </div>
+            ))}
         </Form.Field>
 
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>
           Submit
         </Form.Button>
-      </Form>
+      </Form >
     </>
   );
 }

@@ -247,7 +247,47 @@ export class Game {
   }
 
   async putGame(data, gameId) {
+    console.log(`edit values ${gameId}`);
+    console.table('with the following values', data);
+    console.log('Data:', JSON.stringify(data, null, 2));
+
     try {
+      // Array to hold all promises for image uploads
+      const uploadPromises = [];
+
+      // Upload cover image to Strapi if it exists and is a File
+      if (data.cover && data.cover instanceof File) {
+        uploadPromises.push(uploadFileToStrapi(data.cover)
+          .then(coverResponse => {
+            data.cover = coverResponse[0].id;
+          }));
+      }
+
+      // Upload wallpaper image to Strapi if it exists and is a File
+      if (data.wallpaper && data.wallpaper instanceof File) {
+        uploadPromises.push(uploadFileToStrapi(data.wallpaper)
+          .then(wallpaperResponse => {
+            data.wallpaper = wallpaperResponse[0].id;
+          }));
+      }
+
+      // Upload screenshots to Strapi if they exist and are Files
+      if (data.screenshots && data.screenshots.length > 0) {
+        const screenshotPromises = data.screenshots.map(file => {
+          if (file instanceof File) {
+            return uploadFileToStrapi(file);
+          }
+          return Promise.resolve([{ id: file }]); // If not a File, assume it's already an ID
+        });
+        const screenshotResponses = await Promise.all(screenshotPromises);
+        const screenshotURLs = screenshotResponses.map(response => response[0].id);
+        data.screenshots = screenshotURLs;
+      }
+
+      // Wait for all upload promises to complete before proceeding
+      await Promise.all(uploadPromises);
+
+      // Construct URL for the PUT request
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}/${gameId}`;
       const params = {
         method: "PUT",
@@ -257,16 +297,22 @@ export class Game {
         body: JSON.stringify({ data }),
       };
 
+      console.log(`result values ${url}`);
+
       const response = await authFetch(url, params);
       const result = await response.json();
+
+      console.log(`result values ${JSON.stringify({ result })}`);
+      console.table('result values', result);
+      console.log('Data:', JSON.stringify(result, null, 2));
 
       if (response.status !== 200) throw result;
 
       return result;
     } catch (error) {
-      throw error;
+      console.error('Error updating game data:', error);
+      throw new Error(error.message || 'Failed to update game data');
     }
   }
-
 
 }

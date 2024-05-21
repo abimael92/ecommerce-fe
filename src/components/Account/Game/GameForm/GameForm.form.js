@@ -3,7 +3,6 @@ import { format, startOfToday } from 'date-fns';
 
 export function initialValues(game) {
   // const today = format(startOfToday(), 'ddMMyyyy');
-  console.log('title: ', game?.title, 'cover', game.cover?.data);
 
   const today = format(startOfToday(), 'yyyy-MM-dd');
   return {

@@ -125,29 +125,34 @@
 
   div {
     border: #3d3d3d ;
-    background-color: black ;
     border-radius: 6px;
     width: 100%;
     color: white !important;
-    align-items: center;
-    border: 1px solid #ff7300 !important;
+  text-align: center;
+
 
     &:active {
       background-color: darkslategray !important;
     }
     &:hover {
-      border: 2px solid #ff7300 !important;
       background-color: gray !important;
+      border: 0.5px solid #ff7300 !important;
+      text-align: center;
     }
 
     &:not(:hover) {
-      background-color: darkgrey !important;
-      color: black;
+      background: #1d1d1d !important;
+    }
+
+    &:not(:hover) div {
+      background: #1d1d1d !important;
+      border: 0.5px solid #ff7300 !important;
     }
 
   label {
     margin-top: 8px !important;
     padding: 2px !important;
+    align-items: center;
   }
     }
 }

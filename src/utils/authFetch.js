@@ -24,7 +24,7 @@ export async function authFetch(url, params) {
       };
 
       try {
-        // console.log(url, tokenCtrl.getToken());
+        console.log(`url ${url} and paramsTemp ${paramsTemp}`);
         return await fetch(url, paramsTemp);
       } catch (error) {
         return error;
