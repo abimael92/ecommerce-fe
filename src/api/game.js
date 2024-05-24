@@ -315,4 +315,31 @@ export class Game {
     }
   }
 
+  async deleteGameById(gameId) {
+    console.log('Will delete the following game ID:', gameId);
+    try {
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}/${gameId}`;
+      const params = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      console.log('DELETE request URL:', url);
+      console.log('DELETE request parameters:', params);
+
+      const response = await authFetch(url, params);
+      const result = await response.json();
+
+      if (response.status !== 200) throw result;
+
+      return result;
+    } catch (error) {
+      console.error('Error deleting the game:', error);
+      throw error;
+    }
+  }
+
+
 }

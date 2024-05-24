@@ -133,11 +133,15 @@ export function GameForm(props) {
     const files = Array.from(event.target.files);
     console.log('Selected files:', files);
 
-    const updatedScreenshots = [...formik.values[fieldName], ...files];
+    // Ensure formik.values[fieldName] is an array
+    const currentScreenshots = Array.isArray(formik.values[fieldName]) ? formik.values[fieldName] : [];
 
+    // Combine the current screenshots with the new files
+    const updatedScreenshots = [...currentScreenshots, ...files];
+
+    // Update the state and formik value with the new list of screenshots
     setScreenshotsList(updatedScreenshots);
-    formik.setFieldValue(fieldName, screenshotsList);
-
+    formik.setFieldValue(fieldName, updatedScreenshots);
   };
 
   const handleDeleteScreenshot = (screenshot) => {

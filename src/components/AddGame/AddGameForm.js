@@ -30,7 +30,6 @@ export default function AddGameForm() {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // 50000 milliseconds = 50 seconds
 
         const response = await gameCtrl.postGame(formValue);
-
         // console.log('Game Post was Successful: ', response);
 
         router.push('/');
