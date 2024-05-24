@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Message, Image, Label, Input, Icon } from 'semantic-ui-react';
+import { Button, Form, Message, Image, Label, Input, Icon, Confirm } from 'semantic-ui-react';
 import { useFormik } from "formik";
 import { Game, Platform } from '@/api';
 
@@ -15,6 +15,9 @@ export function GameForm(props) {
   const [platforms, setPlatforms] = useState(null);
   const [videoError, setVideoError] = useState('');
   const [initialFormValues, setInitialFormValues] = useState(initialValues(game));
+  const [screenshotsList, setScreenshotsList] = useState(initialValues(game));
+  const [open, setOpen] = useState(false);
+  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
 
 
   const formik = useFormik({
@@ -26,13 +29,14 @@ export function GameForm(props) {
       formValue.platform = { id: formValue.platform };
       const changedValues = getChangedValues(initialFormValues, formValue);
 
+      console.log("changedValues", changedValues);
+
       try {
 
-        if (changedValues) {
+        if (gameId) {
           console.log(`will edit  game `);
 
           console.log(`edit values ${JSON.stringify(formValue.platform)}`);
-
 
           if (Object.keys(changedValues).length > 0) {
             console.table('Changed values:', changedValues);
@@ -126,10 +130,26 @@ export function GameForm(props) {
   };
 
   const handleScreenShotsUpload = (event, fieldName) => {
-    const files = event.target.files[0];
-    console.log('Selected file:', files);
+    const files = Array.from(event.target.files);
+    console.log('Selected files:', files);
 
-    formik.setFieldValue(fieldName, [...formik.values[fieldName], files]);
+    const updatedScreenshots = [...formik.values[fieldName], ...files];
+
+    setScreenshotsList(updatedScreenshots);
+    formik.setFieldValue(fieldName, screenshotsList);
+
+  };
+
+  const handleDeleteScreenshot = (screenshot) => {
+    // Remove the deleted screenshot from formik values
+    setScreenshotsList(screenshots.filter((s) => s !== screenshot));
+    formik.setFieldValue('screenshots', screenshotsList);
+    setOpen(false);
+  };
+
+  const handleConfirmDelete = (screenshot) => {
+    setSelectedScreenshot(screenshot);
+    setOpen(true);
   };
 
   const extractVideo = (url) => {
@@ -240,6 +260,7 @@ export function GameForm(props) {
             onChange={formik.handleChange}
             error={formik.touched.price && formik.errors.price}
           />
+
           <Form.Input
             label="Discount"
             name="discount"
@@ -269,9 +290,9 @@ export function GameForm(props) {
             id="platform"
             name="platform"
             placeholder="Select a platform"
-            value={platform || null} // Ensure value is either null/undefined or a valid value
+            value={platform || ''} // Ensure value is either null/undefined or a valid value
             options={[
-              { key: 'select', text: 'Select a platform', value: null }, // Ensure the placeholder option has an empty string value
+              { key: 'select', text: 'Select a platform', value: '' }, // Ensure the placeholder option has an empty string value
               ...(platforms
                 ? platforms.map(platform => ({ key: platform.id, text: platform.title, value: platform.id }))
                 : [])
@@ -395,34 +416,48 @@ export function GameForm(props) {
           />
 
           {/* Display selected screenshots */}
-          {screenshots &&
-            screenshots?.map((screenshot, index) => (
-              <div key={`${index}_grid`} className={styles.imageGrid}>
-                <div key={`${index}_gridItem`} className={styles.imageGridItem}>
-                  {screenshot && screenshot instanceof File ? (
-                    <div>
-                      <Image src={URL.createObjectURL(screenshot)} size="small" />
-                      <Label pointing="above">{screenshot.name}</Label>
-
-                    </div>
-                  ) : (
-                    screenshot && (
-                      <div className={styles.imageGrid}>
-                        {(() => {
-                          const extractedImage = extractImage(screenshot);
-                          return (
-                            <div className={styles.imageGridItem}>
-                              <Image src={extractedImage.thumbnailUrl} size="small" />
-                              <Label pointing="above">{extractedImage.name}</Label>
+          {Array.isArray(screenshots) && screenshots.map((screenshot, index) => (
+            <div key={`${index}_grid`} className={styles.imageGrid}>
+              <div key={`${index}_gridItem`} className={styles.imageGridItem}>
+                {screenshot && screenshot instanceof File ? (
+                  <div>
+                    <Image src={URL.createObjectURL(screenshot)} size="small" />
+                    <Label pointing="above">{screenshot.name}</Label>
+                  </div>
+                ) : (
+                  screenshot && (
+                    <div className={styles.imageGridItem}>
+                      {(() => {
+                        const extractedImage = extractImage(screenshot);
+                        return (
+                          <>
+                            <div >
+                              <Icon
+                                name="delete"
+                                color="red"
+                                className={styles.trashIcon}
+                                link
+                                onClick={() => handleConfirmDelete(screenshot)}
+                              />
                             </div>
-                          );
-                        })()}
-                      </div>
-                    )
-                  )}
-                </div>
+                            <Image src={extractedImage.thumbnailUrl} size="small" />
+                            <Label pointing="above" className={styles.imageLabel}>{extractedImage.name}</Label>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  )
+                )}
               </div>
-            ))}
+            </div>
+          ))}
+
+          <Confirm
+            open={open}
+            onCancel={() => setOpen(false)}
+            onConfirm={() => handleDeleteScreenshot(selectedScreenshot)}
+            content="Are you sure you want to delete this screenshot?"
+          />
         </Form.Field>
 
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>

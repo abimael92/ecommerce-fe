@@ -171,6 +171,8 @@ export class Game {
   }
 
   async postGame(formData) {
+    console.table('with the following values Data:', JSON.stringify(formData, null, 2));
+
     try {
       // Array to hold all promises for image uploads
       const uploadPromises = [];
@@ -208,13 +210,13 @@ export class Game {
 
         // Assign IDs to formData
         formData.screenshots = screenshotURLs;
-        // console.log('Updated formData with screenshot IDs:', formData);
+        console.log('Updated formData with screenshot IDs:', formData);
       }
 
       // Wait for all upload promises to complete before proceeding
       await Promise.all(uploadPromises);
 
-      // console.log('Updated formData with URLs:', formData);
+      console.log('Updated formData with URLs:', formData);
 
       // Construct URL for the POST request
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}`;
@@ -247,9 +249,7 @@ export class Game {
   }
 
   async putGame(data, gameId) {
-    console.log(`edit values ${gameId}`);
-    console.table('with the following values', data);
-    console.log('Data:', JSON.stringify(data, null, 2));
+    console.table('with the following values Data:', JSON.stringify(data, null, 2));
 
     try {
       // Array to hold all promises for image uploads

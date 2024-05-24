@@ -30,26 +30,42 @@ export function Game(props) {
           <Button primary icon onClick={openCloseEdit}>
             <Icon name="pencil" />
           </Button>
-          {/* <Button primary icon onClick={openCloseConfirm}>
+          {/* <Button primary icon onClick={openCloseConfirm}> */}
+          <Button primary icon >
             <Icon name="delete" />
-          </Button> */}
+          </Button>
         </div>
         <div key={game.id} className={styles.product}>
+          <p>{game?.title}</p>
           <Image src={game?.cover?.data?.attributes?.url} />
           <div className={styles.info}>
-            <p>{game?.title}</p>
-            <p>{game?.platform?.data?.attributes?.title}</p>
-          </div>
-          <span>
-            $
-            {fn.calcDiscountedPrice(
-              game?.price,
-              game?.discount,
-            )}
-          </span>
-        </div>
-      </div>
+            <div key={game.id} className={styles.game}>
+              <div>
 
+                {game?.attributes?.discount > 0 && (
+                  <div>
+                    <span>${game?.price}</span>
+
+                    <Label.Discount className={styles.discount}>
+                      {`-${game?.discount}%`}
+                    </Label.Discount>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                $
+                {fn.calcDiscountedPrice(
+                  game?.price,
+                  game?.discount,
+                )}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div >
       {/* <Confirm
         open={showConfirm}
         onCancel={openCloseConfirm}
@@ -57,7 +73,7 @@ export function Game(props) {
         content="Are you sure you want to delete the address?"
       /> */}
 
-      <BasicModal
+      < BasicModal
         show={showEdit}
         onClose={openCloseEdit}
         title="Edit game"
@@ -68,7 +84,7 @@ export function Game(props) {
           gameId={gameId}
           game={game}
         />
-      </BasicModal>
+      </BasicModal >
     </>
   );
 }
