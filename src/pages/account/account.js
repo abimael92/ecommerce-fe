@@ -9,6 +9,7 @@ import {
   Address,
   Wishlist,
   Game,
+  User,
   Orders,
 } from '@/components/Account';
 import { Separator, Seo } from '@/components/Shared';
@@ -96,7 +97,9 @@ export default function AccountPage() {
       render: () => (
         <Tab.Pane attached={false} style={{ fontSize: 'x-large' }}>
           {/* Render user-related components */}
+          <User.AddUser onReload={onReload} />
           {/* Example: <UsersComponent /> */}
+          <User.ListUsers reload={reload} onReload={onReload} />
           <Separator height={80} />
         </Tab.Pane>
       ),

@@ -1,21 +1,25 @@
 import * as Yup from 'yup';
 import { format, startOfToday } from 'date-fns';
 
-export function initialValues() {
+export function initialValues(game) {
   // const today = format(startOfToday(), 'ddMMyyyy');
+
+  console.log('screenshots: ', game?.screenshots?.data);
+
   const today = format(startOfToday(), 'yyyy-MM-dd');
+
   return {
-    title: '',
-    slug: '',
-    price: 0,
-    discount: null,
-    platform: '',
-    summary: '',
-    releaseDate: today,
-    video: '',
-    cover: null,
-    wallpaper: null,
-    screenshots: [],
+    title: game?.title || '',
+    slug: game?.slug || '',
+    price: game?.price || 0,
+    discount: game?.discount || null,
+    platform: game?.platform?.data?.id || '',
+    summary: game?.summary || '',
+    releaseDate: game?.releaseDate || today,
+    video: game?.video || '',
+    cover: game?.cover?.data || null,
+    wallpaper: game?.wallpaper?.data || null,
+    screenshots: Array.isArray(game?.screenshots?.data) ? game.screenshots?.data : [],
   };
 }
 
@@ -40,9 +44,9 @@ export function validationSchema() {
       .max(100, 'Discount must be between 1 and 100')
       .typeError('Discount must be a number'),
     video: Yup.string().url('Invalid URL format').required('Video/Trailer Link is required'),
-    cover: Yup.mixed().nullable(),// Allow null 
-    wallpaper: Yup.mixed().nullable(),// Allow null 
+    cover: Yup.mixed().nullable(),
+    wallpaper: Yup.mixed().nullable(),
     screenshots: Yup.array()
-      .of(Yup.mixed()).nullable(),// Allow null 
+      .of(Yup.mixed()).nullable(),
   });
 }

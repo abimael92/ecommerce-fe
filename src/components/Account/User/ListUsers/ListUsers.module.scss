@@ -1,0 +1,41 @@
+.addressesContainer {
+  margin-top: 20px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+}
+
+.addressesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 5%;
+}
+
+.addressItem {
+  position: relative;
+}
+
+.addressActions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+}
+
+.addressItem:hover .addressActions {
+  display: block;
+}
+
+.addressActions button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+.addressActions button:hover {
+  color: orange;
+}

@@ -5,15 +5,8 @@ import { useRouter } from 'next/router';
 import styles from './Info.module.scss';
 
 export function Info() {
-  // const router = useRouter(); // Get the router object
+
   const { user } = useAuth();
-
-  // const handleAddGame = () => {
-  //   console.log('is admin? ', user.admin);
-
-  //   router.push('/addGame');
-
-  // };
 
   return (
     <div className={styles.info}>
@@ -27,11 +20,6 @@ export function Info() {
         Member since:{' '}
         {DateTime.fromISO(user.createdAt, { locale: 'en' }).toFormat('DDD')}
       </p>
-      {/* {(user.admin) && (
-        <Button type="submit" className={styles.gameButton} onClick={handleAddGame}>Add Game</Button>
-
-      )
-      } */}
 
     </div>
   );
