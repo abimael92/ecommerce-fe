@@ -1,71 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Message, Image, Label, Input, Icon, Confirm } from 'semantic-ui-react';
+import { Button, Form, Message, Icon } from 'semantic-ui-react';
 import { useFormik } from "formik";
-import { Game, Platform } from '@/api';
-
+import { User } from '@/api';
 import LoaderComponent from '@/components/Shared/Loader';
 import { initialValues, validationSchema } from "./UserForm.form";
 import styles from './UserForm.module.scss';
 
-const gameCtrl = new Game();
-const platformCtrl = new Platform();
+const userCtrl = new User();
 
 export function UserForm(props) {
-  const { onClose, onReload, gameId, game } = props;
-  const [platforms, setPlatforms] = useState(null);
-  const [videoError, setVideoError] = useState('');
-  const [initialFormValues, setInitialFormValues] = useState(initialValues(game));
-  const [screenshotsList, setScreenshotsList] = useState(initialValues(game));
+  const { onClose, onReload, user } = props;
   const [open, setOpen] = useState(false);
-  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
-
+  const [initialFormValues, setInitialFormValues] = useState(initialValues(user)); // Define initialFormValues state
 
   const formik = useFormik({
-    initialValues: initialValues(game),
+    initialValues: initialFormValues,
     validationSchema: validationSchema(),
     validateOnChange: false,
     onSubmit: async (formValue) => {
-      // console.log('values sent: ', formValue);
-      formValue.platform = { id: formValue.platform };
+
+      console.log('Form submitted:', formValue);
       const changedValues = getChangedValues(initialFormValues, formValue);
 
-      console.log("changedValues", changedValues);
-
       try {
-
-        if (gameId) {
-          console.log(`will edit  game `);
-
-          console.log(`edit values ${JSON.stringify(formValue.platform)}`);
-
-          if (Object.keys(changedValues).length > 0) {
-            console.table('Changed values:', changedValues);
-            await gameCtrl.putGame(changedValues, gameId);
-
-          } else {
-            console.log('No changes detected.');
-          }
-
+        if (user) {
+          // Update user if user prop is provided
+          await userCtrl.updateUser(user.id, changedValues);
         } else {
-
-          console.log('will create new game');
-          await gameCtrl.postGame(formValue);
-          // console.log('Game Post was Successful: ', response);
+          // Create new user
+          await userCtrl.createUser(formValue);
         }
 
         formik.handleReset();
-        onReload();
-        onClose();
-
+        // onReload();
+        // onClose();
       } catch (error) {
         console.error(error);
-        const errorMessage =
-          error?.response?.data?.error?.message ||
-          'Failed to add game. Please try again later.';
+
+        if (error instanceof Error && error.message) {
+          let errorMessage = error.message;
+        }
 
         formik.setSubmitting(false);
-        formik.setStatus({ gameError: errorMessage });
+        formik.setStatus({ userError: errorMessage ? errorMessage : 'An error occurred. Please try again later.' });
+
       }
+
     },
   });
 
@@ -79,133 +59,10 @@ export function UserForm(props) {
     return changedValues;
   };
 
-  const formatDate = (dateString) => {
-    // Assuming dateString is in "ddMMyyyy" format
-    const day = dateString.slice(0, 2);
-    const month = dateString.slice(2, 4);
-    const year = dateString.slice(4, 8);
-
-    return `${year}-${month}-${day}`; // Format as "yyyy-MM-dd"
+  const handleInputChange = (event, { name, value, checked, type }) => {
+    const inputValue = type === 'checkbox' ? !!checked : value;
+    formik.setFieldValue(name, inputValue);
   };
-
-  const {
-    title,
-    slug,
-    price,
-    discount,
-    platform,
-    summary,
-    releaseDate,
-    video,
-    cover,
-    wallpaper,
-    screenshots
-  } = formik.values;
-
-  const handleTitleChange = (event) => {
-    const title = event.target.value;
-    const slug = generateSlug(title);
-    formik.setValues({
-      ...formik.values,
-      title: title,
-      slug: slug,
-    });
-  };
-
-  const generateSlug = (title) => {
-    return title.trim().toLowerCase().replace(/\s+/g, '-');
-  };
-
-  const handleReleaseDateChange = (event) => {
-    const { name, value } = event.target;
-    const formattedDate = formatDate(value); // Format the date to "yyyy-MM-dd"
-    formik.setFieldValue(name, formattedDate);
-  };
-
-  const handleFileUpload = (event, fieldName) => {
-    const file = event.target.files[0];
-    console.log('Selected file:', file);
-
-    formik.setFieldValue(fieldName, file);
-  };
-
-  const handleScreenShotsUpload = (event, fieldName) => {
-    const files = Array.from(event.target.files);
-    console.log('Selected files:', files);
-
-    // Ensure formik.values[fieldName] is an array
-    const currentScreenshots = Array.isArray(formik.values[fieldName]) ? formik.values[fieldName] : [];
-
-    // Combine the current screenshots with the new files
-    const updatedScreenshots = [...currentScreenshots, ...files];
-
-    // Update the state and formik value with the new list of screenshots
-    setScreenshotsList(updatedScreenshots);
-    formik.setFieldValue(fieldName, updatedScreenshots);
-  };
-
-  const handleDeleteScreenshot = (screenshot) => {
-    // Remove the deleted screenshot from formik values
-    setScreenshotsList(screenshots.filter((s) => s !== screenshot));
-    formik.setFieldValue('screenshots', screenshotsList);
-    setOpen(false);
-  };
-
-  const handleConfirmDelete = (screenshot) => {
-    setSelectedScreenshot(screenshot);
-    setOpen(true);
-  };
-
-  const extractVideo = (url) => {
-    const standardRegex = /^https:\/\/www\.youtube\.com\/watch\?v=([^&]+)/;
-    const shortRegex = /^https:\/\/youtu\.be\/([^?]+)/;
-    const standardMatch = url.match(standardRegex);
-    const shortMatch = url.match(shortRegex);
-
-    if (standardMatch) return standardMatch[1];
-    if (shortMatch) return shortMatch[1];
-
-    return null;
-  };
-
-  const showVideo = extractVideo(video);
-
-  const extractImage = (img) => {
-    const extractedImg = {
-      id: img?.id ?? '',
-      name: img?.attributes?.name ?? 'Not Found',
-      thumbnailUrl: img?.attributes?.formats?.thumbnail?.url ?? '/images/not-found.jpeg',
-    };
-
-    return extractedImg;
-  };
-
-
-
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await platformCtrl.getAll();
-        // console.log('res', response);
-
-        const platformOptions = response.data.map(platform => ({
-          id: platform.id,
-          title: platform.attributes.title
-        }));
-        // console.log('this are the titles: ', platformOptions);
-        setPlatforms(platformOptions);
-
-        // Set initial platform value if game data exists
-        if (game?.platform?.data?.id) {
-          formik.setFieldValue('platform', game.platform.data.id);
-        }
-
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [game]);
 
   return (
     <>
@@ -219,255 +76,81 @@ export function UserForm(props) {
       />
 
       <Form className={styles.gameForm} onSubmit={formik.handleSubmit}>
-        {formik.status?.gameError && (
+
+        {formik.status?.userError && (
           <Message negative>
-            <Message.Header>Submit Failed</Message.Header>
-            <p style={{ color: 'red' }}>{formik.status.gameError}</p>
+            <Message.Header>Login Failed</Message.Header>
+            <p>{formik.status.userError.message}</p>
           </Message>
         )}
 
-        <LoaderComponent
-          active={formik.isSubmitting}
-          secondaryText="Uploading your new game. Sit tight, it won't take long!"
-        />
 
-        <Form.Group widths="equal">
-          <Form.Input
-            label="Title"
-            name="title"
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => {
-              handleTitleChange(e);
-            }}
-            error={formik.touched.title && formik.errors.title}
+        {formik.isSubmitting && (
+          <LoaderComponent
+            active={formik.isSubmitting}
+            secondaryText="Creating the new user. Please wait, it won't take long!"
           />
-          <Form.Input
-            label="Slug"
-            name="slug"
-            type="text"
-            placeholder="Slug"
-            value={slug}
-            readOnly
-          />
-        </Form.Group>
-
-        <Form.Group widths="equal">
-          <Form.Input
-            label="Price"
-            name="price"
-            type="number"
-            min="0"
-            placeholder="Price"
-            value={price}
-            onChange={formik.handleChange}
-            error={formik.touched.price && formik.errors.price}
-          />
-
-          <Form.Input
-            label="Discount"
-            name="discount"
-            type="number"
-            // min="0"
-            placeholder="Discount"
-            value={discount}
-            onChange={formik.handleChange}
-            error={formik.touched.discount && formik.errors.discount}
-          />
-        </Form.Group>
-
-        <Form.TextArea
-          className={styles.textArea}
-          label="Summary"
-          name="summary"
-          placeholder="Summary"
-          value={summary}
-          onChange={formik.handleChange}
-          error={formik.touched.summary && formik.errors.summary}
-        />
-
-        <Form.Group widths="equal">
-
-          <Form.Dropdown
-            label="Platform"
-            id="platform"
-            name="platform"
-            placeholder="Select a platform"
-            value={platform || ''} // Ensure value is either null/undefined or a valid value
-            options={[
-              { key: 'select', text: 'Select a platform', value: '' }, // Ensure the placeholder option has an empty string value
-              ...(platforms
-                ? platforms.map(platform => ({ key: platform.id, text: platform.title, value: platform.id }))
-                : [])
-            ]}
-            onChange={(e, { value }) => formik.setFieldValue('platform', value)}
-            onBlur={formik.handleBlur}
-            className={styles.dropdown}
-          />
-
-          <Form.Input
-            label="Release Date"
-            name="releaseDate"
-            type="date"
-            value={releaseDate}
-            onChange={formik.handleChange}
-            error={formik.touched.releaseDate && formik.errors.releaseDate}
-          />
-        </Form.Group>
-
-        <Form.Group widths="equal">
-          <Form.Input
-            label="Video/Trailer Link"
-            name="video"
-            type="text"
-            placeholder="Add Link"
-            value={video}
-            onChange={formik.handleChange}
-            error={formik.touched.video && formik.errors.video}
-          />
-
-        </Form.Group>
-
-        {videoError && <Message negative>{videoError}</Message>}
-
-        {showVideo && (
-          <div className={styles.videoPreviewContainer}>
-            <iframe
-              className={styles.videoPreview}
-              src={`https://www.youtube.com/embed/${showVideo}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
         )}
 
-        <Form.Field>
-          <label>Cover Image</label>
-          <Input
-            className={styles.customFileInput}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileUpload(e, 'cover')}
+        <Form.Group widths="equal">
+          <Form.Input
+            label="Username"
+            name="username"
+            type="text"
+            placeholder="Username"
+            value={formik.values.username}
+            onChange={handleInputChange}
+            error={formik.touched.username && formik.errors.username}
           />
 
-          {cover && cover instanceof File ? (
-            <div>
-              <Label pointing="above">Cover Image Preview</Label>
-              <Image
-                src={URL.createObjectURL(cover)}
-                size="small"
-              />
-            </div>
-          ) : (
-            cover && (
-              <div className={styles.imageGrid}>
-                {(() => {
-                  const extractedImage = extractImage(cover);
-                  return (
-                    <div className={styles.imageGridItem}>
-                      <Image src={extractedImage.thumbnailUrl} size="small" />
-                      <Label pointing="above">{extractedImage.name}</Label>
-                    </div>
-                  );
-                })()}
-              </div>
-            )
-          )}
-        </Form.Field>
+          <Form.Input
+            label="Email"
+            name="email"
+            type="text"
+            placeholder="Email"
+            value={formik.values.email}
+            onChange={handleInputChange}
+            error={formik.touched.email && formik.errors.email}
+          />
+        </Form.Group>
 
-        <Form.Field>
-          <label>Wallpaper Image</label>
-          <Input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileUpload(e, 'wallpaper')}
+        <Form.Group widths="equal">
+          <Form.Input
+            label="First Name"
+            name="firstname"
+            type="text"
+            placeholder="First Name"
+            value={formik.values.firstname}
+            onChange={handleInputChange}
+            error={formik.touched.firstname && formik.errors.firstname}
           />
 
-          {wallpaper && wallpaper instanceof File ? (
-            <div>
-              <Label pointing="above">Wallpaper Image Preview</Label>
-              <Image
-                src={URL.createObjectURL(wallpaper)}
-                size="small"
-              />
-            </div>
-          ) : (
-            wallpaper && (
-              <div className={styles.imageGrid}>
-                {(() => {
-                  const extractedImage = extractImage(wallpaper);
-                  return (
-                    <div className={styles.imageGridItem}>
-                      <Image src={extractedImage.thumbnailUrl} size="small" />
-                      <Label pointing="above">{extractedImage.name}</Label>
-                    </div>
-                  );
-                })()}
-              </div>
-            )
-          )}
-        </Form.Field>
-
-        <Form.Field>
-          <label>Screenshots</label>
-          <Input
-            type="file"
-            accept="image/*"
-            multiple // Allow multiple file selection
-            onChange={(e) => handleScreenShotsUpload(e, 'screenshots')}
+          <Form.Input
+            label="Last Name"
+            name="lastname"
+            type="text"
+            placeholder="Last Name"
+            value={formik.values.lastname}
+            onChange={handleInputChange}
+            error={formik.touched.lastname && formik.errors.lastname}
           />
+        </Form.Group>
 
-          {/* Display selected screenshots */}
-          {Array.isArray(screenshots) && screenshots.map((screenshot, index) => (
-            <div key={`${index}_grid`} className={styles.imageGrid}>
-              <div key={`${index}_gridItem`} className={styles.imageGridItem}>
-                {screenshot && screenshot instanceof File ? (
-                  <div>
-                    <Image src={URL.createObjectURL(screenshot)} size="small" />
-                    <Label pointing="above">{screenshot.name}</Label>
-                  </div>
-                ) : (
-                  screenshot && (
-                    <div className={styles.imageGridItem}>
-                      {(() => {
-                        const extractedImage = extractImage(screenshot);
-                        return (
-                          <>
-                            <div >
-                              <Icon
-                                name="delete"
-                                color="red"
-                                className={styles.trashIcon}
-                                link
-                                onClick={() => handleConfirmDelete(screenshot)}
-                              />
-                            </div>
-                            <Image src={extractedImage.thumbnailUrl} size="small" />
-                            <Label pointing="above" className={styles.imageLabel}>{extractedImage.name}</Label>
-                          </>
-                        );
-                      })()}
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          ))}
-
-          <Confirm
-            open={open}
-            onCancel={() => setOpen(false)}
-            onConfirm={() => handleDeleteScreenshot(selectedScreenshot)}
-            content="Are you sure you want to delete this screenshot?"
+        <Form.Field style={{ textAlign: 'right', marginTop: '30px' }}>
+          <label style={{ marginRight: '10px' }}>Set this user as Admin?</label>
+          <Form.Checkbox
+            name="admin"
+            checked={formik.values.admin}
+            onChange={handleInputChange}
+            error={formik.touched.admin && formik.errors.admin}
           />
         </Form.Field>
 
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>
           Submit
         </Form.Button>
-      </Form >
+      </Form>
     </>
   );
+
 }
