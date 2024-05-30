@@ -57,7 +57,7 @@ export class User {
 
   async createUser(data) {
     try {
-      const url = `${ENV.API_URL} /${ENV.ENDPOINTS.USERS}`;
+      const url = `${ENV.API_URL}/${ENV.ENDPOINTS.USERS}`;
 
       const params = {
         method: "POST",

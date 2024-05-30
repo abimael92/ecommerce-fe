@@ -1,38 +1,19 @@
 @import "~/src/scss/index.scss";
 
-.gameItem {
-  background-color: $background-quaternary;
-  width: 250px;
-
-
-  .actions {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    button {
-      padding: 10px !important;
-      margin-left: 10px !important;
-    }
-  }
-}
-
 .userCard {
   background-color: $background-quaternary;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-bottom: 20px;
+  margin: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Ensure all content is covered */
   transition: transform 0.5s ease;
   cursor: pointer;
   height: 300px; /* Set a fixed height for the card */
+  width: 280px; /* Set a fixed height for the card */
   position: relative; /* Ensure absolute positioning of front and back sides */
 
   &:hover {
@@ -40,31 +21,33 @@
   }
 
   .header {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 
     h2 {
-      font-size: 1.8rem; // Larger size
+      font-size: 1.6rem; // Larger size
       font-weight: bold; // Bold
       margin: 0;
       color: $text-primary;
     }
 
     h4 {
-      font-size: 1.4rem; // Larger size
+      font-size: 1.2rem;
       margin: 0;
       color: $text-primary;
     }
   }
 
   .info {
+    max-width: fit-content;
     .field {
       display: flex;
-      align-items: center; /* Center align labels and values */
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 8px;
 
       .label {
         font-weight: bold;
-        width: 120px;
+        max-width: calc(100% - 30%);
+        min-width: 80px;
         margin-right: 10px;
         color: $text-secondary;
         cursor: pointer;
@@ -73,7 +56,7 @@
 
       .value {
         color: $text-primary;
-        max-width: calc(100% - 130px); // Adjust width as needed
+        max-width: calc(100% - 50%);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -82,16 +65,16 @@
 
     .switchWrapper {
       display: flex;
-      align-items: center; // Center vertically
+      align-items: center;
     }
-    
+
     .switch {
       position: relative;
       display: inline-block;
       width: 40px; // Adjust width of the switch
       height: 20px; // Adjust height of the switch
     }
-    
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -103,38 +86,57 @@
       transition: .4s;
       border-radius: 20px; // Round slider
     }
-    
+
     .slider:before {
       position: absolute;
       content: "";
       height: 16px; // Adjust size of slider button
       width: 16px; // Adjust size of slider button
-      left: 2px; // Adjust position of slider button
-      bottom: 2px; // Adjust position of slider button
-      background-color: white; // Default color of slider button
+      left: 2px; 
+      bottom: 2px; 
+      background-color: white;
       transition: .4s;
       border-radius: 50%; // Round slider button
     }
-    
+
     input:checked + .slider {
-      background-color: $primary; // Change background color when checked
+      background-color: $primary;
     }
-    
+
     input:checked + .slider:before {
-      transform: translateX(20px); // Move slider button when checked
+      transform: translateX(20px);
     }
-    
-    /* Add styles for the switch */
 
     .orders {
       display: flex;
-      flex-direction: column; /* Display orders vertically */
+      flex-direction: column;
     }
 
     .order {
       margin-bottom: 5px;
     }
   }
+
+  .falseBadge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #eb3c1e; // Tomato color for blocked users
+    margin-top: 10px;
+  }
+  
+  .trueBadge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #32cd32; // Lime green color for not blocked users
+    margin-top: 10px;
+  }
+  
 
   .front,
   .back {
@@ -144,24 +146,24 @@
     right: 0;
     bottom: 0;
     backface-visibility: hidden;
-    padding: 20px; /* Adjust padding to cover the entire card */
-    height: 100%; /* Ensure the back side covers the entire card */
+    padding: 20px;
+    height: 100%;
   }
 
   .back {
-    transform: rotateY(180deg); /* Adjust rotation of the back side */
-    display: none; /* Initially hide the back side */
+    transform: rotateY(180deg);
+    display: none;
   }
 
   &.flipped {
     .front {
-      transform: rotateY(-180deg); /* Adjust rotation of the front side when flipped */
-      display: none; /* Hide the front side when flipped */
+      transform: rotateY(-180deg);
+      display: none;
     }
 
     .back {
-      transform: rotateY(0deg); /* Adjust rotation of the back side when flipped */
-      display: flex; /* Show the back side when flipped */
+      transform: rotateY(0deg);
+      display: flex;
     }
   }
 
@@ -187,10 +189,39 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: darken($primary, 20%);
+    background-color: darken($primary, 10%);
     color: $text-primary;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px ;
+    border-radius: 0px 0px 8px 8px ;
+    -webkit-border-radius: 0px 0px 8px 8px ;
+    -moz-border-radius: 0px 0px 8px 8px ;
+    -ms-border-radius: 0px 0px 8px 8px ;
+    -o-border-radius: 0px 0px 8px 8px ;
+}
+  .actions {
+    top: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    .flipButton {
+      width: 30px;
+      height:  30px;
+      cursor: pointer;
+      color: black;
+      background-color: darken($primary, 10%);
+      border: none;
+      padding: 5px;
+      margin: 0;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+      -ms-border-radius: 8px;
+      -o-border-radius: 8px;
+}
   }
-
 }

@@ -62,23 +62,38 @@ export function UserForm(props) {
   function getErrorMessage(result) {
     console.log('Raw error message:', result.message);
 
-    const errorObject = JSON.parse(result.message);
-    const errorMessage = {
-      name: errorObject.name,
-      errorMessages: []
+    let errorMessage = {
+      name: "UnknownError",
+      errorMessages: ["An unexpected error occurred."]
     };
 
-    console.log('Parsed Message:', errorObject.message);
+    try {
+      const errorObject = JSON.parse(result.message);
+      console.log('Parsed Message:', errorObject);
 
-    if (errorObject.details && Array.isArray(errorObject.details.errors)) {
-      errorObject.details.errors.forEach((err) => {
-        errorMessage.errorMessages.push(err.message);
-      });
+      if (errorObject.name) {
+        errorMessage.name = errorObject.name;
+      }
+
+      if (errorObject.message) {
+        errorMessage.errorMessages = [errorObject.message];
+      }
+
+      if (errorObject.details && Array.isArray(errorObject.details.errors)) {
+        errorMessage.errorMessages = []; // Reset errorMessages to avoid default message
+        errorObject.details.errors.forEach((err) => {
+          errorMessage.errorMessages.push(err.message);
+        });
+      }
+
+    } catch (e) {
+      console.error('Error parsing JSON:', e);
     }
 
     console.log('Formatted Error Message:', errorMessage);
     return errorMessage;
   }
+
 
   return (
     <>

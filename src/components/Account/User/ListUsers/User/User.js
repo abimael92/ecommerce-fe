@@ -36,16 +36,21 @@ export function User(props) {
 
   return (
     <div className={`${styles.userCard} ${flipped ? styles.flipped : ''}`}>
+
       <div className={styles.front}>
+
+
         <div className={styles.header}>
+          <div className={styles.actions}>
+            <button className={`${styles.flipButton} ${styles.frontFlip}`} onClick={flipCard}>
+              →
+            </button>
+          </div>
           <h2>{username}</h2>
           <h4>{firstname} {lastname}</h4>
         </div>
         <div className={styles.info}>
-          <div className={styles.field}>
-            <span className={styles.label} onClick={() => navigator.clipboard.writeText(username)}>Username:</span>
-            <span className={styles.value}>{username}</span>
-          </div>
+
           <div className={styles.field}>
             <span className={styles.label} onClick={() => navigator.clipboard.writeText(email)}>Email:</span>
             <span className={styles.value}>{email}</span>
@@ -54,24 +59,38 @@ export function User(props) {
           <div className={styles.field}>
             <span className={styles.label}>Confirmed:</span>
             {confirmed ? (
-              <span className={styles.value}>&#10003; </span> // Unicode check mark
+              <span className={styles.trueBadge}>&#10003;</span> // Unicode check mark
             ) : (
-              <span className={styles.value}>&#10067; </span> // Unicode question mark
+              <span className={styles.falseBadge}>&#10067;</span> // Unicode question mark
             )}
           </div>
 
 
-          <div className={`${styles.field} ${styles.switchWrapper}`}>
+          <div className={styles.field}>
             <span className={styles.label}>Blocked:</span>
-            <label className={styles.switch}>
-              <input type="checkbox" checked={blocked} readOnly />
-              <span className={`${styles.slider} ${styles.round}`}></span>
-            </label>
+            <span className={styles.value}>
+              {blocked ? (
+                <span className={styles.falseBadge}></span>
+              ) : (
+                <span className={styles.trueBadge}></span>
+              )}
+            </span>
           </div>
+
         </div>
       </div>
       <div className={styles.back}>
+
         <div className={styles.info}>
+          <div className={styles.header}>
+            <div className={styles.actions}>
+              <button className={`${styles.flipButton} ${styles.backFlip}`} onClick={flipCard}>
+                ←
+              </button>
+            </div>
+            <h2>{username}</h2>
+            <h4>{firstname} {lastname}</h4>
+          </div>
           <div className={styles.field}>
             <span className={styles.label}>Orders:</span>
             <div className={styles.orders}>
@@ -86,12 +105,6 @@ export function User(props) {
           </div>
         </div>
       </div>
-      <button className={`${styles.flipButton} ${styles.frontFlip}`} onClick={flipCard}>
-        <i className="fas fa-arrow-left"></i>
-      </button>
-      <button className={`${styles.flipButton} ${styles.backFlip}`} onClick={flipCard}>
-        <i className="fas fa-arrow-right"></i>
-      </button>
       {admin && <div className={styles.adminBar}>Admin</div>}
     </div>
   );
