@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Message, Icon } from 'semantic-ui-react';
 import { useFormik } from "formik";
-import { User } from '@/api';
+import { User as UserCtrl } from '@/api';
 import LoaderComponent from '@/components/Shared/Loader';
 import { initialValues, validationSchema } from "./UserForm.form";
 import styles from './UserForm.module.scss';
 
-const userCtrl = new User();
+const userCtrl = new UserCtrl();
 
 export function UserForm(props) {
   const { onClose, onReload, user } = props;
@@ -32,17 +32,12 @@ export function UserForm(props) {
         }
 
         formik.handleReset();
-        // onReload();
-        // onClose();
+        onReload();
+        onClose();
       } catch (error) {
-        console.error(error);
-
-        if (error instanceof Error && error.message) {
-          let errorMessage = error.message;
-        }
 
         formik.setSubmitting(false);
-        formik.setStatus({ userError: errorMessage ? errorMessage : 'An error occurred. Please try again later.' });
+        formik.setStatus({ userError: error ? error : 'An error occurred. Please try again later.' });
 
       }
 
@@ -64,6 +59,27 @@ export function UserForm(props) {
     formik.setFieldValue(name, inputValue);
   };
 
+  function getErrorMessage(result) {
+    console.log('Raw error message:', result.message);
+
+    const errorObject = JSON.parse(result.message);
+    const errorMessage = {
+      name: errorObject.name,
+      errorMessages: []
+    };
+
+    console.log('Parsed Message:', errorObject.message);
+
+    if (errorObject.details && Array.isArray(errorObject.details.errors)) {
+      errorObject.details.errors.forEach((err) => {
+        errorMessage.errorMessages.push(err.message);
+      });
+    }
+
+    console.log('Formatted Error Message:', errorMessage);
+    return errorMessage;
+  }
+
   return (
     <>
       <Icon
@@ -80,9 +96,26 @@ export function UserForm(props) {
         {formik.status?.userError && (
           <Message negative>
             <Message.Header>Login Failed</Message.Header>
-            <p>{formik.status.userError.message}</p>
+            {(() => {
+              const errorInfo = getErrorMessage(formik.status.userError);
+              return (
+                <>
+                  <div className={styles.errorContainer}>
+
+                    <h3>{errorInfo.name}</h3>
+                  </div>
+                  <div className={styles.errorContainer2}>
+                    <ul>
+                      {errorInfo.errorMessages.map((msg, index) => (
+                        <li key={index}>{msg}</li>
+                      ))}
+                    </ul></div>
+                </ >
+              );
+            })()}
           </Message>
         )}
+
 
 
         {formik.isSubmitting && (
@@ -149,7 +182,7 @@ export function UserForm(props) {
         <Form.Button type="submit" fluid loading={formik.isSubmitting}>
           Submit
         </Form.Button>
-      </Form>
+      </Form >
     </>
   );
 

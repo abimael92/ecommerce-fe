@@ -1,119 +1,101 @@
-import { useState, useEffect } from "react";
-import { Icon, Image, Button, Label } from "semantic-ui-react";
-import { Game as GameAPI, Platform } from '@/api';
-import { fn } from '@/utils';
+import { useState } from "react";
+import { Icon, Image } from "semantic-ui-react";
 import { BasicModal, Confirm } from "@/components/Shared";
 import { UserForm } from "../../UserForm";
 import styles from "./User.module.scss";
 
-const platformCtrl = new Platform();
-const gameCtrl = new GameAPI();
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
-export function Game(props) {
-  const { gameId, game, onReload } = props;
+
+export function User(props) {
+  const { user, userId, onReload } = props;
   const [showEdit, setShowEdit] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
-  const [platforms, setPlatforms] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await platformCtrl.getAll();
-        setPlatforms(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
-
-  // Find the matching platform
-  const matchingPlatform = platforms?.find(
-    (platform) => platform.attributes.slug === game?.platform?.data?.attributes?.slug
-  );
-
-  console.log(game);
-  console.log(platforms);
 
   const openCloseEdit = () => setShowEdit((prevState) => !prevState);
   const openCloseConfirm = () => setShowConfirm((prevState) => !prevState);
 
-  const onDelete = async () => {
-    try {
-      console.log('Deleting game with ID:', gameId);
-      await gameCtrl.deleteGameById(gameId); // Use gameId directly here
-      onReload();
-    } catch (error) {
-      console.error('Error deleting the game:', error);
-    } finally {
-      setShowConfirm(false); // Close the confirm modal after delete
-    }
+  console.log(user)
+  const {
+    username,
+    email,
+    password,
+    confirmed,
+    blocked,
+    role,
+    firstname,
+    lastname,
+    admin
+  } = user;
+  const [flipped, setFlipped] = useState(false);
+
+  const flipCard = () => {
+    setFlipped(!flipped);
   };
 
   return (
-    <>
-      <div className={styles.gameItem}>
-        <div className={styles.actions}>
-          {/* <Button primary icon > */}
-          <Icon name="pencil" onClick={openCloseEdit} />
-          {/* </Button> */}
-          {/* <Button primary icon onClick={openCloseConfirm}> */}
-          {/* <Button primary icon onClick={openCloseConfirm} > */}
-          <Icon name="delete" onClick={openCloseConfirm} />
-          {/* </Button> */}
+    <div className={`${styles.userCard} ${flipped ? styles.flipped : ''}`}>
+      <div className={styles.front}>
+        <div className={styles.header}>
+          <h2>{username}</h2>
+          <h4>{firstname} {lastname}</h4>
         </div>
-        <div key={game.id} className={styles.product}>
-          <h3 className={styles.productTitle}>{game?.title}</h3>
-          <Image src={game?.cover?.data?.attributes?.url ? game.cover.data.attributes.url : '/images/not-found.jpeg'} />
-          {matchingPlatform && (
-            <div className={styles.platform} >
-              <div className={styles.iconWrapper}>
-                <Image src={matchingPlatform.attributes.icon.data.attributes.url} />
-              </div>
-            </div>
-          )}
-          <div className={styles.price}>
-            {game.discount > 0 ? (
-              <>
-                <div className={styles.originalPriceWrapper}>
-                  <span className={styles.originalPrice}>
-                    <Icon name="tag" />${game.price}
-                  </span>
-                  <span className={styles.discount}>-{game.discount}%</span>
-                </div>
-                <span className={styles.discountedPrice}>
-                  ${fn.calcDiscountedPrice(game.price, game.discount)}
-                </span>
-              </>
+        <div className={styles.info}>
+          <div className={styles.field}>
+            <span className={styles.label} onClick={() => navigator.clipboard.writeText(username)}>Username:</span>
+            <span className={styles.value}>{username}</span>
+          </div>
+          <div className={styles.field}>
+            <span className={styles.label} onClick={() => navigator.clipboard.writeText(email)}>Email:</span>
+            <span className={styles.value}>{email}</span>
+          </div>
+
+          <div className={styles.field}>
+            <span className={styles.label}>Confirmed:</span>
+            {confirmed ? (
+              <span className={styles.value}>&#10003; </span> // Unicode check mark
             ) : (
-              <span className={styles.discountedPrice}>
-                ${fn.calcDiscountedPrice(game.price, game.discount)}
-              </span>
+              <span className={styles.value}>&#10067; </span> // Unicode question mark
             )}
           </div>
+
+
+          <div className={`${styles.field} ${styles.switchWrapper}`}>
+            <span className={styles.label}>Blocked:</span>
+            <label className={styles.switch}>
+              <input type="checkbox" checked={blocked} readOnly />
+              <span className={`${styles.slider} ${styles.round}`}></span>
+            </label>
+          </div>
         </div>
-      </div >
-
-
-      <Confirm
-        open={showConfirm}
-        onCancel={openCloseConfirm}
-        onConfirm={onDelete}
-        content="Are you sure you want to delete this game?"
-      />
-
-      < BasicModal
-        show={showEdit}
-        onClose={openCloseEdit}
-        title="Edit game"
-      >
-        <UserForm
-          onClose={openCloseEdit}
-          onReload={onReload}
-          gameId={gameId}
-          game={game}
-        />
-      </BasicModal >
-    </>
+      </div>
+      <div className={styles.back}>
+        <div className={styles.info}>
+          <div className={styles.field}>
+            <span className={styles.label}>Orders:</span>
+            <div className={styles.orders}>
+              <div className={styles.order}>Order 1 - $100</div>
+              <div className={styles.order}>Order 2 - $150</div>
+              <div className={styles.order}>Order 3 - $200</div>
+            </div>
+          </div>
+          <div className={styles.field}>
+            <span className={styles.label}>Address:</span>
+            <span className={`${styles.value} ${styles.address}`}>123 Main St, City, Country</span>
+          </div>
+        </div>
+      </div>
+      <button className={`${styles.flipButton} ${styles.frontFlip}`} onClick={flipCard}>
+        <i className="fas fa-arrow-left"></i>
+      </button>
+      <button className={`${styles.flipButton} ${styles.backFlip}`} onClick={flipCard}>
+        <i className="fas fa-arrow-right"></i>
+      </button>
+      {admin && <div className={styles.adminBar}>Admin</div>}
+    </div>
   );
+
+
+
 }

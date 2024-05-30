@@ -3,8 +3,6 @@ import { format, startOfToday } from 'date-fns';
 
 export function initialValues(user) {
 
-  console.log('user: ', user);
-
   return {
     username: user?.username || '',
     email: user?.email || '',

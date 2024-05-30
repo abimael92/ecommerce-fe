@@ -3,29 +3,7 @@
 .gameItem {
   background-color: $background-quaternary;
   width: 250px;
-  height: 260px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
 
-  .title {
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 5px;
-    align-self: center;
-  }
-
-  .addressInfo {
-    color: $text-secondary;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
 
   .actions {
     position: absolute;
@@ -42,91 +20,177 @@
   }
 }
 
-.basket {
-  > h2 {
-    margin-bottom: 15px;
-    font-size: 18px;
-  }
-}
-
-.block {
+.userCard {
   background-color: $background-quaternary;
-  width: 100%;
-  border-radius: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-}
+  justify-content: space-between; /* Ensure all content is covered */
+  transition: transform 0.5s ease;
+  cursor: pointer;
+  height: 300px; /* Set a fixed height for the card */
+  position: relative; /* Ensure absolute positioning of front and back sides */
 
-.product {
-  position: relative;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid $border-secondary;
-
-  &:last-of-type {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
+  &:hover {
+    transform: translateY(-5px); /* Add a hover effect */
   }
 
-  .productTitle {
-    margin: 10px 0 !important;
-    font-weight: bold;
-    font-size: 18px;
-    color: $text-primary;
-    padding-top: 10px;
-    word-wrap: break-word !important;
-  }
+  .header {
+    margin-bottom: 20px;
 
-  .originalPrice {
-    padding-top: 10px !important;
-    margin: 10px !important;
-    font-size: 14px;
-    text-decoration: line-through;
-    color: red;
-    margin-left: -18px;
+    h2 {
+      font-size: 1.8rem; // Larger size
+      font-weight: bold; // Bold
+      margin: 0;
+      color: $text-primary;
+    }
 
-    > i {
-      font-size: 12px;
-      color: red;
+    h4 {
+      font-size: 1.4rem; // Larger size
+      margin: 0;
+      color: $text-primary;
     }
   }
 
-  .discount {
-    margin: 0 10px;
-    color: $primary;
-    font-weight: bold;
-    font-size: 14px;
-  }
+  .info {
+    .field {
+      display: flex;
+      align-items: center; /* Center align labels and values */
+      margin-bottom: 10px;
 
-  .price {
-    font-size: 18px;
-    margin-top: 5px;
-    align-self: center;
-    flex-direction: column;
-    // padding: 20px;
-  }
+      .label {
+        font-weight: bold;
+        width: 120px;
+        margin-right: 10px;
+        color: $text-secondary;
+        cursor: pointer;
+        user-select: all;
+      }
 
-  > img {
-    width: 190px;
-    border-radius: 8px;
-    margin-right: 20px;
-  }
-
-  .platform {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 5px;
-
-
-    .iconWrapper {
-      position: relative;
-
-      img {
-        height: 16px;
+      .value {
+        color: $text-primary;
+        max-width: calc(100% - 130px); // Adjust width as needed
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
+
+    .switchWrapper {
+      display: flex;
+      align-items: center; // Center vertically
+    }
+    
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px; // Adjust width of the switch
+      height: 20px; // Adjust height of the switch
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc; // Default background color
+      transition: .4s;
+      border-radius: 20px; // Round slider
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px; // Adjust size of slider button
+      width: 16px; // Adjust size of slider button
+      left: 2px; // Adjust position of slider button
+      bottom: 2px; // Adjust position of slider button
+      background-color: white; // Default color of slider button
+      transition: .4s;
+      border-radius: 50%; // Round slider button
+    }
+    
+    input:checked + .slider {
+      background-color: $primary; // Change background color when checked
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(20px); // Move slider button when checked
+    }
+    
+    /* Add styles for the switch */
+
+    .orders {
+      display: flex;
+      flex-direction: column; /* Display orders vertically */
+    }
+
+    .order {
+      margin-bottom: 5px;
+    }
   }
+
+  .front,
+  .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backface-visibility: hidden;
+    padding: 20px; /* Adjust padding to cover the entire card */
+    height: 100%; /* Ensure the back side covers the entire card */
+  }
+
+  .back {
+    transform: rotateY(180deg); /* Adjust rotation of the back side */
+    display: none; /* Initially hide the back side */
+  }
+
+  &.flipped {
+    .front {
+      transform: rotateY(-180deg); /* Adjust rotation of the front side when flipped */
+      display: none; /* Hide the front side when flipped */
+    }
+
+    .back {
+      transform: rotateY(0deg); /* Adjust rotation of the back side when flipped */
+      display: flex; /* Show the back side when flipped */
+    }
+  }
+
+  .frontFlip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .backFlip {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+
+  .checkIcon {
+    color: $success;
+    margin-right: 15px;
+  }
+
+  .adminBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: darken($primary, 20%);
+    color: $text-primary;
+    text-align: center;
+    padding: 10px 0;
+  }
+
 }

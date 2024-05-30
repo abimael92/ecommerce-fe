@@ -20,6 +20,38 @@
   color: white !important;
 }
 
+.errorContainer {
+  color: red;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  h3 {
+    color: red;
+    padding: 0;
+    margin-left: 20px;
+  }
+
+}
+
+.errorContainer2 {
+  color: red;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ul {
+    margin-top: 0;
+    padding: 2px;
+
+    li {
+      color: red;
+    }
+  }
+}
 
 .loading {
   display: flex;

@@ -1,46 +1,54 @@
-// import { useState, useEffect } from "react";
-// import { map } from "lodash";
-import { Game as GameCtrl } from "@/api";
-// import { useAuth } from "@/hooks";
-// import { User } from "./User";
+import { useState, useEffect } from "react";
+import { map } from "lodash";
+import { User as UserCtrl } from '@/api';
+import { User } from "./User";
 import styles from './ListUsers.module.scss';
 
-const gameCtrl = new GameCtrl();
+const userCtrl = new UserCtrl();
 
 const ListUsers = ({ reload, onReload }) => {
-  console.log('ListGames component rendered');
-  // const [games, setGames] = useState(null);
+  console.log('listusers component rendered');
+  const [users, setUsers] = useState(null);
   // const { user } = useAuth();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await gameCtrl.getAllGames(user.id);
-  //       setGames(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   })();
-  // }, [reload]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await userCtrl.getAllUsers();
+        console.log(response);
+        setUsers(response);
 
-  // if (!games) return null;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, [reload]);
 
-  // console.log('games: ', games);
+  if (!users) return <div>Loading...</div>; // Display a loading indicator
+
+  console.log('users: ', users);
+
+  console.log(users.map((user) => (user)));
 
   return (
     <div className={styles.addressesContainer}>
       <div className={styles.addressesGrid}>
-        {/* {map(games, (game) => (
-          <div key={game.id} className={styles.addressItem}>
-            <div className={styles.address}>
-              <User
-                gameId={game.id}
-                game={game.attributes}
-                onReload={onReload}
-              />
+        {users.map((user) => {
+          console.log(user); // Log each user object
+          return (
+            <div key={user.id} className={styles.addressItem}>
+              <div className={styles.address}>
+                <User
+                  userId={user.id}
+                  user={user}
+                  onReload={onReload}
+                />
+              </div>
             </div>
-          </div>
-        ))} */}
+          );
+        })}
+
       </div>
     </div>
   );
