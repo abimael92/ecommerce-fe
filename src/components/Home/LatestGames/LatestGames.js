@@ -20,7 +20,7 @@ export function LatestGames(props) {
         console.error(error);
       }
     })();
-  }, []);
+  }, [platformId, limit]);
 
   if (!games) return null;
 

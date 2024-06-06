@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Container } from 'semantic-ui-react';
 import { BasicLayout } from '@/layouts';
 import { Home } from '@/components/Home';
 import { Separator, BarTrust, BannerAd, Seo } from '@/components/Shared';
+import styles from './landing-user.module.scss'
 
 const platformsId = {
   playstation: 1,
@@ -11,6 +13,9 @@ const platformsId = {
 };
 
 export default function LandingUserPage() {
+  const [firstContainerPlatform, setFirstContainerPlatform] = useState(platformsId.playstation);
+  const [secondContainerPlatform, setSecondContainerPlatform] = useState(platformsId.nintendo);
+
   return (
     <>
       <Seo />
@@ -31,12 +36,27 @@ export default function LandingUserPage() {
         <Separator height={100} />
 
         <Container>
+          <div className={styles.tabs}>
+            <button
+              onClick={() => setFirstContainerPlatform(platformsId.playstation)}
+              className={firstContainerPlatform === platformsId.playstation ? styles.active : ""}
+            >
+              PlayStation
+            </button>
+            <button
+              onClick={() => setFirstContainerPlatform(platformsId.xbox)}
+              className={firstContainerPlatform === platformsId.xbox ? styles.active : ""}
+            >
+              Xbox
+            </button>
+          </div>
           <Home.LatestGames
-            title="PlayStation"
+            title={firstContainerPlatform === platformsId.playstation ? "PlayStation" : "Xbox"}
             limit={3}
-            platformId={platformsId.playstation}
+            platformId={firstContainerPlatform}
           />
         </Container>
+
 
         <Separator height={100} />
 
@@ -51,10 +71,24 @@ export default function LandingUserPage() {
         <Separator height={50} />
 
         <Container>
+          <div className={styles.tabs}>
+            <button
+              onClick={() => setSecondContainerPlatform(platformsId.nintendo)}
+              className={secondContainerPlatform === platformsId.nintendo ? styles.active : ""}
+            >
+              Nintendo
+            </button>
+            <button
+              onClick={() => setSecondContainerPlatform(platformsId.pc)}
+              className={secondContainerPlatform === platformsId.pc ? styles.active : ""}
+            >
+              PC
+            </button>
+          </div>
           <Home.LatestGames
-            title="Xbox"
+            title={secondContainerPlatform === platformsId.nintendo ? "Nintendo" : "PC"}
             limit={3}
-            platformId={platformsId.xbox}
+            platformId={secondContainerPlatform}
           />
         </Container>
 

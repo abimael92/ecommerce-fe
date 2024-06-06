@@ -19,7 +19,7 @@ export function Basket(props) {
       <h2>Shopping Cart</h2>
 
       <div className={styles.block}>
-        {games && games.length === 0 ? (
+        {games && games.length <= 0 ? (
           <div className={styles.productLess}>
             <p>Your Shopping Cart is Empty.</p>
           </div>
