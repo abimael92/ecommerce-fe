@@ -29,17 +29,11 @@ export function GameForm(props) {
       formValue.platform = { id: formValue.platform };
       const changedValues = getChangedValues(initialFormValues, formValue);
 
-      console.log("changedValues", changedValues);
-
       try {
 
         if (gameId) {
-          console.log(`will edit  game `);
-
-          console.log(`edit values ${JSON.stringify(formValue.platform)}`);
 
           if (Object.keys(changedValues).length > 0) {
-            console.table('Changed values:', changedValues);
             await gameCtrl.putGame(changedValues, gameId);
 
           } else {
@@ -48,9 +42,7 @@ export function GameForm(props) {
 
         } else {
 
-          console.log('will create new game');
           await gameCtrl.postGame(formValue);
-          // console.log('Game Post was Successful: ', response);
         }
 
         formik.handleReset();
@@ -124,14 +116,14 @@ export function GameForm(props) {
 
   const handleFileUpload = (event, fieldName) => {
     const file = event.target.files[0];
-    console.log('Selected file:', file);
+    // console.log('Selected file:', file);
 
     formik.setFieldValue(fieldName, file);
   };
 
   const handleScreenShotsUpload = (event, fieldName) => {
     const files = Array.from(event.target.files);
-    console.log('Selected files:', files);
+    // console.log('Selected files:', files);
 
     // Ensure formik.values[fieldName] is an array
     const currentScreenshots = Array.isArray(formik.values[fieldName]) ? formik.values[fieldName] : [];

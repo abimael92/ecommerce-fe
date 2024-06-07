@@ -19,7 +19,6 @@ export function UserForm(props) {
     validateOnChange: false,
     onSubmit: async (formValue) => {
 
-      console.log('Form submitted:', formValue);
       const changedValues = getChangedValues(initialFormValues, formValue);
 
       try {

@@ -32,9 +32,6 @@ export function Game(props) {
     (platform) => platform.attributes.slug === game?.platform?.data?.attributes?.slug
   );
 
-  console.log(game);
-  console.log(platforms);
-
   const openCloseEdit = () => setShowEdit((prevState) => !prevState);
   const openCloseConfirm = () => setShowConfirm((prevState) => !prevState);
 

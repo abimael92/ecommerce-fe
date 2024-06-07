@@ -202,7 +202,6 @@ export class Game {
       if (formData.screenshots && formData.screenshots.length > 0) {
         const screenshotPromises = formData.screenshots.map(uploadFileToStrapi);
         const screenshotResponses = await Promise.all(screenshotPromises);
-
         // console.log('Screenshots uploaded:', screenshotResponses);
 
         // Extract IDs from responses and construct URL objects
@@ -210,7 +209,7 @@ export class Game {
 
         // Assign IDs to formData
         formData.screenshots = screenshotURLs;
-        console.log('Updated formData with screenshot IDs:', formData);
+        // console.log('Updated formData with screenshot IDs:', formData);
       }
 
       // Wait for all upload promises to complete before proceeding
@@ -297,14 +296,8 @@ export class Game {
         body: JSON.stringify({ data }),
       };
 
-      console.log(`result values ${url}`);
-
       const response = await authFetch(url, params);
       const result = await response.json();
-
-      console.log(`result values ${JSON.stringify({ result })}`);
-      console.table('result values', result);
-      console.log('Data:', JSON.stringify(result, null, 2));
 
       if (response.status !== 200) throw result;
 
@@ -316,7 +309,6 @@ export class Game {
   }
 
   async deleteGameById(gameId) {
-    console.log('Will delete the following game ID:', gameId);
     try {
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.GAME}/${gameId}`;
       const params = {
@@ -325,9 +317,6 @@ export class Game {
           "Content-Type": "application/json",
         },
       };
-
-      console.log('DELETE request URL:', url);
-      console.log('DELETE request parameters:', params);
 
       const response = await authFetch(url, params);
       const result = await response.json();

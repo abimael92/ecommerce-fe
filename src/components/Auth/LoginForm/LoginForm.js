@@ -29,7 +29,6 @@ export function LoginForm() {
         router.push('/');
         formik.setSubmitting(false);
 
-        console.log('login successful');
       } catch (error) {
         console.error(error);
         const errorMessage =

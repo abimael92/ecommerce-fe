@@ -19,8 +19,6 @@ export class User {
   async getAllUsers() {
     try {
       const url = `${ENV.API_URL}/${ENV.ENDPOINTS.USERS}`;
-      console.log('getAllUsers: ', url);
-
       const response = await fetch(url);
       const result = await response.json();
 

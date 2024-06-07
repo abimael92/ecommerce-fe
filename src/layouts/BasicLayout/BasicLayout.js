@@ -11,8 +11,6 @@ export function BasicLayout(props) {
     relative = false,
   } = props;
 
-  console.log(children);
-
   return (
     <>
       <TopBar isOpenSearch={isOpenSearch} />

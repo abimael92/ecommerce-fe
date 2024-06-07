@@ -4,7 +4,6 @@ import { Separator, Seo } from '@/components/Shared';
 
 export default function GamePage(props) {
   const { game } = props;
-  // console.log(game);
 
   if (!game) {
     return (

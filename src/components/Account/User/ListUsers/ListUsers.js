@@ -7,7 +7,6 @@ import styles from './ListUsers.module.scss';
 const userCtrl = new UserCtrl();
 
 const ListUsers = ({ reload, onReload }) => {
-  console.log('listusers component rendered');
   const [users, setUsers] = useState(null);
   // const { user } = useAuth();
 
@@ -27,15 +26,10 @@ const ListUsers = ({ reload, onReload }) => {
 
   if (!users) return <div>Loading...</div>; // Display a loading indicator
 
-  console.log('users: ', users);
-
-  console.log(users.map((user) => (user)));
-
   return (
     <div className={styles.addressesContainer}>
       <div className={styles.addressesGrid}>
         {users.map((user) => {
-          console.log(user); // Log each user object
           return (
             <div key={user.id} className={styles.addressItem}>
               <div className={styles.address}>

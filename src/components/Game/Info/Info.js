@@ -17,8 +17,6 @@ export function Info(props) {
         const gameId = await gameCtrl.searchGameByName(game.title);
         const gameDetails = await gameCtrl.getGameDetailsById(gameId);
 
-        // console.log('gameDetails:', gameDetails);
-
         setGameDetails(gameDetails);
         setLoading(false);
       } catch (error) {
@@ -56,8 +54,6 @@ export function Info(props) {
       return '#FF0000';
     }
   }
-
-  // console.log('gameDetails:', gameDetails);
 
   return (
     <Container className={styles.info}>
